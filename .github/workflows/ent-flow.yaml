@@ -1,0 +1,117 @@
+name: Deploy to AWS Cluster
+
+on:
+  push:
+    branches:
+      - upgradeCorda
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.4.0
+
+      - name: Print Working Directory
+        run: |
+          pwd
+
+      - name: List Files
+        run: |
+          ls -a
+
+      - name: List Files under platforms
+        run: |
+          ls -l ./platforms/
+
+      - name: Create Build Directory
+        run: |
+          mkdir -p ./platforms/build
+          
+      - name: List Files under platforms 2
+        run: |
+          ls -l ./platforms/
+
+      - name: Copy and Modify File
+        run: |
+          # Copy the file
+          cp ./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml ./platforms/build/running-network-cordaent.yaml
+
+          # Make modifications
+          sed -i '/^ *type:/s/.*/  type: fabric/' ./platforms/build/running-network-cordaent.yaml
+          sed -i '/^ *version:/s/.*/  version: 3.1/' ./platforms/build/running-network-cordaent.yaml
+          sed -i '/^ *frontend:/s/.*/  frontend: true/' ./platforms/build/running-network-cordaent.yaml
+          sed -i '/^ *env:/,/type:/s/type: .*/  type: skk/' ./platforms/build/running-network-cordaent.yaml
+
+      - name: Display Modified File
+        run: |
+          cat ./platforms/build/running-network-cordaent.yaml | head -n 30
+
+      - name: List Files under build
+        run: |
+          ls -l ./platforms/build/
+
+      - name: Is kubectl already available
+        run: |
+          # Add your script/command to check if kubectl is already available
+          # For example:
+          if command -v kubectl &> /dev/null
+          then
+              echo "kubectl is already installed"
+          else
+              echo "kubectl is not installed"
+          fi
+
+      - name: Check kubectl is installed or not
+        run: |
+          # Checking client version only because checking server version is not possible because koubeconfig file is not yet setup for th runner
+          kubectl version --client
+
+      - name: Check AWS is installed or not
+        run: |
+          aws --version
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: <your-region>
+
+      - name: AWS CLI Command
+        run: |
+          # Your AWS CLI command goes here
+          aws --version && echo "##-1"
+          aws configure list && echo "##-2"
+
+      - name: Set KUBECONFIG
+        run: |
+          echo "PWD: $(pwd)" && mkdir -p .kube/config && echo "###############-1"
+          ls -a && echo "###############-2"
+          echo "${{ secrets.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
+          cat "$(pwd)/.kube/config/decoded-kubeconfig" && echo "###############-3"
+          export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
+          echo "Runner-Kubeconfig-path: $KUBECONFIG" && echo "###############-4"
+          kubectl config view && echo "###############-5"
+          kubectl config current-context && echo "###############-6"
+          kubectl version
+
+      # - name: Install kubectl binary
+      #   uses: azure/setup-kubectl@v3
+      #   with:
+      #     version: '1.28.4' # default is latest stable
+      #   id: install
+
+      # - name: Set up AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
+
+# Unable to locate credentials. You can configure credentials by running "aws configure".
+# Unable to connect to the server: getting credentials: exec: executable aws failed with exit code 253
+# Client Version: v1.28.4
+# Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
+# Error: Process completed with exit code 1.
