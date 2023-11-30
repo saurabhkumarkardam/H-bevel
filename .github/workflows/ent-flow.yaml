@@ -99,7 +99,7 @@ jobs:
           kubectl version
 
       - name: Set up HashiCorp Vault
-        uses: hashicorp/vault-action@v0.2.4
+        uses: hashicorp/vault-action@v2
         with:
           vault-token: ${{ secrets.VAULT_TOKEN }}
           vault-url: ${{ secrets.VAULT_URL }}
