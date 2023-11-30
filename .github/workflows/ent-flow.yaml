@@ -93,24 +93,12 @@ jobs:
           echo "${{ secrets.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
           cat "$(pwd)/.kube/config/decoded-kubeconfig" && echo "###############-3"
           export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
+          echo "Before"
+          ll "$(pwd)/.kube/config/decoded-kubeconfig"
+          chmod 400 "$(pwd)/.kube/config/decoded-kubeconfig"
+          echo "After"
+          ll "$(pwd)/.kube/config/decoded-kubeconfig"
           echo "Runner-Kubeconfig-path: $KUBECONFIG" && echo "###############-4"
           kubectl config view && echo "###############-5"
           kubectl config current-context && echo "###############-6"
           kubectl version
-
-      - name: Install HashiCorp Vault CLI
-        run: |
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install vault
-
-      - name: Vault version
-        run: |
-          vault version
-
-      - name: Set up HashiCorp Vault
-        uses: hashicorp/vault-action@v2
-        with:
-          url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
-

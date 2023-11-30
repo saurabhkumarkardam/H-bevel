@@ -79,7 +79,7 @@ jobs:
       run: |
         mkdir -p build
         mkdir -p ~/.ssh
-              
+        
         LOCAL_BUILD_PATH=$(pwd)/build        
         curl https://ipv4.icanhazip.com/ > ./build/localip
         # Move Kubeconfig to build dir
