@@ -3,7 +3,7 @@ name: Deploy to AWS Cluster
 on:
   push:
     branches:
-      - upgradeCorda
+      - ent-flow
   workflow_dispatch:
 
 jobs:
