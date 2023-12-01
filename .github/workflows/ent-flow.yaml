@@ -136,7 +136,7 @@ jobs:
           echo "cat localip" && cat localip
 
           aws ec2 authorize-security-group-ingress \
-            --group-id "${{ secrets.SECURITY_GROUP_ID }}" \
+            --group-id ${{ secrets.SECURITY_GROUP_ID }} \
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat localip)/32"
