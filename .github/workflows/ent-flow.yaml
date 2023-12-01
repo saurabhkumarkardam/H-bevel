@@ -111,10 +111,10 @@ jobs:
         run: |
           vault version
 
-      - name: Manually - Debug Vault Configuration
+      - name: Echo Vault Configuration
         run: |
-          echo "VAULT_ADDR: ${{ env.VAULT_ADDR }}" # $VAULT_ADDR"
-          echo "VAULT_TOKEN: ${{ env.VAULT_TOKEN }}" # $VAULT_TOKEN"
+          echo "WHAT_VAULT_ADDR: ${{ env.VAULT_ADDR }}"
+          echo "WHAT_VAULT_TOKEN: ${{ env.VAULT_TOKEN }}"
 
       - name: Running vault commands
         run: |
