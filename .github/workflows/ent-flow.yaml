@@ -119,4 +119,4 @@ jobs:
 
       - name: Running vault commands
         run: |
-          vault kv list secretsv2/
+          vault status
