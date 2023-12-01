@@ -125,6 +125,6 @@ jobs:
           sudo bash -c 'echo "127.0.0.1 vault.internal.dev.aws.blockchaincloudpoc-develop.com" >> /etc/hosts'
           echo "4 - cat /etc/hosts" && cat "/etc/hosts"
 
-      # - name: Running vault commands
-      #   run: |
-      #     vault status
+      - name: Running vault commands
+        run: |
+          vault status
