@@ -142,5 +142,5 @@ jobs:
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat localip)/32" \
-            --region "${{ secrets.AWS_REGION_NAME }}"
+            --region "${{ secrets.AWS_REGION_NAME }}" \
             --description "Github Runner"
