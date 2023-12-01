@@ -9,6 +9,9 @@ on:
 jobs:
   deployment:
     runs-on: ubuntu-latest
+    env:
+      VAULT_ADDR: ${{ secrets.VAULT_URL }}
+      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -108,10 +111,10 @@ jobs:
         run: |
           vault version
 
-      - name: Manually - Set up HashiCorp Vault
-        run: |
-          export VAULT_ADDR=${{ secrets.VAULT_URL }}
-          export VAULT_TOKEN=${{ secrets.VAULT_TOKEN }}
+      # - name: Manually - Set up HashiCorp Vault
+      #   run: |
+      #     export VAULT_ADDR=${{ secrets.VAULT_URL }}
+      #     export VAULT_TOKEN=${{ secrets.VAULT_TOKEN }}
 
       - name: Manually - Debug Vault Configuration
         run: |
