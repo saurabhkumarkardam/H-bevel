@@ -111,26 +111,10 @@ jobs:
         run: |
           vault version
 
-      # - name: Manually - Set up HashiCorp Vault
-      #   run: |
-      #     export VAULT_ADDR=${{ secrets.VAULT_URL }}
-      #     export VAULT_TOKEN=${{ secrets.VAULT_TOKEN }}
-
       - name: Manually - Debug Vault Configuration
         run: |
-          echo "VAULT_ADDR: $VAULT_ADDR"
-          echo "VAULT_TOKEN: $VAULT_TOKEN"
-
-      # - name: Plugin - Set up HashiCorp Vault
-      #   uses: hashicorp/vault-action@v2
-      #   with:
-      #     url: ${{ secrets.VAULT_URL }}
-      #     token: ${{ secrets.VAULT_TOKEN }}
-
-      # - name: Plugin - Debug Vault Configuration
-      #   run: |
-      #     echo "VAULT_ADDR: $VAULT_ADDR"
-      #     echo "VAULT_TOKEN: $VAULT_TOKEN"
+          echo "VAULT_ADDR: ${{ env.VAULT_ADDR }}" # $VAULT_ADDR"
+          echo "VAULT_TOKEN: ${{ env.VAULT_TOKEN }}" # $VAULT_TOKEN"
 
       - name: Running vault commands
         run: |
