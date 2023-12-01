@@ -114,6 +114,11 @@ jobs:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
 
+      - name: Debug Vault Configuration
+        run: |
+          echo "VAULT_ADDR: $VAULT_ADDR"
+          echo "VAULT_TOKEN: $VAULT_TOKEN"
+
       - name: Running vault commands
         run: |
           vault kv list secretsv2/
