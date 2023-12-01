@@ -135,7 +135,7 @@ jobs:
 
           echo "cat localip" && cat localip
 
-          echo "aws ec2 describe-security-groups --region ${{ secrets.AWS_REGION_NAME }}" && aws ec2 describe-security-groups --region "${{ secrets.AWS_REGION_NAME }}" # list all the SGs
+          # echo "aws ec2 describe-security-groups --region ${{ secrets.AWS_REGION_NAME }}" && aws ec2 describe-security-groups --region "${{ secrets.AWS_REGION_NAME }}" # list all the SGs
 
           aws ec2 authorize-security-group-ingress \
             --group-id "${{ secrets.SECURITY_GROUP_ID }}" \
