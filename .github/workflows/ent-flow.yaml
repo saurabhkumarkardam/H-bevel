@@ -108,18 +108,23 @@ jobs:
         run: |
           vault version
 
-      - name: Set up HashiCorp Vault
+      - name: Manually - Set up HashiCorp Vault
         run: |
-          export VAULT_ADDR=https://vault.dev.aws.blockloud-develop.com:20002
+          export VAULT_ADDR=${{ secrets.VAULT_URL }}
           export VAULT_TOKEN=${{ secrets.VAULT_TOKEN }}
 
-      - name: Set up HashiCorp Vault
+      - name: Manually - Debug Vault Configuration
+        run: |
+          echo "VAULT_ADDR: $VAULT_ADDR"
+          echo "VAULT_TOKEN: $VAULT_TOKEN"
+
+      - name: Plugin - Set up HashiCorp Vault
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
 
-      - name: Debug Vault Configuration
+      - name: Plugin - Debug Vault Configuration
         run: |
           echo "VAULT_ADDR: $VAULT_ADDR"
           echo "VAULT_TOKEN: $VAULT_TOKEN"
