@@ -143,3 +143,4 @@ jobs:
             --port "22" \
             --cidr "$(cat localip)/32" \
             --region "${{ secrets.AWS_REGION_NAME }}"
+            --description "Github Runner"
