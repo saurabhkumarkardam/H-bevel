@@ -116,6 +116,11 @@ jobs:
           echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
           echo "3 - ###" && ls -a /home/runner/.ssh/
           echo "4 - ###" && chmod 600 ~/.ssh/vault.pem
+          echo "5 - ###"
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan github.com >> ~/.ssh/known_hosts2
+          ssh-keyscan ${VAULT_BASTION} >> ~/.ssh/known_hosts
+          echo "6 - ###"
           ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
 
         continue-on-error: true
