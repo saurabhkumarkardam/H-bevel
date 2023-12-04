@@ -114,7 +114,7 @@ jobs:
           echo "ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
           chmod 400 .ssh/vault.pem
           echo "2 => ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
-          ssh -i devenv-bastion.pem -f -q -N -L 20002:vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002 dev@2.bastion.dev.aws.blockchaincloudpoc-develop.com
+          ssh -i .ssh/vault.pem -f -q -N -L 20002:vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002 dev@2.bastion.dev.aws.blockchaincloudpoc-develop.com
 
       - name: Running vault commands
         run: |
