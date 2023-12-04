@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "aws --version" && aws --version
           echo "aws configure list" && aws configure list  
-          echo "sts get-caller-identity" && aws sts get-caller-identity && 
+          echo "sts get-caller-identity" && aws sts get-caller-identity
 
       - name: Set KUBECONFIG
         run: |
