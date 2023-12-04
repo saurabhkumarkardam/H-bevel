@@ -83,10 +83,6 @@ jobs:
           sudo bash -c 'echo "127.0.0.1 vault.internal.dev.aws.blockchaincloudpoc-develop.com" >> /etc/hosts'
           echo "4 - cat /etc/hosts" && cat "/etc/hosts"
 
-      # - name: Running vault commands
-      #   run: |
-      #     vault status
-
       - name: Add SSH Rule to Security Group
         run: |
           curl https://ipv4.icanhazip.com/ > localip
@@ -106,7 +102,7 @@ jobs:
         run: |
           echo "whoami" && whoami
           echo "pwd" && pwd
-          echo "ls" && ls
+          echo "ls -a" && ls -a
           echo "mkdir -p .ssh" && mkdir -p .ssh
           echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > .ssh/vault.pem
           echo "ls -a .ssh" && ls -a ".ssh"
@@ -114,3 +110,7 @@ jobs:
           echo "ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
           chmod 400 .ssh/vault.pem
           echo "2 => ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
+
+      - name: Running vault commands
+        run: |
+          vault status
