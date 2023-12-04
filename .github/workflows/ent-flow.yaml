@@ -114,7 +114,7 @@ jobs:
           echo "ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
           chmod 400 .ssh/vault.pem
           echo "2 => ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
-          ssh -o "StrictHostKeyChecking no" -i .ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}"
+          ssh -o "StrictHostKeyChecking no" -i .ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
 
       - name: Running vault commands
         run: |
