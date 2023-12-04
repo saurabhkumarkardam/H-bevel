@@ -18,11 +18,10 @@ jobs:
 
       - name: Is kubectl already available
         run: |
-          # Add your script/command to check if kubectl is already available
-          # For example:
+          # Check if kubectl is already available
           if command -v kubectl &> /dev/null
           then
-              echo "kubectl is already installed"
+              echo "kubectl is already installed."
           else
               echo "kubectl is not installed"
           fi
@@ -40,13 +39,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION_NAME }} # ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION_NAME }}
 
       - name: AWS CLI Command
         run: |
-          aws --version && echo "##-1"
-          aws configure list && echo "##-2"
-          aws sts get-caller-identity && echo "##-3"
+          echo "aws --version" && aws --version
+          echo "aws configure list" && aws configure list  
+          echo "sts get-caller-identity" && aws sts get-caller-identity && 
 
       - name: Set KUBECONFIG
         run: |
@@ -76,7 +75,7 @@ jobs:
           echo "WHAT_VAULT_ADDR: ${{ env.VAULT_ADDR }}"
           echo "WHAT_VAULT_TOKEN: ${{ env.VAULT_TOKEN }}"
 
-      - name: Running Commnads (NotReqd)
+      - name: Running Commnads
         run: |
           echo "1 - cat /etc/resolv.conf" && cat "/etc/resolv.conf"
           echo "2 - ls -l /etc/hosts" && ls -l "/etc/hosts"
@@ -92,7 +91,7 @@ jobs:
         run: |
           curl https://ipv4.icanhazip.com/ > localip
 
-          echo "cat localip" && cat localip
+          echo "cat localip" && cat "localip"
 
           # echo "aws ec2 describe-security-groups --region ${{ secrets.AWS_REGION_NAME }}" && aws ec2 describe-security-groups --region "${{ secrets.AWS_REGION_NAME }}" # list all the SGs
 
@@ -102,3 +101,11 @@ jobs:
             --port "22" \
             --cidr "$(cat localip)/32" \
             --region "${{ secrets.AWS_REGION_NAME }}"
+
+      - name: Create Tunnel
+        run: |
+          echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          echo "cat ~/.ssh/vault.pem" && cat "~/.ssh/vault.pem"
+          echo "ls -l ~/.ssh/vault.pem" && ls -l "~/.ssh/vault.pem"
+          chmod 400 ~/.ssh/vault.pem
+          echo "2 => ls -l ~/.ssh/vault.pem" && ls -l "~/.ssh/vault.pem"
