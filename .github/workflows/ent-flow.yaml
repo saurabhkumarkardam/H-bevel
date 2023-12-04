@@ -104,6 +104,10 @@ jobs:
 
       - name: Create Tunnel
         run: |
+          echo "whoami" && whoami
+          echo "pwd" && pwd
+          echo "ls" && ls
+
           echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
           echo "cat ~/.ssh/vault.pem" && cat "~/.ssh/vault.pem"
           echo "ls -l ~/.ssh/vault.pem" && ls -l "~/.ssh/vault.pem"
