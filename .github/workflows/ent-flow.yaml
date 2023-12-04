@@ -124,7 +124,7 @@ jobs:
           ssh -i .ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
         continue-on-error: true
 
-      - name: Running vault commands
+      - name: Running vault command
         run: |
           vault status
         continue-on-error: true
