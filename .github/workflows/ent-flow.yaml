@@ -119,3 +119,16 @@ jobs:
       - name: Running vault commands
         run: |
           vault status
+
+      - name: Remove SSH Rule from Security Group
+        run: |
+          curl https://ipv4.icanhazip.com/ > localip
+
+          echo "cat localip" && cat "localip"
+
+          aws ec2 revoke-security-group-ingress \
+            --group-id "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
+            --protocol "tcp" \
+            --port "22" \
+            --cidr "$(cat localip)/32" \
+            --region "${{ secrets.AWS_REGION_NAME }}"
