@@ -111,11 +111,12 @@ jobs:
 
       - name: Create Tunnel
         run: |
-          echo "1 - ###" && pwd 
-          echo "2 - ###" && mkdir ~/.ssh
-          echo "3 - ###" && ls -a
-          echo "4 - ###" && ls -a /home/runner/
-          echo "5 - ###" && ls -a /home/runner/.ssh
+          echo "1 - ###" && mkdir ~/.ssh
+          echo "2 - ###" && ls -a /home/runner/.ssh
+          echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          echo "3 - ###" && ls -a /home/runner/.ssh/
+
+
         continue-on-error: true
 
       - name: Running vault command
