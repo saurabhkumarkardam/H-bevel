@@ -102,6 +102,13 @@ jobs:
             --cidr "$(cat localip)/32" \
             --region "${{ secrets.AWS_REGION_NAME }}"
 
+          aws ec2 authorize-security-group-ingress \
+            --group-id "sg-03bd095e7b92149f8" \
+            --protocol "tcp" \
+            --port "22" \
+            --cidr "$(cat localip)/32" \
+            --region "eu-west-1"
+
       - name: Create Tunnel
         run: |
           echo "whoami" && whoami
@@ -114,7 +121,7 @@ jobs:
           echo "ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
           chmod 600 .ssh/vault.pem
           echo "2 => ls -l .ssh/vault.pem" && ls -l ".ssh/vault.pem"
-          ssh -i .ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
+          # ssh -i .ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
         continue-on-error: true
 
       - name: Running vault commands
@@ -134,3 +141,10 @@ jobs:
             --port "22" \
             --cidr "$(cat localip)/32" \
             --region "${{ secrets.AWS_REGION_NAME }}"
+
+          aws ec2 revoke-security-group-ingress \
+            --group-id "sg-03bd095e7b92149f8" \
+            --protocol "tcp" \
+            --port "22" \
+            --cidr "$(cat localip)/32" \
+            --region "eu-west-1"
