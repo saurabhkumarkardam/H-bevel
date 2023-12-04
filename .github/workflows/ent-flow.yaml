@@ -114,8 +114,8 @@ jobs:
           echo "1 - ###" && pwd 
           echo "2 - ###" && mkdir ~/.ssh
           echo "3 - ###" && ls -a
-          echo "4 - ###" && ls -a home/runner
-          echo "5 - ###" && ls -a home/runner/.ssh
+          echo "4 - ###" && ls -a /home/runner/
+          echo "5 - ###" && ls -a /home/runner/.ssh
         continue-on-error: true
 
       - name: Running vault command
