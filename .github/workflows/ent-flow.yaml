@@ -115,8 +115,8 @@ jobs:
           echo "2 - ###" && ls -a /home/runner/.ssh
           echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
           echo "3 - ###" && ls -a /home/runner/.ssh/
-          chmod 600 .ssh/vault.pem
-          ssh -i .ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
+          echo "4 - ###" && chmod 600 ~/.ssh/vault.pem
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
 
         continue-on-error: true
 
