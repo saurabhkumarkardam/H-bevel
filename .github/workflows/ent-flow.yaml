@@ -107,9 +107,9 @@ jobs:
           echo "whoami" && whoami
           echo "pwd" && pwd
           echo "ls" && ls
-          echo "mkdir -p ~/.ssh" && mkdir -p ~/.ssh
-          echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-          echo "ls -l ~/.ssh" && ls -l "~/.ssh"
+          echo "mkdir -p .ssh" && mkdir -p .ssh
+          echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > .ssh/vault.pem
+          echo "ls -a .ssh" && ls -a ".ssh"
           echo "cat ~/.ssh/vault.pem" && cat "~/.ssh/vault.pem"
           echo "ls -l ~/.ssh/vault.pem" && ls -l "~/.ssh/vault.pem"
           chmod 400 ~/.ssh/vault.pem
