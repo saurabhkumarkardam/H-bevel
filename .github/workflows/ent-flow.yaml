@@ -101,11 +101,19 @@ jobs:
           git version
           which git
           pwd
-          tree ./
+          # tree ./
 
           git remote -v
 
           git config --list
+
+          echo "1=>" && git branch
+
+          touch SAURABH.txt
+          echo "HELLO" >> SAURABH.txt
+          cat SAURABH.txt
+          # git push origin 
+
 
 
 
