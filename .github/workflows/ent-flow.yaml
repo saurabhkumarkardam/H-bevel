@@ -113,7 +113,7 @@ jobs:
           echo "HELLO" >> SAURABH.txt
           cat SAURABH.txt
 
-          git config --global user.name "saurabhkumarkardam
+          git config --global user.name "saurabhkumarkardam"
           git config --global user.email "saurabhkumarkardam@accenture.com"
           git config --list
           git push origin ent-flow
