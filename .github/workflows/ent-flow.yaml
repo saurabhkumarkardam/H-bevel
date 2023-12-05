@@ -30,7 +30,7 @@ jobs:
         with:
           aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION_NAME }}
+          aws-region: "eu-central-1"
 
       - name: AWS Commands
         run: |
@@ -79,6 +79,7 @@ jobs:
           ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
           vault status
           vault kv list secretsv2/
+        continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
         run: |
