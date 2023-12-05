@@ -91,8 +91,13 @@ jobs:
           echo "################-1"
           ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
           echo "################-2"
+        continue-on-error: true
+
+      - name: Running vault command
+        run: |
           vault status
           vault kv list secretsv2/
+          echo "################-done"
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
