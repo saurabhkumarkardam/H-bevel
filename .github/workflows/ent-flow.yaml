@@ -16,6 +16,7 @@ jobs:
       AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
       ENCODED_KUBECONFIG: ${{ secrets.ENCODED_KUBECONFIG }}
       ENCODED_DEVENV_BASTION_PEM: ${{ secrets.ENCODED_DEVENV_BASTION_PEM }}
+      VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
       VAULT_SERVER: ${{ secrets.VAULT_SERVER }}
       VAULT_PORT: ${{ secrets.VAULT_PORT }}
       VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
@@ -59,15 +60,18 @@ jobs:
       - name: Vault Commands
         run: |
           vault version
-          export VAULT_ADDR="http://vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002"
-          export VAULT_TOKEN="s.8rzRdEGISjdOPL0oqZogI4Fb"
+          export VAULT_ADDR="${{ env.VAULT_ADDR }}"
+          export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
 
           echo "VAULT_ADDR=$VAULT_ADDR"
           echo "VAULT_TOKEN=$VAULT_TOKEN"
 
+          echo "### bashrc"
+          cat ~/.bashrc
+
       - name: Local DNS Mapping
         run: |
-          sudo bash -c 'echo "127.0.0.1 saurabh" >> /etc/hosts'
+          sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
           echo "##-1"
           cat "/etc/hosts"
 
