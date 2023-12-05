@@ -62,6 +62,9 @@ jobs:
           export VAULT_ADDR="http://${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}"
           export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
 
+          echo "VAULT_ADDR=${VAULT_ADDR}"
+          echo "VAULT_TOKEN=${VAULT_TOKEN}"
+
       - name: Local DNS Mapping
         run: |
           sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
