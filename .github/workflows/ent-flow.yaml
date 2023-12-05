@@ -67,7 +67,7 @@ jobs:
 
       - name: Local DNS Mapping
         run: |
-          sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
+          sudo bash -c 'echo "127.0.0.1 vault.internal.dev.aws.blockchaincloudpoc-develop.com" >> /etc/hosts'
           echo "##-1"
           cat /etc/hosts
 
