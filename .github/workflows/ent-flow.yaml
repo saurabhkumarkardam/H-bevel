@@ -10,10 +10,15 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     env:
-      VAULT_ADDR: ${{ secrets.VAULT_URL }}
-      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION_NAME: ${{ secrets.AWS_REGION_NAME }}
+      AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
+      ENCODED_KUBECONFIG: ${{ secrets.ENCODED_KUBECONFIG }}
+      ENCODED_DEVENV_BASTION_PEM: ${{ secrets.ENCODED_DEVENV_BASTION_PEM }}
       VAULT_SERVER: ${{ secrets.VAULT_SERVER }}
       VAULT_PORT: ${{ secrets.VAULT_PORT }}
+      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
       VAULT_BASTION: ${{ secrets.VAULT_BASTION }}
       VAULT_USER: ${{ vars.VAULT_USER }}
     steps:
@@ -23,14 +28,14 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION_NAME }}
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION_NAME }}
 
       - name: Set KUBECONFIG
         run: |
           mkdir -p .kube/config
-          echo "${{ secrets.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
+          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
           export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
 
       - name: Install HashiCorp Vault CLI
@@ -41,13 +46,13 @@ jobs:
 
       - name: Local DNS Mapping
         run: |
-          sudo bash -c 'echo "127.0.0.1 vault.internal.dev.aws.blockchaincloudpoc-develop.com" >> /etc/hosts'
+          sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
 
       - name: Add SSH Rule to Security Group
         run: |
           curl https://ipv4.icanhazip.com/ > localip
           aws ec2 authorize-security-group-ingress \
-            --group-id "sg-03bd095e7b92149f8" \
+            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat localip)/32" \
@@ -56,7 +61,7 @@ jobs:
       - name: Create Tunnel
         run: |
           mkdir ~/.ssh
-          echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
           chmod 600 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan ${VAULT_BASTION} >> ~/.ssh/known_hosts
@@ -66,7 +71,7 @@ jobs:
         run: |
           curl https://ipv4.icanhazip.com/ > localip
           aws ec2 revoke-security-group-ingress \
-            --group-id "sg-03bd095e7b92149f8" \
+            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat localip)/32" \
