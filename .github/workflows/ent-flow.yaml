@@ -1,11 +1,3 @@
-# 3 things:
-# - AWS 
-# - K8s => kubectl
-# - Vault
-
-# kubectl version = Client (kubectl Tool) Version + Server (bevel-dev-cluster) Version
-# kubectl version --client = Client Version
-
 name: Deploy to AWS Cluster
 
 on:
@@ -16,7 +8,7 @@ on:
 
 jobs:
   deployment:
-    runs-on: ubuntu-latest # Runner
+    runs-on: ubuntu-latest
     env:
       VAULT_ADDR: ${{ secrets.VAULT_URL }}
       VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
@@ -28,52 +20,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
 
-      - name: Is kubectl already available
-        run: |
-          # Check if kubectl is already available
-          if command -v kubectl &> /dev/null
-          then
-              echo "kubectl is already installed."
-          else
-              echo "kubectl is not installed"
-              # code to install kubectl if missing
-          fi
-
-      - name: Check kubectl is installed or not
-        run: |
-          kubectl version --client
-
-      - name: Check AWS is installed or not
-        run: |
-          aws --version
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} # id
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # password
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION_NAME }}
-
-      - name: AWS CLI Command
-        run: |
-          echo "aws --version" && aws --version
-          echo "aws configure list" && aws configure list  
-          echo "sts get-caller-identity" && aws sts get-caller-identity
 
       - name: Set KUBECONFIG
         run: |
-          echo "PWD: $(pwd)" && mkdir -p .kube/config && echo "###############-1"
-          ls -a && echo "###############-2"
-
+          mkdir -p .kube/config
           echo "${{ secrets.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
-
-          cat "$(pwd)/.kube/config/decoded-kubeconfig" && echo "###############-3"
           export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
-          echo "Runner-Kubeconfig-path: $KUBECONFIG" && echo "###############-4"
-          kubectl config view && echo "###############-5"
-          kubectl config current-context && echo "###############-6"
-          kubectl version && echo "###############-6"
-          kubectl get nodes
 
       - name: Install HashiCorp Vault CLI
         run: |
@@ -81,38 +39,13 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
           sudo apt update && sudo apt install vault
 
-      - name: Vault version
+      - name: Local DNS Mapping
         run: |
-          vault version
-
-      - name: Echo Vault Configuration
-        run: |
-          echo "WHAT_VAULT_ADDR: ${{ env.VAULT_ADDR }}"
-          echo "WHAT_VAULT_TOKEN: ${{ env.VAULT_TOKEN }}"
-
-      - name: Running Commnads
-        run: |
-          echo "1 - cat /etc/resolv.conf" && cat "/etc/resolv.conf"
-          echo "2 - ls -l /etc/hosts" && ls -l "/etc/hosts"
-          echo "3 - cat /etc/hosts" && cat "/etc/hosts"
           sudo bash -c 'echo "127.0.0.1 vault.internal.dev.aws.blockchaincloudpoc-develop.com" >> /etc/hosts'
-          echo "4 - cat /etc/hosts" && cat "/etc/hosts"
 
       - name: Add SSH Rule to Security Group
         run: |
           curl https://ipv4.icanhazip.com/ > localip
-
-          echo "cat localip" && cat "localip"
-
-          # echo "aws ec2 describe-security-groups --region ${{ secrets.AWS_REGION_NAME }}" && aws ec2 describe-security-groups --region "${{ secrets.AWS_REGION_NAME }}" # list all the SGs
-
-          # aws ec2 authorize-security-group-ingress \
-          #   --group-id "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
-          #   --protocol "tcp" \
-          #   --port "22" \
-          #   --cidr "$(cat localip)/32" \
-          #   --region "${{ secrets.AWS_REGION_NAME }}"
-
           aws ec2 authorize-security-group-ingress \
             --group-id "sg-03bd095e7b92149f8" \
             --protocol "tcp" \
@@ -122,35 +55,16 @@ jobs:
 
       - name: Create Tunnel
         run: |
-          echo "1 - ###" && mkdir ~/.ssh
-          echo "2 - ###" && ls -a /home/runner/.ssh
+          mkdir ~/.ssh
           echo "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-          echo "3 - ###" && ls -a /home/runner/.ssh/
-          echo "4 - ###" && chmod 600 ~/.ssh/vault.pem
-          echo "5 - ###"
+          chmod 600 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan ${VAULT_BASTION} >> ~/.ssh/known_hosts
-          echo "6 - ###"
           ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
-
-      - name: Running vault command
-        run: |
-          vault status
-          vault kv list secretsv2/
 
       - name: Remove SSH Rule from Security Group
         run: |
           curl https://ipv4.icanhazip.com/ > localip
-
-          echo "cat localip" && cat "localip"
-
-          # aws ec2 revoke-security-group-ingress \
-          #   --group-id "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
-          #   --protocol "tcp" \
-          #   --port "22" \
-          #   --cidr "$(cat localip)/32" \
-          #   --region "${{ secrets.AWS_REGION_NAME }}"
-
           aws ec2 revoke-security-group-ingress \
             --group-id "sg-03bd095e7b92149f8" \
             --protocol "tcp" \
