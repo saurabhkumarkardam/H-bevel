@@ -101,3 +101,4 @@ jobs:
           git version
           which git
           pwd
+          ls -a
