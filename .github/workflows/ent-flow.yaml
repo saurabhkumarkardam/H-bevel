@@ -32,11 +32,22 @@ jobs:
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION_NAME }}
 
+      - name: AWS Commands
+        run: |
+          echo "aws --version" && aws --version
+          echo "aws configure list" && aws configure list  
+          echo "sts get-caller-identity" && aws sts get-caller-identity
+
       - name: Set KUBECONFIG
         run: |
           mkdir -p .kube/config
           echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
           export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
+
+          kubectl config view && echo "###############-5"
+          kubectl config current-context && echo "###############-6"
+          kubectl version && echo "###############-6"
+          kubectl get nodes
 
       - name: Install HashiCorp Vault CLI
         run: |
