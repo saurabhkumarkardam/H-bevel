@@ -16,7 +16,7 @@ jobs:
       AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
       ENCODED_KUBECONFIG: ${{ secrets.ENCODED_KUBECONFIG }}
       ENCODED_DEVENV_BASTION_PEM: ${{ secrets.ENCODED_DEVENV_BASTION_PEM }}
-      # VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+      VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
       VAULT_SERVER: ${{ secrets.VAULT_SERVER }}
       VAULT_PORT: ${{ secrets.VAULT_PORT }}
       VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
@@ -31,7 +31,7 @@ jobs:
         with:
           aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "eu-central-1"
+          aws-region: "eu-west-1" # "eu-central-1"
 
       - name: AWS Commands
         run: |
