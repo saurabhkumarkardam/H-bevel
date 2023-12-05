@@ -1,3 +1,11 @@
+# 3 things:
+# - AWS 
+# - K8s => kubectl
+# - Vault
+
+# kubectl version = Client (kubectl Tool) Version + Server (bevel-dev-cluster) Version
+# kubectl version --client = Client Version
+
 name: Deploy to AWS Cluster
 
 on:
@@ -8,7 +16,7 @@ on:
 
 jobs:
   deployment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Runner
     env:
       VAULT_ADDR: ${{ secrets.VAULT_URL }}
       VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
@@ -28,6 +36,7 @@ jobs:
               echo "kubectl is already installed."
           else
               echo "kubectl is not installed"
+              # code to install kubectl if missing
           fi
 
       - name: Check kubectl is installed or not
@@ -41,8 +50,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} # id
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # password
           aws-region: ${{ secrets.AWS_REGION_NAME }}
 
       - name: AWS CLI Command
@@ -55,7 +64,9 @@ jobs:
         run: |
           echo "PWD: $(pwd)" && mkdir -p .kube/config && echo "###############-1"
           ls -a && echo "###############-2"
+
           echo "${{ secrets.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
+
           cat "$(pwd)/.kube/config/decoded-kubeconfig" && echo "###############-3"
           export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
           echo "Runner-Kubeconfig-path: $KUBECONFIG" && echo "###############-4"
@@ -118,18 +129,14 @@ jobs:
           echo "4 - ###" && chmod 600 ~/.ssh/vault.pem
           echo "5 - ###"
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          # ssh-keyscan github.com >> ~/.ssh/known_hosts2
           ssh-keyscan ${VAULT_BASTION} >> ~/.ssh/known_hosts
           echo "6 - ###"
           ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
-
-        continue-on-error: true
 
       - name: Running vault command
         run: |
           vault status
           vault kv list secretsv2/
-        continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
         run: |
