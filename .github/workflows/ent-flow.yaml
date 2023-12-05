@@ -10,18 +10,18 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION_NAME: ${{ secrets.AWS_REGION_NAME }}
-      AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
-      ENCODED_KUBECONFIG: ${{ secrets.ENCODED_KUBECONFIG }}
-      ENCODED_DEVENV_BASTION_PEM: ${{ secrets.ENCODED_DEVENV_BASTION_PEM }}
-      VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-      VAULT_SERVER: ${{ secrets.VAULT_SERVER }}
-      VAULT_PORT: ${{ secrets.VAULT_PORT }}
-      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
-      VAULT_BASTION: ${{ secrets.VAULT_BASTION }}
-      VAULT_USER: ${{ vars.VAULT_USER }}
+      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+      AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
+      AWS_SECURITY_GROUP_ID: "${{ secrets.AWS_SECURITY_GROUP_ID }}"
+      ENCODED_KUBECONFIG: "${{ secrets.ENCODED_KUBECONFIG }}"
+      ENCODED_DEVENV_BASTION_PEM: "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}"
+      VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
+      VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
+      VAULT_PORT: "${{ secrets.VAULT_PORT }}"
+      VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
+      VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
+      VAULT_USER: "${{ vars.VAULT_USER }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -29,9 +29,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "eu-west-1" # "eu-central-1"
+          aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
+          aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
+          aws-region: "${{ env.AWS_REGION_NAME }}"
 
       - name: AWS Commands
         run: |
@@ -73,7 +73,7 @@ jobs:
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat localip)/32" \
-            --region "eu-west-1"
+            --region "${{ env.AWS_REGION_NAME }}"
 
       - name: Create Tunnel
         run: |
@@ -82,7 +82,6 @@ jobs:
           chmod 600 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-          # ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts2
           echo "################-1"
           ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
           echo "################-2"
@@ -92,7 +91,6 @@ jobs:
         run: |
           vault status
           vault kv list secretsv2/
-          echo "################-done"
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
@@ -103,5 +101,5 @@ jobs:
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat localip)/32" \
-            --region "eu-west-1"
+            --region "${{ env.AWS_REGION_NAME }}"
 
