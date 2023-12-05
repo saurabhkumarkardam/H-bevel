@@ -34,6 +34,7 @@ jobs:
 
       - name: AWS Commands
         run: |
+          #
           echo "aws --version" && aws --version
           echo "aws configure list" && aws configure list  
           echo "sts get-caller-identity" && aws sts get-caller-identity
@@ -54,6 +55,12 @@ jobs:
           wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
           echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
           sudo apt update && sudo apt install vault
+
+      - name: Vault Commands
+        run: |
+          vault version
+          export VAULT_ADDR="http://${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}""
+          export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
 
       - name: Local DNS Mapping
         run: |
@@ -92,3 +99,4 @@ jobs:
             --port "22" \
             --cidr "$(cat localip)/32" \
             --region "eu-west-1"
+
