@@ -102,3 +102,10 @@ jobs:
           which git
           pwd
           ls -a
+
+          mkdir -p build
+
+          cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
+          cat "build/ENT/running-network-cordaent.yaml"
+
+          ls -a build/
