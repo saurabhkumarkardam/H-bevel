@@ -59,17 +59,17 @@ jobs:
       - name: Vault Commands
         run: |
           vault version
-          export VAULT_ADDR="http://${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}"
-          export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
+          # export VAULT_ADDR="http://${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}"
+          # export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
 
-          echo "VAULT_ADDR=${VAULT_ADDR}"
-          echo "VAULT_TOKEN=${VAULT_TOKEN}"
+          # echo "VAULT_ADDR=${VAULT_ADDR}"
+          # echo "VAULT_TOKEN=${VAULT_TOKEN}"
 
       - name: Local DNS Mapping
         run: |
           sudo bash -c 'echo "127.0.0.1 vault.internal.dev.aws.blockchaincloudpoc-develop.com" >> /etc/hosts'
           echo "##-1"
-          cat /etc/hosts
+          cat "/etc/hosts"
 
       - name: Add SSH Rule to Security Group
         run: |
