@@ -62,8 +62,8 @@ jobs:
           export VAULT_ADDR="http://vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002"
           export VAULT_TOKEN="s.8rzRdEGISjdOPL0oqZogI4Fb"
 
-          echo "VAULT_ADDR=${VAULT_ADDR}"
-          echo "VAULT_TOKEN=${VAULT_TOKEN}"
+          echo "VAULT_ADDR=$VAULT_ADDR"
+          echo "VAULT_TOKEN=$VAULT_TOKEN"
 
       - name: Local DNS Mapping
         run: |
@@ -88,6 +88,7 @@ jobs:
           chmod 600 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+          ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts2
           echo "################-1"
           ssh -i ~/.ssh/vault.pem -f -q -N -L "20002:vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
           echo "################-2"
