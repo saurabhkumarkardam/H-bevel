@@ -59,7 +59,7 @@ jobs:
       - name: Vault Commands
         run: |
           vault version
-          export VAULT_ADDR="http://${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}""
+          export VAULT_ADDR="http://${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}"
           export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
 
       - name: Local DNS Mapping
