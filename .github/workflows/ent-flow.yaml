@@ -59,11 +59,11 @@ jobs:
       - name: Vault Commands
         run: |
           vault version
-          # export VAULT_ADDR="http://${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}"
-          # export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
+          export VAULT_ADDR="http://vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002"
+          export VAULT_TOKEN="s.8rzRdEGISjdOPL0oqZogI4Fb"
 
-          # echo "VAULT_ADDR=${VAULT_ADDR}"
-          # echo "VAULT_TOKEN=${VAULT_TOKEN}"
+          echo "VAULT_ADDR=${VAULT_ADDR}"
+          echo "VAULT_TOKEN=${VAULT_TOKEN}"
 
       - name: Local DNS Mapping
         run: |
