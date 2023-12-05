@@ -18,8 +18,8 @@ network:
 
   #Environment section for Kubernetes setup
   env:
-    type: "dev"              # tag for the environment. Important to run multiple flux on single cluster
-    proxy: ambassador               # value has to be 'ambassador' as 'haproxy' has not been implemented for Corda
+    type: "FLUX_SUFFIX_PLACEHOLDER"              # tag for the environment. Important to run multiple flux on single cluster
+    proxy: "INGRESS_CONTROLLER_PLACEHOLDER"               # value has to be 'ambassador' as 'haproxy' has not been implemented for Corda
     proxy_namespace: "ambassador"   # Namespace required for Ambassador Edge-Stack deployment
     ambassadorPorts:                # Any additional Ambassador ports can be given here, this is valid only if proxy='ambassador'
       portRange:              # For a range of ports 

@@ -108,4 +108,14 @@ jobs:
           cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
           cat "build/ENT/running-network-cordaent.yaml"
 
-          ls -a build/
+          tree build/
+
+          ENV_TYPE="skk"
+          ENV_PROXY="ambassador"
+
+          YAML_FILE="build/ENT/running-network-cordaent.yaml"
+
+          sed -i "s/FLUX_SUFFIX_PLACEHOLDER/$ENV_TYPE/g" "$YAML_FILE"
+          sed -i "s/INGRESS_CONTROLLER_PLACEHOLDER/$ENV_PROXY/g" "$YAML_FILE"
+
+          cat "build/ENT/running-network-cordaent.yaml"
