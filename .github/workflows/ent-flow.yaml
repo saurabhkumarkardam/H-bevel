@@ -67,7 +67,7 @@ jobs:
 
       - name: Local DNS Mapping
         run: |
-          sudo bash -c 'echo "127.0.0.1 vault.internal.dev.aws.blockchaincloudpoc-develop.com" >> /etc/hosts'
+          sudo bash -c 'echo "127.0.0.1 http://vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002" >> /etc/hosts'
           echo "##-1"
           cat "/etc/hosts"
 
@@ -90,7 +90,7 @@ jobs:
           ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
           ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts2
           echo "################-1"
-          ssh -i ~/.ssh/vault.pem -f -q -N -L "20002:vault.internal.dev.aws.blockchaincloudpoc-develop.com:20002" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
           echo "################-2"
         continue-on-error: true
 
