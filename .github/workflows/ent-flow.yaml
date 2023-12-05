@@ -60,14 +60,14 @@ jobs:
       - name: Vault Commands
         run: |
           vault version
-          export VAULT_ADDR="${{ env.VAULT_ADDR }}"
-          export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
+          # export VAULT_ADDR="${{ env.VAULT_ADDR }}"
+          # export VAULT_TOKEN="${{ env.VAULT_TOKEN }}"
 
-          echo "VAULT_ADDR=$VAULT_ADDR"
-          echo "VAULT_TOKEN=$VAULT_TOKEN"
+          # echo "VAULT_ADDR=$VAULT_ADDR"
+          # echo "VAULT_TOKEN=$VAULT_TOKEN"
 
-          echo "### bashrc"
-          cat ~/.bashrc
+          # echo "### bashrc"
+          # cat ~/.bashrc
 
       - name: Local DNS Mapping
         run: |
