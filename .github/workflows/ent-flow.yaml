@@ -124,13 +124,31 @@ jobs:
           # echo "##-2"
           # git config --list
 
+          echo "Create file"
           touch SAURABH.txt
           echo "Hello" >> SAURABH.txt
 
+          echo "List all files at $(pwd)"
           ls
 
-          # Push changes
+          echo "Push changes"
           git add .
           git commit -m "Your commit message"
           git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
-          git pull origin ent-flow # working
+          git pull origin ent-flow
+
+          echo "Delete the same file"
+          rm -rf SAURABH.txt
+
+          echo "Push changes again"
+          git add .
+          git commit -m "Your commit message"
+          git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+
+          echo "Git Push and Pull"
+          git pull origin ent-flow
+          git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+
+
+
+
