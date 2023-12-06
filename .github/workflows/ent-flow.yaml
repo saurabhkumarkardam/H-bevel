@@ -7,97 +7,183 @@ on:
   workflow_dispatch:
 
 jobs:
-  # deployment:
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: write
-  #   env:
-  #     AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  #     AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-  #     AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
-  #     AWS_SECURITY_GROUP_ID: "${{ secrets.AWS_SECURITY_GROUP_ID }}"
-  #     ENCODED_KUBECONFIG: "${{ secrets.ENCODED_KUBECONFIG }}"
-  #     ENCODED_DEVENV_BASTION_PEM: "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}"
-  #     VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
-  #     VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
-  #     VAULT_PORT: "${{ secrets.VAULT_PORT }}"
-  #     VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
-  #     VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
-  #     VAULT_USER: "${{ vars.VAULT_USER }}"
-  #     GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
-  #     GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
-    aws-setup:
-      runs-on: ubuntu-latest
-      env:
-        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-        AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
-      steps:
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v2
-          with:
-            aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
-            aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
-            aws-region: "${{ env.AWS_REGION_NAME }}"
+  deployment:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+      AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
+      AWS_SECURITY_GROUP_ID: "${{ secrets.AWS_SECURITY_GROUP_ID }}"
+      ENCODED_KUBECONFIG: "${{ secrets.ENCODED_KUBECONFIG }}"
+      ENCODED_DEVENV_BASTION_PEM: "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}"
+      VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
+      VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
+      VAULT_PORT: "${{ secrets.VAULT_PORT }}"
+      VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
+      VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
+      VAULT_USER: "${{ vars.VAULT_USER }}"
+      GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
+      GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
+      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+      GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
+      GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
+      DOCKER_URL: "${{ secrets.DOCKER_URL }}"
+      DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+      DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
+      EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
+      CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
 
-        - name: AWS Commands
-          run: |
-            echo "aws --version" && aws --version
-            echo "aws configure list" && aws configure list  
-            echo "sts get-caller-identity" && aws sts get-caller-identity
+      
 
-    git-and-github-setup:
-      runs-on: ubuntu-latest
-      needs: aws-setup
-      permissions:
-        contents: write
-      env:
-        GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
-        GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
-      steps:
-        - name: Checkout Repository
-          uses: actions/checkout@v2.4.0
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.4.0
 
-        - name: AWS Commands
-          run: |
-            echo "aws --version" && aws --version
-            echo "aws configure list" && aws configure list  
-            echo "sts get-caller-identity" && aws sts get-caller-identity
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
+      #     aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
+      #     aws-region: "${{ env.AWS_REGION_NAME }}"
 
-        - name: Display Git Information
-          run: |
-            env
-            git --version
-            git branch
-            git log -1
+      # - name: AWS Commands
+      #   run: |
+      #     echo "aws --version" && aws --version
+      #     echo "aws configure list" && aws configure list  
+      #     echo "sts get-caller-identity" && aws sts get-caller-identity
 
-        - name: Configure Git
-          run: |
-            git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-            git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+      # - name: Set KUBECONFIG
+      #   run: |
+      #     mkdir -p .kube/config
+      #     echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
+      #     export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
 
-            echo "Create file"
-            touch SAURABH.txt
-            echo "Hello" >> SAURABH.txt
+      #     kubectl config view && echo "###############-5"
+      #     kubectl config current-context && echo "###############-6"
+      #     kubectl version && echo "###############-6"
+      #     kubectl get nodes
 
-            echo "List all files at $(pwd)"
-            ls
+      # - name: Install HashiCorp Vault CLI
+      #   run: |
+      #     wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+      #     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+      #     sudo apt update && sudo apt install vault
 
-            echo "Push changes"
-            git add .
-            git commit -m "Your commit message"
-            git push origin ent-flow
-            git pull origin ent-flow
+      # - name: Local DNS Mapping
+      #   run: |
+      #     sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
 
-            echo "#################################5"
-            echo "Delete the same file"
-            rm -rf SAURABH.txt
+      # - name: Add SSH Rule to Security Group
+      #   run: |
+      #     curl https://ipv4.icanhazip.com/ > localip 
+      #     aws ec2 authorize-security-group-ingress \
+      #       --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+      #       --protocol "tcp" \
+      #       --port "22" \
+      #       --cidr "$(cat localip)/32" \
+      #       --region "${{ env.AWS_REGION_NAME }}"
 
-            echo "Push changes again"
-            git add .
-            git commit -m "Your commit message"
-            git push origin ent-flow
+      # - name: Create Tunnel
+      #   run: |
+      #     mkdir ~/.ssh
+      #     echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+      #     chmod 600 ~/.ssh/vault.pem
+      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
+      #     ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+      #     ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
+      #   continue-on-error: true
 
-            echo "Git Push and Pull"
-            git pull origin ent-flow
-            git push origin ent-flow
+      # - name: Running vault command
+      #   run: |
+      #     vault status
+      #     vault kv list secretsv2/
+      #   continue-on-error: true
+
+      # - name: Remove SSH Rule from Security Group
+      #   run: |
+      #     curl https://ipv4.icanhazip.com/ > localip
+      #     aws ec2 revoke-security-group-ingress \
+      #       --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+      #       --protocol "tcp" \
+      #       --port "22" \
+      #       --cidr "$(cat localip)/32" \
+      #       --region "${{ env.AWS_REGION_NAME }}"
+
+      # - name: Git Setup
+      #   run: |
+      #     git --version
+      #     git branch
+      #     git log -1
+      #     git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+      #     git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+
+      - name: Network File Setup
+        run: |
+          mkdir -p build/ENT/
+
+          cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
+          cat "build/ENT/running-network-cordaent.yaml"
+
+          tree build/
+
+          echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+
+          NETWORK_VERSION="4.10"
+          FLUX_SUFFIX="corda-ent"
+          INGRESS_CONTROLLER="ambassador"
+          PORT_RANGE_FROM=15010
+          PORT_RANGE_TO=15090
+          DOCKER_URL="${{ env.DOCKER_URL }}"
+          DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
+          DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
+          USER_DIRECTORY="$(pwd)"
+          EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
+          CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
+          AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
+          CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
+          CLUSTER_CONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
+          VAULT_ADDR="${{ env.VAULT_ADDR }}"
+          VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
+          GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
+          GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
+          GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
+          GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
+          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > ~/encoded_private_ssh_key && PRIVATE_KEY_PATH="~/encoded_private_ssh_key"
+
+          YAML_FILE="build/ENT/running-network-cordaent.yaml"
+
+          echo "2->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+
+          tree build/
+
+          sed -i "s/NETWORK_VERSION_PLACEHOLDER/$NETWORK_VERSION/g" "$YAML_FILE"
+          sed -i "s/FLUX_SUFFIX_PLACEHOLDER/$FLUX_SUFFIX/g" "$YAML_FILE"
+          sed -i "s/INGRESS_CONTROLLER_PLACEHOLDER/$INGRESS_CONTROLLER/g" "$YAML_FILE"
+          sed -i "s/PORT_RANGE_FROM_PLACEHOLDER/$PORT_RANGE_FROM/g" "$YAML_FILE"
+          sed -i "s/PORT_RANGE_TO_PLACEHOLDER/$PORT_RANGE_TO/g" "$YAML_FILE"
+
+          sed -i "s/DOCKER_URL_PLACEHOLDER/$DOCKER_URL/g" "$YAML_FILE"
+          sed -i "s/DOCKER_USERNAME_PLACEHOLDER/$DOCKER_USERNAME/g" "$YAML_FILE"
+          sed -i "s/DOCKER_PASSWORD_PLACEHOLDER/$DOCKER_PASSWORD/g" "$YAML_FILE"
+          sed -i "s/USER_DIRECTORY_PLACEHOLDER/$USER_DIRECTORY/g" "$YAML_FILE"
+          sed -i "s/EXTERNAL_URL_SUFFIX_PLACEHOLDER/$EXTERNAL_URL_SUFFIX/g" "$YAML_FILE"
+
+          sed -i "s/CLOUD_PROVIDER_PLACEHOLDER/$CLOUD_PROVIDER/g" "$YAML_FILE"
+          sed -i "s/AWS_ACCESS_KEY_PLACEHOLDER/$AWS_ACCESS_KEY/g" "$YAML_FILE"
+          sed -i "s/AWS_SECRET_KEY_PLACEHOLDER/$AWS_SECRET_KEY/g" "$YAML_FILE"
+          sed -i "s/CLUSTER_CONTEXT_PLACEHOLDER/$CLUSTER_CONTEXT/g" "$YAML_FILE"
+          sed -i "s/CLUSTER_CONFIG_PLACEHOLDER/$CLUSTER_CONFIG/g" "$YAML_FILE"
+
+          sed -i "s/VAULT_ADDR_PLACEHOLDER/$VAULT_ADDR/g" "$YAML_FILE"
+          sed -i "s/VAULT_ROOT_TOKEN_PLACEHOLDER/$VAULT_ROOT_TOKEN/g" "$YAML_FILE"
+          sed -i "s/GITHUB_USERNAME_PLACEHOLDER/$GITHUB_USERNAME/g" "$YAML_FILE"
+          sed -i "s/GITHUB_EMAIL_ADDR_PLACEHOLDER/$GITHUB_EMAIL_ADDR/g" "$YAML_FILE"
+          sed -i "s/GITHUB_TOKEN_PLACEHOLDER/$GITHUB_TOKEN/g" "$YAML_FILE"
+          sed -i "s/GIT_BRANCH_PLACEHOLDER/$GIT_BRANCH/g" "$YAML_FILE"
+          sed -i "s/PRIVATE_KEY_PATH_PLACEHOLDER/$PRIVATE_KEY_PATH/g" "$YAML_FILE"
+
+          echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          cat "build/ENT/running-network-cordaent.yaml"
