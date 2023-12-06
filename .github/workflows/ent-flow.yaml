@@ -127,5 +127,5 @@ jobs:
           # Push changes
           git add .
           git commit -m "Your commit message"
-          git push "https://${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+          git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
           # git pull origin ent-flow # working
