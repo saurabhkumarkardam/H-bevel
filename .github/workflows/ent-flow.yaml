@@ -27,7 +27,7 @@ jobs:
       VAULT_USER: "${{ vars.VAULT_USER }}"
       GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
       GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
-      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+      # GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
       GITHUB_REPO_URL: "${{ secrets.GH_REPO_URL }}"
     steps:
       - name: Checkout Repository
@@ -114,7 +114,6 @@ jobs:
         run: |
           git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
           git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-          # git remote set-url origin "${{ env.GITHUB_REPO_URL }}"
 
           echo "Create file"
           touch SAURABH.txt
@@ -129,7 +128,7 @@ jobs:
           git push origin ent-flow
           git pull origin ent-flow
 
-          echo "#################################"
+          echo "#################################1"
           echo "Delete the same file"
           rm -rf SAURABH.txt
 
