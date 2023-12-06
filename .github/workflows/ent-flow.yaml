@@ -102,12 +102,12 @@ jobs:
 
       - name: Configure Git
         run: |
-          # git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-          # git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-          # git remote set-url origin "${{ env.GITHUB_REPO_URL }}"
+          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+          git remote set-url origin "${{ env.GITHUB_REPO_URL }}"
 
-          # echo "##-0"
-          # git config --list
+          echo "##-0"
+          git config --list
 
           echo "##-1"
           git remote -v
