@@ -100,6 +100,12 @@ jobs:
       #       --cidr "$(cat localip)/32" \
       #       --region "${{ env.AWS_REGION_NAME }}"
 
+      - name: Display Git Information
+        run: |
+          git --version
+          git branch
+          git log -1
+
       - name: Configure Git
         run: |
           git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
@@ -111,7 +117,6 @@ jobs:
 
           echo "##-1"
           git remote -v
-
           # echo "##-22"
           # git config --list
 
