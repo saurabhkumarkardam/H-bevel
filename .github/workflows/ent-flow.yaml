@@ -28,7 +28,7 @@ jobs:
       GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
       GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
       # GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
-      GITHUB_REPO_URL: "${{ secrets.GH_REPO_URL }}"
+      # GITHUB_REPO_URL: "${{ secrets.GH_REPO_URL }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -128,7 +128,7 @@ jobs:
           git push origin ent-flow
           git pull origin ent-flow
 
-          echo "#################################3"
+          echo "#################################5"
           echo "Delete the same file"
           rm -rf SAURABH.txt
 
