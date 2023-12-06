@@ -112,9 +112,9 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-          git remote set-url origin "${{ env.GITHUB_REPO_URL }}"
+          # git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+          # git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+          # git remote set-url origin "${{ env.GITHUB_REPO_URL }}"
 
           echo "Create file"
           touch SAURABH.txt
