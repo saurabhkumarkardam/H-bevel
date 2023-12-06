@@ -2,5 +2,5 @@
 
 git status
 git add .
-git commit -m "A123"
+git commit -m "S123"
 git push origin ent-flow

@@ -129,6 +129,7 @@ jobs:
           git push origin ent-flow
           git pull origin ent-flow
 
+          echo "#################################"
           echo "Delete the same file"
           rm -rf SAURABH.txt
 
