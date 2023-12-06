@@ -124,7 +124,7 @@ jobs:
           # git remote -v
           # # echo "##-2"
           # # git config --list
-          echo "######################################1"
+          echo "######################################2"
 
           echo "Create file"
           touch SAURABH.txt
@@ -136,7 +136,8 @@ jobs:
           echo "Push changes"
           git add .
           git commit -m "Your commit message"
-          git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+          # git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+          git push origin ent-flow
           git pull origin ent-flow
 
           echo "Delete the same file"
@@ -145,12 +146,10 @@ jobs:
           echo "Push changes again"
           git add .
           git commit -m "Your commit message"
-          git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+          git push origin ent-flow
+          # git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
 
           echo "Git Push and Pull"
           git pull origin ent-flow
-          git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
-
-
-
-
+          git push origin ent-flow
+          # git push "https://${{ env.GITHUB_USER_NAME }}:${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
