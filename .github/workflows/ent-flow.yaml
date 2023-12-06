@@ -106,11 +106,12 @@ jobs:
           git config --global user.name "${{ env.GITHUB_USER_NAME }}"
           git remote set-url origin "${{ env.GITHUB_REPO_URL }}"
 
+          git config --list
+
           touch SAURABH.txt
           echo "Hello" >> SAURABH.txt
 
           # Push changes
           git add .
           git commit -m "Your commit message"
-          git push origin main
-
+          git push origin ent-flow
