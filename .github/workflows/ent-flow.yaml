@@ -102,6 +102,7 @@ jobs:
 
       - name: Display Git Information
         run: |
+          env
           git --version
           git branch
           git log -1
@@ -126,5 +127,5 @@ jobs:
           # Push changes
           git add .
           git commit -m "Your commit message"
-          git pull origin ent-flow
-          # git push "https://${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+          git push "https://${{ env.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_USER_NAME }}/H-bevel.git" "ent-flow"
+          # git pull origin ent-flow # working
