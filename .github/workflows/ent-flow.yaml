@@ -128,7 +128,7 @@ jobs:
 
           tree build/
 
-          echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-1"
 
           NETWORK_VERSION="4.10"
           FLUX_SUFFIX="corda-ent"
