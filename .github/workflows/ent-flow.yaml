@@ -112,7 +112,7 @@ jobs:
           echo "##-1"
           git remote -v
 
-          echo "##-2"
+          echo "##-22"
           git config --list
 
           touch SAURABH.txt
