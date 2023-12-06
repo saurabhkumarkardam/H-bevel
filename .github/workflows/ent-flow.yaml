@@ -22,6 +22,10 @@ jobs:
       VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
       VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
       VAULT_USER: "${{ vars.VAULT_USER }}"
+      GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
+      GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
+      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+      GITHUB_REPO_URL: "${{ secrets.GH_REPO_URL }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -96,44 +100,17 @@ jobs:
       #       --cidr "$(cat localip)/32" \
       #       --region "${{ env.AWS_REGION_NAME }}"
 
-      - name: Git Setup
+      - name: Configure Git
         run: |
-          git version
-          which git
-          pwd
-          # tree ./
-
-          git remote -v
-
-          git config --list
-
-          echo "1=>" && git branch
+          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+          git remote set-url origin "${{ env.GITHUB_REPO_URL }}"
 
           touch SAURABH.txt
-          echo "HELLO" >> SAURABH.txt
-          cat SAURABH.txt
+          echo "Hello" >> SAURABH.txt
 
-          git config --global user.name "saurabhkumarkardam"
-          git config --global user.email "saurabhkumarkardam@accenture.com"
-          git config --list
-          git push origin ent-flow
+          # Push changes
+          git add .
+          git commit -m "Your commit message"
+          git push origin main
 
-
-
-
-          # mkdir -p build/ENT/
-
-          # cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
-          # cat "build/ENT/running-network-cordaent.yaml"
-
-          # tree build/
-
-          # ENV_TYPE="skk"
-          # ENV_PROXY="ambassador"
-
-          # YAML_FILE="build/ENT/running-network-cordaent.yaml"
-
-          # sed -i "s/FLUX_SUFFIX_PLACEHOLDER/$ENV_TYPE/g" "$YAML_FILE"
-          # sed -i "s/INGRESS_CONTROLLER_PLACEHOLDER/$ENV_PROXY/g" "$YAML_FILE"
-
-          # cat "build/ENT/running-network-cordaent.yaml"
