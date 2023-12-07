@@ -185,6 +185,7 @@ jobs:
           echo "7=>" && sudo ls -l /usr/local/bin/ansible
           echo "8=>" && which ansible
           echo "9=>" && echo $PATH
+          echo "10=>" && pip list
         continue-on-error: true
 
       - name: Deploy network
