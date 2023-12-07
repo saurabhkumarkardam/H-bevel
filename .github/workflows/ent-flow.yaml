@@ -179,7 +179,7 @@ jobs:
           echo "1=>" && which ansible
           echo "2=>" && which python
           echo "4=>" && ansible --version
-          echo "5=>" && ansibpythonle --version
+          echo "5=>" && python --version
 
       # - name: Deploy network
       #   run: |
