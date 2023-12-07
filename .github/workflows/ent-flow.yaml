@@ -56,9 +56,9 @@ jobs:
 
       - name: Set KUBECONFIG
         run: |
-          mkdir -p .kube/config
-          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
-          export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
+          mkdir -p ~/.kube/build_config
+          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > ~/.kube/build_config/decoded-kubeconfig
+          export KUBECONFIG="~/.kube/build_config/decoded-kubeconfig"
 
           echo "0=> echo $KUBECONFIG" && echo "$KUBECONFIG"
 
