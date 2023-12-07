@@ -206,7 +206,7 @@ jobs:
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
 
-          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
+          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml -v
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
