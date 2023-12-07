@@ -45,6 +45,8 @@ jobs:
       - name: Testing
         run: |
           # cat ~/bin/flux | head -n 10
+          ls ~/
+          ls /home/runner
           sudo tree /home/saurabh/bin/
           sudo tree ~/bin/
 
