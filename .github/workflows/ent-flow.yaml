@@ -184,7 +184,6 @@ jobs:
           echo "11=>" && pip install kubernetes
           echo "12=>" && curl google.com
           echo "12.1=>" && curl -sSf https://fluxcd.io/ || exit 1
-
           echo "13=>" && curl -s https://fluxcd.io/install.sh | bash -s
         continue-on-error: true
 
@@ -200,7 +199,8 @@ jobs:
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
 
-          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
+          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml > build/playbook_logs
+          cat build/playbook_logs
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
