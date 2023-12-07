@@ -50,6 +50,7 @@ jobs:
           echo "--"
           ls -l /home/runner
           echo "--"
+          touch /home/runner/bin/a.txt
           sudo tree /home/runner/bin/
           echo "--"
           sudo tree ~/bin/
