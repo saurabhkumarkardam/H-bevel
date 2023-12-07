@@ -7,21 +7,15 @@
 ---
 - name: check flux cli
   stat:
-    path: "{{ bin_install_dir }}" # "{{ bin_install_dir }}"
+    path: "{{ bin_install_dir }}/flux"
   register: flux_cli_stat_result
-
-# - name: check tree 1
-#   command: tree /home/saurabh/bin/
-# wget https://fluxcd.io/install.sh | bash -s {{ bin_install_dir }} # NEW
-# wget https://fluxcd.io/install.sh | bash -s {{ bin_install_dir }}/flux # NEW
-# curl -s https://fluxcd.io/install.sh | bash -s {{ bin_install_dir }}
 
 - name: Install flux cli
   shell: |
-    curl -s https://fluxcd.io/install.sh | bash -s "{{ bin_install_dir }}/flux"
+    curl -s https://fluxcd.io/install.sh | bash -s {{ bin_install_dir }}
   environment:
     FLUX_VERSION: "{{ flux_version }}"
-  # when: not flux_cli_stat_result.stat.exists
+  when: not flux_cli_stat_result.stat.exists
 
 - name: Update the ssh host to known hosts
   shell: |
