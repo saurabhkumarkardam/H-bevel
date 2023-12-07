@@ -60,7 +60,7 @@ jobs:
           echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > .kube/config/decoded-kubeconfig
           export KUBECONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
 
-          echo "0=> echo $(KUBECONFIG)" && echo "$(KUBECONFIG)"
+          echo "0=> echo $KUBECONFIG" && echo "$KUBECONFIG"
 
           kubectl config view && echo "###############-5"
           kubectl config current-context && echo "###############-6"
@@ -153,7 +153,7 @@ jobs:
           AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
           AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
           CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
-          CLUSTER_CONFIG="$(KUBECONFIG)"
+          CLUSTER_CONFIG="$KUBECONFIG"
           VAULT_ADDR="${{ env.VAULT_ADDR }}"
           VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
           GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
