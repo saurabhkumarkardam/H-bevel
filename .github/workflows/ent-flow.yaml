@@ -178,8 +178,11 @@ jobs:
         run: |
           echo "1=>" && which ansible
           echo "2=>" && which python
-          echo "4=>" && ansible --version
-          echo "5=>" && python --version
+          echo "3=>" && ansible --version
+          echo "4=>" && python --version
+          echo "5=>" && cat ~/.bashrc
+          echo "6=>" && sudo mv /opt/pipx_bin/ansible /usr/local/bin/
+          echo "7=>" && sudo ls -l /usr/local/bin/ansible
         continue-on-error: true
 
       - name: Deploy network
