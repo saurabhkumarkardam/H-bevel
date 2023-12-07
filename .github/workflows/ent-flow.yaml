@@ -180,14 +180,9 @@ jobs:
           echo "2=>" && which python
           echo "3=>" && ansible --version
           echo "4=>" && python --version
-          # # echo "5=>" && cat ~/.bashrc
-          # echo "6=>" && sudo mv /opt/pipx_bin/ansible /usr/local/bin/
-          # echo "7=>" && sudo ls -l /usr/local/bin/ansible
-          # echo "8=>" && which ansible
-          # # echo "8.1=>" && ansible --version
-          # echo "9=>" && echo $PATH
           echo "10=>" && pip list
           echo "11=>" && pip install kubernetes
+          echo "12=>" && curl google.com
         continue-on-error: true
 
       - name: Deploy network
