@@ -27,13 +27,13 @@ jobs:
       GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
       GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
       # GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
-      # GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
-      # GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
-      # DOCKER_URL: "${{ secrets.DOCKER_URL }}"
-      # DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
-      # DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
-      # EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
-      # CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
+      GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
+      GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
+      DOCKER_URL: "${{ secrets.DOCKER_URL }}"
+      DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+      DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
+      EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
+      CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
     steps:
       - name: curl
         run: |
