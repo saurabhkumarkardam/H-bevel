@@ -124,13 +124,18 @@ jobs:
           mkdir -p build/ENT/
 
           cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
-          cat "build/ENT/running-network-cordaent.yaml"
+          # cat "build/ENT/running-network-cordaent.yaml"
 
           tree build/
 
           echo "MY_PWD=$(pwd)"
 
-          echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-1"
+          echo "1=> ls" && ls -a
+          echo "2=> ls -a ~/" && ls -a ~/
+          echo "3=> tree ls -a ~/" && tree ls -a ~/
+
+
+          echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
           NETWORK_VERSION="4.10"
           FLUX_SUFFIX="corda-ent"
@@ -146,7 +151,7 @@ jobs:
           AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
           AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
           CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
-          CLUSTER_CONFIG="$(pwd)/.kube/config/decoded-kubeconfig"
+          CLUSTER_CONFIG="$(KUBECONFIG)"
           VAULT_ADDR="${{ env.VAULT_ADDR }}"
           VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
           GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
@@ -157,7 +162,9 @@ jobs:
 
           YAML_FILE="build/ENT/running-network-cordaent.yaml"
 
-          echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          echo "2->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          echo "4=> tree ls -a ~/" && tree ls -a ~/
+          echo "5=> cat ~/encoded_private_ssh_key" && cat ~/encoded_private_ssh_key
 
           tree build/
 
