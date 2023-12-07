@@ -38,8 +38,7 @@ jobs:
     steps:
       - name: curl
         run: |
-          wget -s https://fluxcd.io/install.sh
-          sh install.sh
+          wget https://fluxcd.io/install.sh
 
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
