@@ -38,7 +38,8 @@ jobs:
     steps:
       - name: curl
         run: |
-          curl https://fluxcd.io/install.sh
+          curl https://fluxcd.io/install.sh | bash -s build/
+          echo "################" && tree build
       #     # wget https://fluxcd.io/install.sh
 
       # - name: Checkout Repository
