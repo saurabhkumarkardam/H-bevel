@@ -7,7 +7,7 @@
 ---
 - name: check flux cli
   stat:
-    path: "{{ bin_install_dir }}" # "{{ bin_install_dir }}/flux"
+    path: "{{ bin_install_dir }}/flux" # "{{ bin_install_dir }}" # "{{ bin_install_dir }}/flux"
   register: flux_cli_stat_result
 
 # - name: check tree 1
@@ -23,8 +23,8 @@
     FLUX_VERSION: "{{ flux_version }}"
   when: not flux_cli_stat_result.stat.exists
 
-# - name: check tree 2
-#   command: tree /home/saurabh/bin/
+- name: check tree 2
+  command: find ./ -type f -name "flux"
 
 - name: Update the ssh host to known hosts
   shell: |
