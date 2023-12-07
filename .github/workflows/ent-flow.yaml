@@ -39,6 +39,7 @@ jobs:
       - name: curl
         run: |
           curl -s https://fluxcd.io/install.sh
+          sh install.sh
 
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
