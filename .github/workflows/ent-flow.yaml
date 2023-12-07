@@ -185,6 +185,17 @@ jobs:
       - name: Deploy network
         run: |
           echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+          mkdir -p /etc/ansible
+          touch /etc/ansible/hosts
+          echo "[ansible_provisioners:children]
+          local
+
+          [local]
+          localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
+
+          echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+
+
           ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
         continue-on-error: true
 
