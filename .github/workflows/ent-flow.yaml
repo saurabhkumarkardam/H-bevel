@@ -184,8 +184,10 @@ jobs:
           echo "6=>" && sudo mv /opt/pipx_bin/ansible /usr/local/bin/
           echo "7=>" && sudo ls -l /usr/local/bin/ansible
           echo "8=>" && which ansible
+          echo "8.1=>" && ansible --version
           echo "9=>" && echo $PATH
           echo "10=>" && pip list
+          echo "11=>" && pip install kubernetes
         continue-on-error: true
 
       - name: Deploy network
