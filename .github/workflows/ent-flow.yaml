@@ -113,11 +113,11 @@ jobs:
           ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
         continue-on-error: true
 
-      - name: Running vault command
-        run: |
-          vault status
-          vault kv list secretsv2/
-        continue-on-error: true
+      # - name: Running vault command
+      #   run: |
+      #     vault status
+      #     vault kv list secretsv2/
+      #   continue-on-error: true
 
       - name: Git Setup
         run: |
