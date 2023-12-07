@@ -36,7 +36,7 @@ network:
   
   organizations:
     - organization:
-      name: supplychain
+      name: supplychain-run
       country: UK
       state: London
       location: London
@@ -75,9 +75,9 @@ network:
       cordapps:
         jars: 
         - jar:
-            url: "https://repo/path/cordapp1.jar"
+            url: "https://maven.pkg.github.com/hyperledger/bevel/com.supplychain.bcc.cordapp-contracts-states/4.7/cordapp-contracts-states-4.7.jar" # "https://repo/path/cordapp1.jar" # ?
         - jar:
-            url: "https://repo/path/cordapp2.jar"
+            url: "https://maven.pkg.github.com/hyperledger/bevel/com.supplychain.bcc.cordapp-supply-chain/4.9/cordapp-supply-chain-4.9.jar" # "https://repo/path/cordapp2.jar"
         username: "GITHUB_USERNAME_PLACEHOLDER"
         password: "GITHUB_TOKEN_PLACEHOLDER"
 
@@ -167,7 +167,7 @@ network:
             targetPort: 81
 
     - organization:
-      name: manufacturer
+      name: manufacturer-run
       version: 4.7
       cenm_version: 1.5
       country: CH
@@ -213,9 +213,9 @@ network:
       cordapps:
         jars: 
         - jar:
-            url: "https://repo/path/cordapp1.jar"
+            url: "https://maven.pkg.github.com/hyperledger/bevel/com.supplychain.bcc.cordapp-contracts-states/4.7/cordapp-contracts-states-4.7.jar" # "https://repo/path/cordapp1.jar"
         - jar:
-            url: "https://repo/path/cordapp2.jar"
+            url: "https://maven.pkg.github.com/hyperledger/bevel/com.supplychain.bcc.cordapp-supply-chain/4.9/cordapp-supply-chain-4.9.jar" # "https://repo/path/cordapp2.jar"
         username: "GITHUB_USERNAME_PLACEHOLDER"
         password: "GITHUB_TOKEN_PLACEHOLDER"
 

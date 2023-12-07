@@ -41,105 +41,92 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
 
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
-      #     aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
-      #     aws-region: "${{ env.AWS_REGION_NAME }}"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
+          aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
+          aws-region: "${{ env.AWS_REGION_NAME }}"
 
-      # - name: AWS Commands
-      #   run: |
-      #     echo "aws --version" && aws --version
-      #     echo "aws configure list" && aws configure list  
-      #     echo "sts get-caller-identity" && aws sts get-caller-identity
+      - name: AWS Commands
+        run: |
+          echo "aws --version" && aws --version
+          echo "aws configure list" && aws configure list  
+          echo "sts get-caller-identity" && aws sts get-caller-identity
 
       - name: Set KUBECONFIG
         run: |
           mkdir -p /home/runner/.kube/build_config
           echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
           export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-
-          echo "0=> echo $KUBECONFIG" && echo "$KUBECONFIG"
-
-          echo "1=> cat /home/runner/.kube/build_config/decoded_kubeconfig" && cat /home/runner/.kube/build_config/decoded_kubeconfig
-
           kubectl config view && echo "###############-5"
           kubectl config current-context && echo "###############-6"
           kubectl version && echo "###############-6"
           kubectl get nodes
 
-      # - name: Install HashiCorp Vault CLI
-      #   run: |
-      #     wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-      #     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-      #     sudo apt update && sudo apt install vault
+      - name: Install HashiCorp Vault CLI
+        run: |
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install vault
 
-      # - name: Local DNS Mapping
-      #   run: |
-      #     sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
+      - name: Local DNS Mapping
+        run: |
+          sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
 
-      # - name: Add SSH Rule to Security Group
-      #   run: |
-      #     curl https://ipv4.icanhazip.com/ > localip 
-      #     aws ec2 authorize-security-group-ingress \
-      #       --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
-      #       --protocol "tcp" \
-      #       --port "22" \
-      #       --cidr "$(cat localip)/32" \
-      #       --region "${{ env.AWS_REGION_NAME }}"
+      - name: Add SSH Rule to Security Group
+        run: |
+          mkdir - p build
+          curl https://ipv4.icanhazip.com/ > build/localip 
+          aws ec2 authorize-security-group-ingress \
+            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+            --protocol "tcp" \
+            --port "22" \
+            --cidr "$(cat localip)/32" \
+            --region "${{ env.AWS_REGION_NAME }}"
 
-      # - name: Create Tunnel
-      #   run: |
-      #     mkdir ~/.ssh
-      #     echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-      #     chmod 600 ~/.ssh/vault.pem
-      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-      #     ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-      #     ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
-      #   continue-on-error: true
+      - name: Create Tunnel
+        run: |
+          mkdir ~/.ssh
+          echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          chmod 600 ~/.ssh/vault.pem
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
+        continue-on-error: true
 
-      # - name: Running vault command
-      #   run: |
-      #     vault status
-      #     vault kv list secretsv2/
-      #   continue-on-error: true
+      - name: Running vault command
+        run: |
+          vault status
+          vault kv list secretsv2/
+        continue-on-error: true
 
-      # - name: Remove SSH Rule from Security Group
-      #   run: |
-      #     curl https://ipv4.icanhazip.com/ > localip
-      #     aws ec2 revoke-security-group-ingress \
-      #       --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
-      #       --protocol "tcp" \
-      #       --port "22" \
-      #       --cidr "$(cat localip)/32" \
-      #       --region "${{ env.AWS_REGION_NAME }}"
+      - name: Remove SSH Rule from Security Group
+        run: |
+          curl https://ipv4.icanhazip.com/ > localip
+          aws ec2 revoke-security-group-ingress \
+            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+            --protocol "tcp" \
+            --port "22" \
+            --cidr "$(cat build/localip)/32" \
+            --region "${{ env.AWS_REGION_NAME }}"
 
-      # - name: Git Setup
-      #   run: |
-      #     git --version
-      #     git branch
-      #     git log -1
-      #     git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-      #     git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+      - name: Git Setup
+        run: |
+          git --version
+          git branch
+          git log -1
+          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
 
       - name: Network File Setup
         run: |
           mkdir -p build/ENT/
 
+          tree build/ENT/
+
           cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
           # cat "build/ENT/running-network-cordaent.yaml"
-
-          tree build/
-
-          echo "MY_PWD=$(pwd)"
-
-          echo "1=> ls" && ls -a
-          echo "2=> find ~/ -type f -name "decoded_kubeconfig"" && find ~/ -type f -name "decoded_kubeconfig"
-          echo "3=> ls -a ~/" && ls -a ~/
-
-
-          echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
           NETWORK_VERSION="4.10"
           FLUX_SUFFIX="corda-ent"
@@ -165,11 +152,6 @@ jobs:
           echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
 
           YAML_FILE="build/ENT/running-network-cordaent.yaml"
-
-          echo "2->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-          echo "4=> find ~/ -type f -name "encoded_private_ssh_key"" && find ~/ -type f -name "encoded_private_ssh_key"
-
-          tree build/
 
           sed -i "s#NETWORK_VERSION_PLACEHOLDER#$NETWORK_VERSION#g" "$YAML_FILE"
           sed -i "s#FLUX_SUFFIX_PLACEHOLDER#$FLUX_SUFFIX#g" "$YAML_FILE"
