@@ -226,7 +226,7 @@ jobs:
       - name: Testing
         run: |
           cat ~/bin/flux | head -n 10
-          sudo tree /home/runner/bin/
+          sudo tree ~/bin/
           sudo tree ~/bin/
 
       - name: Remove SSH Rule from Security Group
