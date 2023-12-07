@@ -162,7 +162,7 @@ jobs:
           GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
           GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
           GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
-          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="~/encoded_private_ssh_key"
+          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
 
           YAML_FILE="build/ENT/running-network-cordaent.yaml"
 
