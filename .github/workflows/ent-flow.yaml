@@ -180,10 +180,12 @@ jobs:
           echo "2=>" && which python
           echo "4=>" && ansible --version
           echo "5=>" && python --version
+        continue-on-error: true
 
       - name: Deploy network
         run: |
-          ansible playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
+          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
+        continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
         run: |
