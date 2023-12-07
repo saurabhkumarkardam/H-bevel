@@ -7,7 +7,7 @@
 ---
 - name: check flux cli
   stat:
-    path: "{{ bin_install_dir }}/flux" # "{{ bin_install_dir }}" # "{{ bin_install_dir }}/flux"
+    path: "{{ bin_install_dir }}" # "{{ bin_install_dir }}/flux"
   register: flux_cli_stat_result
 
 # - name: check tree 1
