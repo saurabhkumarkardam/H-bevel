@@ -46,10 +46,14 @@ jobs:
         run: |
           # cat ~/bin/flux | head -n 10
           mkdir -p ~/bin
-          ls ~/
-          ls /home/runner
+          ls -l ~/
+          echo "--"
+          ls -l /home/runner
+          echo "--"
           sudo tree /home/saurabh/bin/
+          echo "--"
           sudo tree ~/bin/
+          echo "--"
 
       # - name: Checkout Repository
       #   uses: actions/checkout@v2.4.0
