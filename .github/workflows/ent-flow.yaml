@@ -186,7 +186,7 @@ jobs:
         run: |
           # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
           sudo mkdir -p /etc/ansible
-          touch /etc/ansible/hosts
+          sudo touch /etc/ansible/hosts
           echo "[ansible_provisioners:children]
           local
 
