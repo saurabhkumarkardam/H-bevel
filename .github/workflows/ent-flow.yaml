@@ -184,7 +184,7 @@ jobs:
 
       - name: Deploy network
         run: |
-          echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+          # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
           mkdir -p /etc/ansible
           touch /etc/ansible/hosts
           echo "[ansible_provisioners:children]
