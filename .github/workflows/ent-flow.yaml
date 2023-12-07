@@ -57,12 +57,12 @@ jobs:
       - name: Set KUBECONFIG
         run: |
           mkdir -p /home/runner/.kube/build_config
-          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded-kubeconfig
-          export KUBECONFIG="/home/runner/.kube/build_config/decoded-kubeconfig"
+          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
 
           echo "0=> echo $KUBECONFIG" && echo "$KUBECONFIG"
 
-          echo "1=> cat /home/runner/.kube/build_config/decoded-kubeconfig" && cat /home/runner/.kube/build_config/decoded-kubeconfig
+          echo "1=> cat /home/runner/.kube/build_config/decoded_kubeconfig" && cat /home/runner/.kube/build_config/decoded_kubeconfig
 
           kubectl config view && echo "###############-5"
           kubectl config current-context && echo "###############-6"
@@ -155,14 +155,14 @@ jobs:
           AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
           AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
           CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
-          CLUSTER_CONFIG="$KUBECONFIG"
+          CLUSTER_CONFIG=$KUBECONFIG
           VAULT_ADDR="${{ env.VAULT_ADDR }}"
           VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
           GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
           GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
           GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
           GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
-          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > ~/encoded_private_ssh_key && PRIVATE_KEY_PATH="~/encoded_private_ssh_key"
+          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="~/encoded_private_ssh_key"
 
           YAML_FILE="build/ENT/running-network-cordaent.yaml"
 
