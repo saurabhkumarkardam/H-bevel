@@ -179,17 +179,17 @@ jobs:
 
       - name: Check Ansible
         run: |
-          echo "1=>" && which ansible
-          echo "2=>" && which python
-          echo "3=>" && ansible --version
-          echo "4=>" && python --version
-          echo "10=>" && pip list
-          echo "11=>" && pip install kubernetes
-          echo "13=>" && lsb_release -a
-          # mkdir -p ~/bin
-          # export PATH=$PATH:~/bin
-          # pip3 install openshift=='0.12.0'
-          # ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
+          # echo "1=>" && which ansible
+          # echo "2=>" && which python
+          # echo "3=>" && ansible --version
+          # echo "4=>" && python --version
+          # echo "10=>" && pip list
+          # echo "11=>" && pip install kubernetes
+          # echo "13=>" && lsb_release -a
+          mkdir -p ~/bin
+          export PATH=$PATH:~/bin
+          pip3 install openshift=='0.12.0'
+          ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
         continue-on-error: true
 
       - name: Deploy network
