@@ -38,7 +38,8 @@ jobs:
     steps:
       - name: curl
         run: |
-          wget https://fluxcd.io/install.sh
+          curl https://fluxcd.io/install.sh
+          # wget https://fluxcd.io/install.sh
 
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -185,6 +186,10 @@ jobs:
           echo "10=>" && pip list
           echo "11=>" && pip install kubernetes
           echo "13=>" && lsb_release -a
+          mkdir -p ~/bin
+          export PATH=$PATH:~/bin
+          pip3 install openshift=='0.12.0'
+          ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
         continue-on-error: true
 
       - name: Deploy network
