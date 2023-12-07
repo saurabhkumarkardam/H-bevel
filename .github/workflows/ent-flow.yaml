@@ -35,8 +35,6 @@ jobs:
       EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
       CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
 
-      
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -184,7 +182,7 @@ jobs:
           echo "11=>" && pip install kubernetes
           echo "12=>" && curl google.com
           echo "12.1=>" && curl -sSf https://fluxcd.io/ || exit 1
-          echo "13=>" && curl -s https://fluxcd.io/install.sh | bash -s
+          echo "13=>" && curl https://fluxcd.io/install.sh
         continue-on-error: true
 
       - name: Deploy network
