@@ -60,6 +60,30 @@
     command: "kubectl version --client" # "kubectl version --client --short"
     changed_when: false
 
+########################################### NEW
+  # - name: View Kubernetes Context
+  #   command: >
+  #     kubectl config get-contexts
+
+  # - name: View Kubernetes Context
+  #   command: >
+  #     KUBECONFIG=/home/runner/.kube/build_config/decoded_kubeconfig 
+  #     kubectl config get-contexts
+
+  # - name: Set Kubernetes Context
+  #   command: >
+  #     KUBECONFIG=/home/runner/.kube/build_config/decoded_kubeconfig
+  #     kubectl config use-context arn:aws:eks:***:***:cluster/bevel-dev-cluster-CLUSTER
+  #   ignore_errors: true
+
+  # - name: Set Namespace
+  #   command: >
+  #     KUBECONFIG=/home/runner/.kube/build_config/decoded_kubeconfig
+  #     kubectl config set-context --current --namespace=default
+  #   ignore_errors: true
+
+########################################### NEW
+
   - name: Changing the current context namespace to default
     shell: |
       KUBECONFIG={{ item.k8s.config_file }} kubectl config use-context {{ item.k8s.context }}
