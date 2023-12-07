@@ -8,8 +8,8 @@ network:
     proxy_namespace: "ambassador"
     ambassadorPorts:
       portRange:
-        from: "PORT_RANGE_FROM_PLACEHOLDER"
-        to: "PORT_RANGE_TO_PLACEHOLDER"
+        from: PORT_RANGE_FROM_PLACEHOLDER
+        to: PORT_RANGE_TO_PLACEHOLDER
     loadBalancerSourceRanges:
     retry_count: 20
     external_dns: enabled
