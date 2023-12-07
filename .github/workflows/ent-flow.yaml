@@ -6,30 +6,6 @@ on:
       - ent-flow
   workflow_dispatch:
 
-# env:
-#   AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-#   AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-#   AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
-#   AWS_SECURITY_GROUP_ID: "${{ secrets.AWS_SECURITY_GROUP_ID }}"
-#   ENCODED_KUBECONFIG: "${{ secrets.ENCODED_KUBECONFIG }}"
-#   ENCODED_DEVENV_BASTION_PEM: "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}"
-#   VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
-#   VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
-#   VAULT_PORT: "${{ secrets.VAULT_PORT }}"
-#   VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
-#   VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
-#   VAULT_USER: "${{ vars.VAULT_USER }}"
-#   GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
-#   GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
-#   GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
-#   GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
-#   GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
-#   DOCKER_URL: "${{ secrets.DOCKER_URL }}"
-#   DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
-#   DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
-#   EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
-#   CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
-
 jobs:
   deployment:
     runs-on: ubuntu-20.04 # ubuntu-latest
@@ -41,6 +17,29 @@ jobs:
           mkdir build/
           curl -s https://fluxcd.io/install.sh | bash -s build/
           echo "################" && tree build
+    env:
+      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+      AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
+      AWS_SECURITY_GROUP_ID: "${{ secrets.AWS_SECURITY_GROUP_ID }}"
+      ENCODED_KUBECONFIG: "${{ secrets.ENCODED_KUBECONFIG }}"
+      ENCODED_DEVENV_BASTION_PEM: "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}"
+      VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
+      VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
+      VAULT_PORT: "${{ secrets.VAULT_PORT }}"
+      VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
+      VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
+      VAULT_USER: "${{ vars.VAULT_USER }}"
+      GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
+      GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
+      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+      GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
+      GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
+      DOCKER_URL: "${{ secrets.DOCKER_URL }}"
+      DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+      DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
+      EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
+      CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
       # curl -s https://fluxcd.io/install.sh | bash -s "build/"
 
       # - name: Testing
