@@ -82,7 +82,7 @@ jobs:
             --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
             --protocol "tcp" \
             --port "22" \
-            --cidr "$(cat localip)/32" \
+            --cidr "$(cat build/localip)/32" \
             --region "${{ env.AWS_REGION_NAME }}"
 
       - name: Create Tunnel
