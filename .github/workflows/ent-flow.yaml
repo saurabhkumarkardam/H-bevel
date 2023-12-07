@@ -183,6 +183,8 @@ jobs:
           echo "5=>" && cat ~/.bashrc
           echo "6=>" && sudo mv /opt/pipx_bin/ansible /usr/local/bin/
           echo "7=>" && sudo ls -l /usr/local/bin/ansible
+          echo "8=>" && which ansible
+          echo "9=>" && echo $PATH
         continue-on-error: true
 
       - name: Deploy network
