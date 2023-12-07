@@ -133,9 +133,9 @@ jobs:
           tree build/
 
           echo "MY_PWD=$(pwd)"
-          echo "0=> echo $(KUBECONFIG)" && echo "$(KUBECONFIG)"
+          echo "0=> echo $KUBECONFIG" && echo "$KUBECONFIG"
           echo "1=> ls" && ls -a
-          echo "2=> find ~/ -type f -name "decoded-kubeconfig"" && find ~/ -type f -name "decoded-kubeconfig"
+          echo "2=> find ~/ -type f -name "decoded_kubeconfig"" && find ~/ -type f -name "decoded_kubeconfig"
           echo "3=> ls -a ~/" && ls -a ~/
 
 
@@ -155,7 +155,7 @@ jobs:
           AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
           AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
           CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
-          CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          CLUSTER_CONFIG="$KUBECONFIG"
           VAULT_ADDR="${{ env.VAULT_ADDR }}"
           VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
           GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
