@@ -177,7 +177,9 @@ jobs:
       - name: Check Ansible
         run: |
           echo "1=>" && which ansible
-          echo "2=>" && ansible --version
+          echo "2=>" && which python
+          echo "4=>" && ansible --version
+          echo "5=>" && ansibpythonle --version
 
       # - name: Deploy network
       #   run: |
