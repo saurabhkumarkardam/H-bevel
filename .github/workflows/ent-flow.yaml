@@ -183,11 +183,11 @@ jobs:
           echo "12=>" && curl google.com
           echo "12.1=>" && curl -sSf https://fluxcd.io/ || exit 1
           echo "13=>" && curl -s https://fluxcd.io/install.sh | bash -s build/
-          echo "14=>" && tree build
         continue-on-error: true
 
       - name: Deploy network
         run: |
+          echo "14=>" && tree build
           # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
           sudo mkdir -p /etc/ansible
           sudo touch /etc/ansible/hosts
