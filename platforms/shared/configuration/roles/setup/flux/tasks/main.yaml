@@ -18,7 +18,7 @@
 
 - name: Install flux cli
   shell: |
-    curl -s https://fluxcd.io/install.sh | bash -s "{{ bin_install_dir }}"
+    curl -s https://fluxcd.io/install.sh | bash -s {{ bin_install_dir }}
   environment:
     FLUX_VERSION: "{{ flux_version }}"
   # when: not flux_cli_stat_result.stat.exists

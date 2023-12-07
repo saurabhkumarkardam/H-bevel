@@ -220,14 +220,13 @@ jobs:
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
 
-          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml -v
+          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
         continue-on-error: true
 
       - name: Testing
         run: |
           cat ~/bin/flux | head -n 10
-          sudo tree ~/bin/
-          sudo tree ~/bin/
+          sudo tree ~/bin/ | head -n 30
 
       - name: Remove SSH Rule from Security Group
         run: |
