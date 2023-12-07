@@ -138,7 +138,7 @@ jobs:
           DOCKER_URL="${{ env.DOCKER_URL }}"
           DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
           DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
-          USER_DIRECTORY=$(pwd)
+          USER_DIRECTORY="$(pwd)"
           EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
           CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
           AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
