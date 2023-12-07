@@ -56,11 +56,13 @@ jobs:
 
       - name: Set KUBECONFIG
         run: |
-          mkdir -p ~/.kube/build_config
-          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > ~/.kube/build_config/decoded-kubeconfig
-          export KUBECONFIG="~/.kube/build_config/decoded-kubeconfig"
+          mkdir -p /home/runner/.kube/build_config
+          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded-kubeconfig
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded-kubeconfig"
 
           echo "0=> echo $KUBECONFIG" && echo "$KUBECONFIG"
+
+          echo "1=> cat /home/runner/.kube/build_config/decoded-kubeconfig" && cat /home/runner/.kube/build_config/decoded-kubeconfig
 
           kubectl config view && echo "###############-5"
           kubectl config current-context && echo "###############-6"
