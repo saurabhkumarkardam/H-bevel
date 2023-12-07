@@ -36,204 +36,204 @@ jobs:
       CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
 
     steps:
-      # - name: curl
+      - name: curl
+        run: |
+          mkdir build/
+          curl -s https://fluxcd.io/install.sh | bash -s build/
+          echo "################" && tree build
+
+      # - name: Testing
       #   run: |
-      #     mkdir build/
-      #     curl -s https://fluxcd.io/install.sh | bash -s build/
-      #     echo "################" && tree build
+      #     # cat ~/bin/flux | head -n 10
+      #     mkdir -p ~/bin
+      #     ls -l ~/
+      #     echo "--"
+      #     ls -l /home/runner
+      #     echo "--"
+      #     touch /home/runner/bin/a.txt
+      #     sudo tree /home/runner/bin/
+      #     echo "--"
+      #     sudo tree ~/bin/
+      #     echo "--"
 
-      - name: Testing
-        run: |
-          # cat ~/bin/flux | head -n 10
-          mkdir -p ~/bin
-          ls -l ~/
-          echo "--"
-          ls -l /home/runner
-          echo "--"
-          touch /home/runner/bin/a.txt
-          sudo tree /home/runner/bin/
-          echo "--"
-          sudo tree ~/bin/
-          echo "--"
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v2.4.0
 
-      - name: Checkout Repository
-        uses: actions/checkout@v2.4.0
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
+      #     aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
+      #     aws-region: "${{ env.AWS_REGION_NAME }}"
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
-          aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
-          aws-region: "${{ env.AWS_REGION_NAME }}"
-
-      - name: AWS Commands
-        run: |
-          echo "aws --version" && aws --version
-          echo "aws configure list" && aws configure list  
-          echo "sts get-caller-identity" && aws sts get-caller-identity
-
-      - name: Set KUBECONFIG
-        run: |
-          mkdir -p /home/runner/.kube/build_config
-          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
-          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-          kubectl config view && echo "###############-5"
-          kubectl config current-context && echo "###############-6"
-          kubectl version && echo "###############-6"
-          kubectl get nodes
-
-      - name: Install HashiCorp Vault CLI
-        run: |
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install vault
-
-      - name: Local DNS Mapping
-        run: |
-          sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
-
-      - name: Add SSH Rule to Security Group
-        run: |
-          mkdir - p build
-          curl https://ipv4.icanhazip.com/ > build/localip 
-          aws ec2 authorize-security-group-ingress \
-            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
-            --protocol "tcp" \
-            --port "22" \
-            --cidr "$(cat build/localip)/32" \
-            --region "${{ env.AWS_REGION_NAME }}"
-
-      - name: Create Tunnel
-        run: |
-          mkdir ~/.ssh
-          echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-          chmod 600 ~/.ssh/vault.pem
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
-        continue-on-error: true
-
-      # - name: Running vault command
+      # - name: AWS Commands
       #   run: |
-      #     vault status
-      #     vault kv list secretsv2/
+      #     echo "aws --version" && aws --version
+      #     echo "aws configure list" && aws configure list  
+      #     echo "sts get-caller-identity" && aws sts get-caller-identity
+
+      # - name: Set KUBECONFIG
+      #   run: |
+      #     mkdir -p /home/runner/.kube/build_config
+      #     echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
+      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+      #     kubectl config view && echo "###############-5"
+      #     kubectl config current-context && echo "###############-6"
+      #     kubectl version && echo "###############-6"
+      #     kubectl get nodes
+
+      # - name: Install HashiCorp Vault CLI
+      #   run: |
+      #     wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+      #     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+      #     sudo apt update && sudo apt install vault
+
+      # - name: Local DNS Mapping
+      #   run: |
+      #     sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
+
+      # - name: Add SSH Rule to Security Group
+      #   run: |
+      #     mkdir - p build
+      #     curl https://ipv4.icanhazip.com/ > build/localip 
+      #     aws ec2 authorize-security-group-ingress \
+      #       --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+      #       --protocol "tcp" \
+      #       --port "22" \
+      #       --cidr "$(cat build/localip)/32" \
+      #       --region "${{ env.AWS_REGION_NAME }}"
+
+      # - name: Create Tunnel
+      #   run: |
+      #     mkdir ~/.ssh
+      #     echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+      #     chmod 600 ~/.ssh/vault.pem
+      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
+      #     ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+      #     ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
       #   continue-on-error: true
 
-      - name: Git Setup
-        run: |
-          git --version
-          git branch
-          git log -1
-          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-        continue-on-error: true
+      # # - name: Running vault command
+      # #   run: |
+      # #     vault status
+      # #     vault kv list secretsv2/
+      # #   continue-on-error: true
 
-      - name: Network File Setup
-        run: |
-          mkdir -p build/ENT/
+      # - name: Git Setup
+      #   run: |
+      #     git --version
+      #     git branch
+      #     git log -1
+      #     git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+      #     git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+      #   continue-on-error: true
 
-          tree build/ENT/
+      # - name: Network File Setup
+      #   run: |
+      #     mkdir -p build/ENT/
 
-          cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
-          # cat "build/ENT/running-network-cordaent.yaml"
+      #     tree build/ENT/
 
-          NETWORK_VERSION="4.10"
-          FLUX_SUFFIX="corda-ent"
-          INGRESS_CONTROLLER="ambassador"
-          PORT_RANGE_FROM=15010
-          PORT_RANGE_TO=15090
-          DOCKER_URL="${{ env.DOCKER_URL }}"
-          DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
-          DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
-          USER_DIRECTORY="$(pwd)"
-          EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
-          CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
-          AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
-          AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
-          CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
-          CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-          VAULT_ADDR="${{ env.VAULT_ADDR }}"
-          VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
-          GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
-          GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
-          GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
-          GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
-          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
+      #     cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
+      #     # cat "build/ENT/running-network-cordaent.yaml"
 
-          YAML_FILE="build/ENT/running-network-cordaent.yaml"
+      #     NETWORK_VERSION="4.10"
+      #     FLUX_SUFFIX="corda-ent"
+      #     INGRESS_CONTROLLER="ambassador"
+      #     PORT_RANGE_FROM=15010
+      #     PORT_RANGE_TO=15090
+      #     DOCKER_URL="${{ env.DOCKER_URL }}"
+      #     DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
+      #     DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
+      #     USER_DIRECTORY="$(pwd)"
+      #     EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
+      #     CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
+      #     AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
+      #     AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
+      #     CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
+      #     CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+      #     VAULT_ADDR="${{ env.VAULT_ADDR }}"
+      #     VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
+      #     GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
+      #     GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
+      #     GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
+      #     GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
+      #     echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
 
-          sed -i "s#NETWORK_VERSION_PLACEHOLDER#$NETWORK_VERSION#g" "$YAML_FILE"
-          sed -i "s#FLUX_SUFFIX_PLACEHOLDER#$FLUX_SUFFIX#g" "$YAML_FILE"
-          sed -i "s#INGRESS_CONTROLLER_PLACEHOLDER#$INGRESS_CONTROLLER#g" "$YAML_FILE"
-          sed -i "s#PORT_RANGE_FROM_PLACEHOLDER#$PORT_RANGE_FROM#g" "$YAML_FILE"
-          sed -i "s#PORT_RANGE_TO_PLACEHOLDER#$PORT_RANGE_TO#g" "$YAML_FILE"
+      #     YAML_FILE="build/ENT/running-network-cordaent.yaml"
 
-          sed -i "s#DOCKER_URL_PLACEHOLDER#$DOCKER_URL#g" "$YAML_FILE"
-          sed -i "s#DOCKER_USERNAME_PLACEHOLDER#$DOCKER_USERNAME#g" "$YAML_FILE"
-          sed -i "s#DOCKER_PASSWORD_PLACEHOLDER#$DOCKER_PASSWORD#g" "$YAML_FILE"
-          sed -i "s#USER_DIRECTORY_PLACEHOLDER#$USER_DIRECTORY#g" "$YAML_FILE"
-          sed -i "s#EXTERNAL_URL_SUFFIX_PLACEHOLDER#$EXTERNAL_URL_SUFFIX#g" "$YAML_FILE"
+      #     sed -i "s#NETWORK_VERSION_PLACEHOLDER#$NETWORK_VERSION#g" "$YAML_FILE"
+      #     sed -i "s#FLUX_SUFFIX_PLACEHOLDER#$FLUX_SUFFIX#g" "$YAML_FILE"
+      #     sed -i "s#INGRESS_CONTROLLER_PLACEHOLDER#$INGRESS_CONTROLLER#g" "$YAML_FILE"
+      #     sed -i "s#PORT_RANGE_FROM_PLACEHOLDER#$PORT_RANGE_FROM#g" "$YAML_FILE"
+      #     sed -i "s#PORT_RANGE_TO_PLACEHOLDER#$PORT_RANGE_TO#g" "$YAML_FILE"
 
-          sed -i "s#CLOUD_PROVIDER_PLACEHOLDER#$CLOUD_PROVIDER#g" "$YAML_FILE"
-          sed -i "s#AWS_ACCESS_KEY_PLACEHOLDER#$AWS_ACCESS_KEY#g" "$YAML_FILE"
-          sed -i "s#AWS_SECRET_KEY_PLACEHOLDER#$AWS_SECRET_KEY#g" "$YAML_FILE"
-          sed -i "s#CLUSTER_CONTEXT_PLACEHOLDER#$CLUSTER_CONTEXT#g" "$YAML_FILE"
-          sed -i "s#CLUSTER_CONFIG_PLACEHOLDER#$CLUSTER_CONFIG#g" "$YAML_FILE"
+      #     sed -i "s#DOCKER_URL_PLACEHOLDER#$DOCKER_URL#g" "$YAML_FILE"
+      #     sed -i "s#DOCKER_USERNAME_PLACEHOLDER#$DOCKER_USERNAME#g" "$YAML_FILE"
+      #     sed -i "s#DOCKER_PASSWORD_PLACEHOLDER#$DOCKER_PASSWORD#g" "$YAML_FILE"
+      #     sed -i "s#USER_DIRECTORY_PLACEHOLDER#$USER_DIRECTORY#g" "$YAML_FILE"
+      #     sed -i "s#EXTERNAL_URL_SUFFIX_PLACEHOLDER#$EXTERNAL_URL_SUFFIX#g" "$YAML_FILE"
 
-          sed -i "s#VAULT_ADDR_PLACEHOLDER#$VAULT_ADDR#g" "$YAML_FILE"
-          sed -i "s#VAULT_ROOT_TOKEN_PLACEHOLDER#$VAULT_ROOT_TOKEN#g" "$YAML_FILE"
-          sed -i "s#GITHUB_USERNAME_PLACEHOLDER#$GITHUB_USERNAME#g" "$YAML_FILE"
-          sed -i "s#GITHUB_EMAIL_ADDR_PLACEHOLDER#$GITHUB_EMAIL_ADDR#g" "$YAML_FILE"
-          sed -i "s#GITHUB_TOKEN_PLACEHOLDER#$GITHUB_TOKEN#g" "$YAML_FILE"
-          sed -i "s#GIT_BRANCH_PLACEHOLDER#$GIT_BRANCH#g" "$YAML_FILE"
-          sed -i "s#PRIVATE_KEY_PATH_PLACEHOLDER#$PRIVATE_KEY_PATH#g" "$YAML_FILE"
+      #     sed -i "s#CLOUD_PROVIDER_PLACEHOLDER#$CLOUD_PROVIDER#g" "$YAML_FILE"
+      #     sed -i "s#AWS_ACCESS_KEY_PLACEHOLDER#$AWS_ACCESS_KEY#g" "$YAML_FILE"
+      #     sed -i "s#AWS_SECRET_KEY_PLACEHOLDER#$AWS_SECRET_KEY#g" "$YAML_FILE"
+      #     sed -i "s#CLUSTER_CONTEXT_PLACEHOLDER#$CLUSTER_CONTEXT#g" "$YAML_FILE"
+      #     sed -i "s#CLUSTER_CONFIG_PLACEHOLDER#$CLUSTER_CONFIG#g" "$YAML_FILE"
 
-          echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-          cat "build/ENT/running-network-cordaent.yaml"
-        continue-on-error: true
+      #     sed -i "s#VAULT_ADDR_PLACEHOLDER#$VAULT_ADDR#g" "$YAML_FILE"
+      #     sed -i "s#VAULT_ROOT_TOKEN_PLACEHOLDER#$VAULT_ROOT_TOKEN#g" "$YAML_FILE"
+      #     sed -i "s#GITHUB_USERNAME_PLACEHOLDER#$GITHUB_USERNAME#g" "$YAML_FILE"
+      #     sed -i "s#GITHUB_EMAIL_ADDR_PLACEHOLDER#$GITHUB_EMAIL_ADDR#g" "$YAML_FILE"
+      #     sed -i "s#GITHUB_TOKEN_PLACEHOLDER#$GITHUB_TOKEN#g" "$YAML_FILE"
+      #     sed -i "s#GIT_BRANCH_PLACEHOLDER#$GIT_BRANCH#g" "$YAML_FILE"
+      #     sed -i "s#PRIVATE_KEY_PATH_PLACEHOLDER#$PRIVATE_KEY_PATH#g" "$YAML_FILE"
 
-      - name: Check Ansible
-        run: |
-          # echo "1=>" && which ansible
-          # echo "2=>" && which python
-          # echo "3=>" && ansible --version
-          # echo "4=>" && python --version
-          # echo "10=>" && pip list
-          # echo "11=>" && pip install kubernetes
-          # echo "13=>" && lsb_release -a
-          mkdir -p ~/bin
-          export PATH=$PATH:~/bin
-          pip3 install openshift=='0.12.0'
-          ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
-        continue-on-error: true
+      #     echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+      #     cat "build/ENT/running-network-cordaent.yaml"
+      #   continue-on-error: true
 
-      - name: Deploy network
-        run: |
-          echo "14=>" && tree build
-          # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
-          sudo mkdir -p /etc/ansible
-          sudo touch /etc/ansible/hosts
-          echo "[ansible_provisioners:children]
-          local
+      # - name: Check Ansible
+      #   run: |
+      #     # echo "1=>" && which ansible
+      #     # echo "2=>" && which python
+      #     # echo "3=>" && ansible --version
+      #     # echo "4=>" && python --version
+      #     # echo "10=>" && pip list
+      #     # echo "11=>" && pip install kubernetes
+      #     # echo "13=>" && lsb_release -a
+      #     mkdir -p ~/bin
+      #     export PATH=$PATH:~/bin
+      #     pip3 install openshift=='0.12.0'
+      #     ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
+      #   continue-on-error: true
 
-          [local]
-          localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
-          echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+      # - name: Deploy network
+      #   run: |
+      #     echo "14=>" && tree build
+      #     # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+      #     sudo mkdir -p /etc/ansible
+      #     sudo touch /etc/ansible/hosts
+      #     echo "[ansible_provisioners:children]
+      #     local
 
-          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
-        continue-on-error: true
+      #     [local]
+      #     localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
+      #     echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
 
-      - name: Testing
-        run: |
-          cat ~/bin/flux | head -n 10
-          sudo tree ~/bin/ | head -n 30
+      #     ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
+      #   continue-on-error: true
 
-      - name: Remove SSH Rule from Security Group
-        run: |
-          curl https://ipv4.icanhazip.com/ > localip
-          aws ec2 revoke-security-group-ingress \
-            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
-            --protocol "tcp" \
-            --port "22" \
-            --cidr "$(cat build/localip)/32" \
-            --region "${{ env.AWS_REGION_NAME }}"
+      # - name: Testing
+      #   run: |
+      #     cat ~/bin/flux | head -n 10
+      #     sudo tree ~/bin/ | head -n 30
+
+      # - name: Remove SSH Rule from Security Group
+      #   run: |
+      #     curl https://ipv4.icanhazip.com/ > localip
+      #     aws ec2 revoke-security-group-ingress \
+      #       --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+      #       --protocol "tcp" \
+      #       --port "22" \
+      #       --cidr "$(cat build/localip)/32" \
+      #       --region "${{ env.AWS_REGION_NAME }}"
