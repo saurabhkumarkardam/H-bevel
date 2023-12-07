@@ -11,12 +11,6 @@ jobs:
     runs-on: ubuntu-20.04 # ubuntu-latest
     permissions:
       contents: write
-    steps:
-      - name: curl
-        run: |
-          mkdir build/
-          curl -s https://fluxcd.io/install.sh | bash -s build/
-          echo "################" && tree build
     env:
       AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
       AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
@@ -29,17 +23,23 @@ jobs:
       VAULT_PORT: "${{ secrets.VAULT_PORT }}"
       VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
       VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
-      VAULT_USER: "${{ vars.VAULT_USER }}"
-      GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
-      GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
-      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
-      GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
-      GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
-      DOCKER_URL: "${{ secrets.DOCKER_URL }}"
-      DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
-      DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
-      EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
-      CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
+      # VAULT_USER: "${{ vars.VAULT_USER }}"
+      # GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
+      # GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
+      # GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+      # GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
+      # GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
+      # DOCKER_URL: "${{ secrets.DOCKER_URL }}"
+      # DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+      # DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
+      # EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
+      # CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
+    steps:
+      - name: curl
+        run: |
+          mkdir build/
+          curl -s https://fluxcd.io/install.sh | bash -s build/
+          echo "################" && tree build
       # curl -s https://fluxcd.io/install.sh | bash -s "build/"
 
       # - name: Testing
