@@ -8,7 +8,7 @@ on:
 
 jobs:
   deployment:
-    runs-on: ubuntu-latest # ubuntu-20.04 # ubuntu-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     env:
@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: curl
         run: |
-          curl -s https://fluxcd.io/install.sh
+          wget -s https://fluxcd.io/install.sh
           sh install.sh
 
       - name: Checkout Repository
