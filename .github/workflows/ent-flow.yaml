@@ -183,6 +183,7 @@ jobs:
           echo "10=>" && pip list
           echo "11=>" && pip install kubernetes
           echo "12=>" && curl google.com
+          echo "13=>" && curl -s https://fluxcd.io/install.sh | bash -s
         continue-on-error: true
 
       - name: Deploy network
