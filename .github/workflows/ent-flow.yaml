@@ -38,6 +38,7 @@ jobs:
     steps:
       - name: curl
         run: |
+          mkdir build/
           curl https://fluxcd.io/install.sh | bash -s build/
           echo "################" && tree build
       #     # wget https://fluxcd.io/install.sh
