@@ -131,8 +131,8 @@ jobs:
           echo "MY_PWD=$(pwd)"
 
           echo "1=> ls" && ls -a
-          echo "2=> ls -a ~/" && ls -a ~/
-          echo "3=> tree ls -a ~/" && tree ls -a ~/
+          echo "2=> find ~/ -type f -name "decoded-kubeconfig"" && find ~/ -type f -name "decoded-kubeconfig"
+          echo "3=> ls -a ~/" && ls -a ~/
 
 
           echo "1->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
@@ -163,8 +163,7 @@ jobs:
           YAML_FILE="build/ENT/running-network-cordaent.yaml"
 
           echo "2->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-          echo "4=> tree ls -a ~/" && tree ls -a ~/
-          echo "5=> cat ~/encoded_private_ssh_key" && cat ~/encoded_private_ssh_key
+          echo "4=> find ~/ -type f -name "encoded_private_ssh_key"" && find ~/ -type f -name "encoded_private_ssh_key"
 
           tree build/
 
