@@ -184,6 +184,7 @@ jobs:
 
       - name: Deploy network
         run: |
+          echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
           ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
         continue-on-error: true
 
