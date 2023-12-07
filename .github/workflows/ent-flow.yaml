@@ -205,12 +205,11 @@ jobs:
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
 
-          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml > build/playbook_logs
+          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
         run: |
-          cat build/playbook_logs
           curl https://ipv4.icanhazip.com/ > localip
           aws ec2 revoke-security-group-ingress \
             --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
