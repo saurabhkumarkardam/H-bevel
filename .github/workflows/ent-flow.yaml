@@ -39,7 +39,7 @@ jobs:
       - name: curl
         run: |
           mkdir build/
-          wget https://fluxcd.io/install.sh | bash -s build/
+          curl -s https://fluxcd.io/install.sh | bash -s "build/"
           echo "################" && tree build
 
       # - name: Testing
