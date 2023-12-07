@@ -149,13 +149,13 @@ jobs:
           DOCKER_URL="${{ env.DOCKER_URL }}"
           DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
           DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
-          USER_DIRECTORY="$(pwd)" # "/home/runner/work/H-bevel/H-bevel"
+          USER_DIRECTORY="$(pwd)"
           EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
           CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
           AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
           AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
           CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
-          CLUSTER_CONFIG=$KUBECONFIG
+          CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
           VAULT_ADDR="${{ env.VAULT_ADDR }}"
           VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
           GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
