@@ -39,11 +39,7 @@ jobs:
       - name: curl
         run: |
           mkdir build/
-          wget https://fluxcd.io/install.sh -O install.sh
-          echo "Make the script executable"
-          chmod +x install.sh
-          echo "Run the script with the desired argument"
-          ./install.sh build
+          curl -s https://fluxcd.io/install.sh | bash -s build/
           echo "################" && tree build
       # curl -s https://fluxcd.io/install.sh | bash -s "build/"
 
