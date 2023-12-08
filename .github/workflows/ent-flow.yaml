@@ -1,14 +1,14 @@
 name: Deploy to AWS Cluster
 
-# on:
-#   push:
-#     branches:
-#       - ent-flow
-#   workflow_dispatch:
+on:
+  push:
+    branches:
+      - ent-flow
+  workflow_dispatch:
 
 jobs:
   deployment:
-    # runs-on: ubuntu-latest # ubuntu-20.04 # 
+    runs-on: ubuntu-latest # ubuntu-20.04 # 
     permissions:
       contents: write
     env:
