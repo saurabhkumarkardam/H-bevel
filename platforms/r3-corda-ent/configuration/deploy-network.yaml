@@ -20,9 +20,9 @@
       path: "./build"
       state: absent
 
-    - name: First
-      debug:
-        msg: "1 => Create namespace, service accounts and clusterrolebinding"
+  - name: First
+    debug:
+      msg: "1 => Create namespace, service accounts and clusterrolebinding"
 
   # create namespace, service account and clusterrolebinding
   - name: "Create namespace, service accounts and clusterrolebinding"
@@ -37,9 +37,9 @@
     loop_control:
       loop_var: org
 
-    - name: Second
-      debug:
-        msg: "2 => Create Storage Class"
+  - name: Second
+    debug:
+      msg: "2 => Create Storage Class"
   
   # Create Storageclass that will be used for this deployment
   - name: Create Storage Class
@@ -59,9 +59,9 @@
     loop_control:
       loop_var: org
 
-    - name: Third
-      debug:
-        msg: "3 => Setup cenm"
+  - name: Third
+    debug:
+      msg: "3 => Setup cenm"
 
   # Setup CENM services for the network
   - name: "Setup cenm"   
@@ -82,9 +82,9 @@
       loop_var: org
     when: org.type == 'cenm'
 
-    - name: Fourth
-      debug:
-        msg: "4 => Check that CENM uri are reachable"
+  - name: Fourth
+    debug:
+      msg: "4 => Check that CENM uri are reachable"
 
   # Wait for cenm services to respond  
   - name: Check that CENM uri are reachable
