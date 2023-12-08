@@ -76,7 +76,11 @@ jobs:
         run: |
           mkdir -p /home/runner/.kube/build_config
           echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
-          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          # export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          echo "HOME=>$HOME"
+          echo 'export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"' >> $HOME/.bashrc
+          source $HOME/.bashrc
+          echo "KUBECONFIG=$KUBECONFIG"
           kubectl config view && echo "###############-5"
           kubectl config current-context && echo "###############-6"
           kubectl version && echo "###############-6"
