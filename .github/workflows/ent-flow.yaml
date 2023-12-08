@@ -232,10 +232,9 @@ jobs:
       - name: Testing
         run: |
           export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-          kubectl config view
-          kubectl get nodes
-          # cat ~/bin/flux | head -n 10
-          # sudo tree ~/bin/ | head -n 30
+          echo "1=>" && kubectl get nodes
+          echo "2=>" && kubectl get ns
+          echo "3=>" && tree platforms/r3-corda-ent/releases/
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
