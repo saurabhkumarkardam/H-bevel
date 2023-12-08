@@ -226,8 +226,10 @@ jobs:
 
       - name: Testing
         run: |
-          cat ~/bin/flux | head -n 10
-          sudo tree ~/bin/ | head -n 30
+          kubectl get nodes
+          kubectl config view
+          # cat ~/bin/flux | head -n 10
+          # sudo tree ~/bin/ | head -n 30
 
       - name: Remove SSH Rule from Security Group
         run: |
