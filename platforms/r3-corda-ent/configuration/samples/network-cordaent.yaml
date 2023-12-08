@@ -69,7 +69,7 @@ network:
         username: "GITHUB_USERNAME_PLACEHOLDER"
         password: "GITHUB_TOKEN_PLACEHOLDER"
         email: "GITHUB_EMAIL_ADDR_PLACEHOLDER"
-        git_repo: "github.com/GITHUB_USERNAME_PLACEHOLDER/bevel.git"
+        git_repo: "github.com/GITHUB_USERNAME_PLACEHOLDER/H-bevel.git"
         private_key: "PRIVATE_KEY_PATH_PLACEHOLDER"
 
       cordapps:
@@ -207,7 +207,7 @@ network:
         username: "GITHUB_USERNAME_PLACEHOLDER"
         password: "GITHUB_TOKEN_PLACEHOLDER"
         email: "GITHUB_EMAIL_ADDR_PLACEHOLDER"
-        git_repo: "github.com/GITHUB_USERNAME_PLACEHOLDER/bevel.git"
+        git_repo: "github.com/GITHUB_USERNAME_PLACEHOLDER/H-bevel.git"
         private_key: "PRIVATE_KEY_PATH_PLACEHOLDER"
 
       cordapps:
@@ -244,7 +244,7 @@ network:
             username: "GITHUB_USERNAME_PLACEHOLDER"
             password: "GITHUB_TOKEN_PLACEHOLDER"
             email: "GITHUB_EMAIL_ADDR_PLACEHOLDER"
-            git_repo: "github.com/GITHUB_USERNAME_PLACEHOLDER/bevel.git"
+            git_repo: "github.com/GITHUB_USERNAME_PLACEHOLDER/H-bevel.git"
             private_key: "PRIVATE_KEY_PATH_PLACEHOLDER"
           ports:
             p2p_port: 40000
