@@ -232,10 +232,10 @@ jobs:
       - name: Testing
         run: |
           export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          echo "0=>" && cat build/logs
           echo "1=>" && kubectl get nodes
           echo "2=>" && kubectl get ns
           echo "3=>" && tree platforms/r3-corda-ent/releases/
-          echo "4=>" && cat build/logs
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
