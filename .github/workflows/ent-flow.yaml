@@ -216,6 +216,7 @@ jobs:
       - name: Deploy network
         run: |
           echo "14=>" && tree build
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
           # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
           sudo mkdir -p /etc/ansible
           sudo touch /etc/ansible/hosts
@@ -225,12 +226,12 @@ jobs:
           [local]
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
-
           ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml
         continue-on-error: true
 
       - name: Testing
         run: |
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
           kubectl config view
           kubectl get nodes
           # cat ~/bin/flux | head -n 10
