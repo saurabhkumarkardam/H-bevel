@@ -226,12 +226,18 @@ jobs:
           [local]
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
-          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml -v > build/logs
-        continue-on-error: true
 
-      - name: Testing
-        run: |
-          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          mkdir ~/.ssh
+          echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          chmod 600 ~/.ssh/vault.pem
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
+          echo "0.1=>" && vault status
+          echo "0.2=>" && vault kv list secretsv2/
+
+          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml -v > build/logs
+
           echo "0=>" && cat build/logs
           echo "1=>" && kubectl get nodes
           echo "2=>" && kubectl get ns
