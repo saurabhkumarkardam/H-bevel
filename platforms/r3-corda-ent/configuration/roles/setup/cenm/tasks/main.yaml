@@ -8,6 +8,10 @@
 # This role sets up all cenm services
 ##############################################################################################
 
+- name: "Three Point One"
+  debug:
+    msg: "3.1 =>Wait for namespace creation for {{ organisation }}"
+
 # Wait for namespace creation
 - name: "Wait for namespace creation for {{ organisation }}"
   include_role:
@@ -16,6 +20,10 @@
     component_type: "Namespace"
     component_name: "{{ component_ns }}"
     type: "retry"
+
+- name: "Three Point Two"
+  debug:
+    msg: "3.2 => Wait for vault-auth creation for {{ organisation }}"
 
 # Wait for vault-auth creation
 - name: "Wait for vault-auth creation for {{ organisation }}"
@@ -26,7 +34,11 @@
     component_name: "vault-auth"
     type: "retry"
   tags:
-    - notest    
+    - notest
+
+- name: "Three Point Three"
+  debug:
+    msg: "3.3 => Wait for vault-reviewer creation for {{ organisation }}"
 
 # Wait for vault-reviewer creation
 - name: "Wait for vault-reviewer creation for {{ organisation }}"
@@ -37,7 +49,11 @@
     component_name: "vault-reviewer"
     type: "retry"
   tags:
-    - notest    
+    - notest
+
+- name: "Three Point Four"
+  debug:
+    msg: "3.4 => Wait for ClusterRoleBinding creation for {{ organisation }}"
 
 # Wait for ClusterRoleBinding creation
 - name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
@@ -48,7 +64,11 @@
     component_name: "{{ component_ns }}-role-tokenreview-binding"
     type: "retry"
   tags:
-    - notest    
+    - notest
+
+- name: "Three Point Five"
+  debug:
+    msg: "3.5 => Setup vault access for cenm"
 
 # Create vault access policies
 - name: "Setup vault access for cenm"
@@ -59,6 +79,10 @@
     component_auth: "cordaent{{ org.name | lower }}"
     component_type: "{{ org.type | lower }}"
 
+- name: "Three Point Six"
+  debug:
+    msg: "3.6 => Check if the root certs are already created"
+
 # Check if the certs are already created
 - name: Check if the root certs are already created
   shell: |
@@ -68,6 +92,10 @@
     VAULT_TOKEN: "{{ vault.root_token }}"
   register: root_certs
   ignore_errors: yes
+
+- name: "Three Point Six"
+  debug:
+    msg: "3.7 => Generate crypto using pki-generator"
 
 # Generate crypto using pki-generator
 - name: "Generate crypto using pki-generator"   
