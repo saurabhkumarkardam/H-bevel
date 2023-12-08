@@ -8,7 +8,7 @@ on:
 
 jobs:
   deployment:
-    runs-on: ubuntu-20.04 # ubuntu-latest
+    runs-on: ubuntu-latest # ubuntu-20.04 # 
     permissions:
       contents: write
     env:
