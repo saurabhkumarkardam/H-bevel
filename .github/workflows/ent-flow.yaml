@@ -35,27 +35,6 @@ jobs:
       EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
       CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
     steps:
-      # - name: curl
-      #   run: |
-      #     mkdir build/
-      #     curl -s https://fluxcd.io/install.sh | bash -s build/
-      #     echo "################" && tree build
-      # curl -s https://fluxcd.io/install.sh | bash -s "build/"
-
-      - name: Testing
-        run: |
-          # cat ~/bin/flux | head -n 10
-          mkdir -p ~/bin
-          ls -l ~/
-          echo "--"
-          ls -l /home/runner
-          echo "--"
-          touch /home/runner/bin/a.txt
-          sudo tree /home/runner/bin/
-          echo "--"
-          sudo tree ~/bin/
-          echo "--"
-
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
 
@@ -87,12 +66,6 @@ jobs:
           kubectl version && echo "###############-6"
           kubectl get nodes
 
-      - name: Install HashiCorp Vault CLI
-        run: |
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install vault
-
       - name: Local DNS Mapping
         run: |
           sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
@@ -107,22 +80,6 @@ jobs:
             --port "22" \
             --cidr "$(cat build/localip)/32" \
             --region "${{ env.AWS_REGION_NAME }}"
-
-      # - name: Create Tunnel
-      #   run: |
-      #     mkdir ~/.ssh
-      #     echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-      #     chmod 600 ~/.ssh/vault.pem
-      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-      #     ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-      #     ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
-      #   continue-on-error: true
-
-      # - name: Running vault command
-      #   run: |
-      #     vault status
-      #     vault kv list secretsv2/
-      #   continue-on-error: true
 
       - name: Git Setup
         run: |
@@ -200,13 +157,6 @@ jobs:
 
       - name: Check Ansible
         run: |
-          # echo "1=>" && which ansible
-          # echo "2=>" && which python
-          # echo "3=>" && ansible --version
-          # echo "4=>" && python --version
-          # echo "10=>" && pip list
-          # echo "11=>" && pip install kubernetes
-          # echo "13=>" && lsb_release -a
           mkdir -p ~/bin
           export PATH=$PATH:~/bin
           pip3 install openshift=='0.12.0'
@@ -232,7 +182,7 @@ jobs:
           chmod 600 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.VAULT_USER }}@${{ env.VAULT_BASTION }}" -v
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "dev@${{ env.VAULT_BASTION }}" -v
           echo "0.1=>" && vault status
           echo "0.2=>" && vault kv list secretsv2/
 
