@@ -1,16 +1,16 @@
 name: Deploy to AWS Cluster
 
-on:
-  push:
-    branches:
-      - ent-flow
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - ent-flow
+#   workflow_dispatch:
 
-jobs:
-  deployment:
-    runs-on: ubuntu-latest # ubuntu-20.04 
-    permissions:
-      contents: write
+# jobs:
+#   deployment:
+#     runs-on: ubuntu-latest # ubuntu-20.04 
+#     permissions:
+#       contents: write
     env:
       AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
       AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
@@ -143,7 +143,7 @@ jobs:
           # cat "build/ENT/running-network-cordaent.yaml"
 
           NETWORK_VERSION="4.10"
-          FLUX_SUFFIX="corda-ent"
+          FLUX_SUFFIX="r3-ent"
           INGRESS_CONTROLLER="ambassador"
           PORT_RANGE_FROM=15010
           PORT_RANGE_TO=15090
