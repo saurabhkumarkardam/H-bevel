@@ -241,6 +241,7 @@ jobs:
 
       - name: Output
         run: |
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
           echo "0=>" && cat build/logs
           echo "1=>" && tree platforms/r3-corda-ent/releases
           echo "2=>" && kubectl get ns
