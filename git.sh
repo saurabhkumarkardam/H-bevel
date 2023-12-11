@@ -3,4 +3,4 @@
 git status
 git add .
 git commit -m "R6"
-git push origin force ent-flow
+git push origin --force ent-flow
