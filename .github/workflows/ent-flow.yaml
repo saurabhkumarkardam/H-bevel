@@ -172,40 +172,40 @@ jobs:
           echo "1=>" && pip list | grep jmespath
         continue-on-error: true
 
-      # - name: Deploy network
-      #   run: |
-      #     echo "14=>" && tree build
-      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-      #     # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
-      #     sudo mkdir -p /etc/ansible
-      #     sudo touch /etc/ansible/hosts
-      #     echo "[ansible_provisioners:children]
-      #     local
+      - name: Deploy network
+        run: |
+          echo "14=>" && tree build
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          # echo "1=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+          sudo mkdir -p /etc/ansible
+          sudo touch /etc/ansible/hosts
+          echo "[ansible_provisioners:children]
+          local
 
-      #     [local]
-      #     localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
-      #     echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+          [local]
+          localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
+          echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
 
-      #     mkdir ~/.ssh
-      #     echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-      #     chmod 600 ~/.ssh/vault.pem
-      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-      #     ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-      #     ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "dev@${{ env.VAULT_BASTION }}" -v
-      #     echo "0.1=>" && vault status
-      #     echo "0.2=>" && vault kv list secretsv2/
+          mkdir ~/.ssh
+          echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          chmod 600 ~/.ssh/vault.pem
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "dev@${{ env.VAULT_BASTION }}" -v
+          echo "0.1=>" && vault status
+          echo "0.2=>" && vault kv list secretsv2/
 
-      #     ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml > build/logs
-      #   continue-on-error: true
+          ansible-playbook platforms/shared/configuration/site.yaml -e @build/ENT/running-network-cordaent.yaml > build/logs
+        continue-on-error: true
 
-      # - name: Output
-      #   run: |
-      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-      #     echo "0=>" && cat build/logs
-      #     echo "1=>" && tree platforms/r3-corda-ent/releases
-      #     echo "2=>" && kubectl get ns
-      #     echo "3=>" && kubectl get pods -A
-      #   continue-on-error: true
+      - name: Output
+        run: |
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          echo "0=>" && cat build/logs
+          echo "1=>" && tree platforms/r3-corda-ent/releases
+          echo "2=>" && kubectl get ns
+          echo "3=>" && kubectl get pods -A
+        continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
         run: |
