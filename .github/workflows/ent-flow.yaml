@@ -185,6 +185,7 @@ jobs:
           [local]
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+          pip install jmespath
 
           mkdir ~/.ssh
           echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
