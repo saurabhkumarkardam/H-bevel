@@ -3,7 +3,7 @@ name: Deploy to AWS Cluster
 on:
   push:
     branches:
-      - ent-flow
+      - flow1
   workflow_dispatch:
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
       VAULT_USER: "${{ vars.VAULT_USER }}"
       GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
       GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
-      # GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}" #
+      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
       GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
       GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
       DOCKER_URL: "${{ secrets.DOCKER_URL }}"
@@ -106,7 +106,7 @@ jobs:
           # cat "build/ENT/running-network-cordaent.yaml"
 
           NETWORK_VERSION="4.10"
-          FLUX_SUFFIX="r3-ent"
+          FLUX_SUFFIX="run-ent"
           INGRESS_CONTROLLER="ambassador"
           PORT_RANGE_FROM=15010
           PORT_RANGE_TO=15090
@@ -123,8 +123,8 @@ jobs:
           VAULT_ADDR="${{ env.VAULT_ADDR }}"
           VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
           GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
-          # GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
-          GITHUB_TOKEN="${{ secrets.GH_TOKEN }}"
+          GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
+          # GITHUB_TOKEN="${{ secrets.GH_TOKEN }}"
           GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
           GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
           echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
