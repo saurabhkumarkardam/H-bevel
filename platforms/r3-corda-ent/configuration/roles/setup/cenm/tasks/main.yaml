@@ -102,38 +102,70 @@
   include_role: 
     name: "setup/pki-generator"
   when: root_certs.failed
-  
+
+- name: "Three Point Eight"
+  debug:
+    msg: "3.8 => Deploy Auth Service"
+
 # Deploy Auth Service
 - name: "Deploy Auth Service"
   include_role:
     name: "setup/auth"
+
+- name: "Three Point Nine"
+  debug:
+    msg: "3.9 => Deploy gateway service"
 
 # Deploy gateway service
 - name: Deploy gateway service
   include_role:
     name: setup/gateway
 
+- name: "Three Point Ten"
+  debug:
+    msg: "3.10 => Deploy Zone service"
+
 # Deploy Zone service
 - name: Deploy Zone service
   include_role:
     name: setup/zone
+
+- name: "Three Point 11"
+  debug:
+    msg: "3.11 => Deploy Signer service"
 
 # Deploy Signer node
 - name: Deploy Signer service
   include_role:
     name: setup/signer
 
+- name: "Three Point 12"
+  debug:
+    msg: "3.12 => Deploy Idman service"
+
 # Deploy Idman service
 - name: Deploy Idman service
   include_role:
     name: setup/idman
+
+- name: "Three Point 13"
+  debug:
+    msg: "3.13 => Deploy networkmap service"
 
 # Deploy networkmap service
 - name: Deploy networkmap service
   include_role:
     name: setup/nmap
 
+- name: "Three Point 14"
+  debug:
+    msg: "3.14 => Deploy notary service"
+
 # Deploy notary service 
 - name: Deploy notary service
   include_role:
     name: setup/notary
+
+- name: "Three Point 15"
+  debug:
+    msg: "3.15 => Compeleted"
