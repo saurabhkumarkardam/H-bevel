@@ -242,6 +242,9 @@ jobs:
       - name: Output
         run: |
           echo "0=>" && cat build/logs
+          echo "1=>" && tree platforms/r3-corda-ent/releases
+          echo "2=>" && kubectl get ns
+          echo "3=>" && kubectl get pods -A
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
