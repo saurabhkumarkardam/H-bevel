@@ -36,7 +36,7 @@ network:
   
   organizations:
     - organization:
-      name: supplychain-run
+      name: sr
       country: UK
       state: London
       location: London
@@ -167,7 +167,7 @@ network:
             targetPort: 81
 
     - organization:
-      name: manufacturer-run
+      name: mr
       version: 4.7
       cenm_version: 1.5
       country: CH
