@@ -12,11 +12,6 @@
   debug:
     msg: "3.1 =>Wait for namespace creation for {{ organisation }}"
 
-- name: Three Point One - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Wait for namespace creation
 - name: "Wait for namespace creation for {{ organisation }}"
   include_role:
@@ -29,11 +24,6 @@
 - name: "Three Point Two"
   debug:
     msg: "3.2 => Wait for vault-auth creation for {{ organisation }}"
-
-- name: Three Point Two - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
 
 # Wait for vault-auth creation
 - name: "Wait for vault-auth creation for {{ organisation }}"
@@ -50,11 +40,6 @@
   debug:
     msg: "3.3 => Wait for vault-reviewer creation for {{ organisation }}"
 
-- name: Three Point Three - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Wait for vault-reviewer creation
 - name: "Wait for vault-reviewer creation for {{ organisation }}"
   include_role:
@@ -69,11 +54,6 @@
 - name: "Three Point Four"
   debug:
     msg: "3.4 => Wait for ClusterRoleBinding creation for {{ organisation }}"
-
-- name: Three Point Four - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
 
 # Wait for ClusterRoleBinding creation
 - name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
@@ -90,11 +70,6 @@
   debug:
     msg: "3.5 => Setup vault access for cenm"
 
-- name: Three Point Five - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Create vault access policies
 - name: "Setup vault access for cenm"
   include_role: 
@@ -107,11 +82,6 @@
 - name: "Three Point Six"
   debug:
     msg: "3.6 => Check if the root certs are already created"
-
-- name: Three Point Six - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
 
 # Check if the certs are already created
 - name: Check if the root certs are already created
@@ -127,11 +97,6 @@
   debug:
     msg: "3.7 => Generate crypto using pki-generator"
 
-- name: Three Point Seven - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Generate crypto using pki-generator
 - name: "Generate crypto using pki-generator"   
   include_role: 
@@ -142,11 +107,6 @@
   debug:
     msg: "3.8 => Deploy Auth Service"
 
-- name: Three Point Eight - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Deploy Auth Service
 - name: "Deploy Auth Service"
   include_role:
@@ -155,11 +115,6 @@
 - name: "Three Point Nine"
   debug:
     msg: "3.9 => Deploy gateway service"
-
-- name: Three Point Nine - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
 
 # Deploy gateway service
 - name: Deploy gateway service
@@ -170,11 +125,6 @@
   debug:
     msg: "3.10 => Deploy Zone service"
 
-- name: Three Point Ten - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Deploy Zone service
 - name: Deploy Zone service
   include_role:
@@ -183,11 +133,6 @@
 - name: "Three Point 11"
   debug:
     msg: "3.11 => Deploy Signer service"
-
-- name: Three Point Eleven - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
 
 # Deploy Signer node
 - name: Deploy Signer service
@@ -198,11 +143,6 @@
   debug:
     msg: "3.12 => Deploy Idman service"
 
-- name: Three Point Tweleve - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Deploy Idman service
 - name: Deploy Idman service
   include_role:
@@ -212,11 +152,6 @@
   debug:
     msg: "3.13 => Deploy networkmap service"
 
-- name: Three Point 13 - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
-
 # Deploy networkmap service
 - name: Deploy networkmap service
   include_role:
@@ -225,11 +160,6 @@
 - name: "Three Point 14"
   debug:
     msg: "3.14 => Deploy notary service"
-
-- name: Three Point 14 - Git pull and push flow1 branch
-  shell: |
-    git pull origin flow1
-    # git push origin flow1
 
 # Deploy notary service 
 - name: Deploy notary service
