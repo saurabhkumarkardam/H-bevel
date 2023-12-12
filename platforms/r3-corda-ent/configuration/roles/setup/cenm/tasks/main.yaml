@@ -15,7 +15,7 @@
 - name: Three Point One - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Wait for namespace creation
 - name: "Wait for namespace creation for {{ organisation }}"
@@ -33,7 +33,7 @@
 - name: Three Point Two - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Wait for vault-auth creation
 - name: "Wait for vault-auth creation for {{ organisation }}"
@@ -53,7 +53,7 @@
 - name: Three Point Three - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Wait for vault-reviewer creation
 - name: "Wait for vault-reviewer creation for {{ organisation }}"
@@ -73,7 +73,7 @@
 - name: Three Point Four - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Wait for ClusterRoleBinding creation
 - name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
@@ -93,7 +93,7 @@
 - name: Three Point Five - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Create vault access policies
 - name: "Setup vault access for cenm"
@@ -111,7 +111,7 @@
 - name: Three Point Six - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Check if the certs are already created
 - name: Check if the root certs are already created
@@ -130,7 +130,7 @@
 - name: Three Point Seven - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Generate crypto using pki-generator
 - name: "Generate crypto using pki-generator"   
@@ -145,7 +145,7 @@
 - name: Three Point Eight - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Deploy Auth Service
 - name: "Deploy Auth Service"
@@ -159,7 +159,7 @@
 - name: Three Point Nine - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Deploy gateway service
 - name: Deploy gateway service
@@ -173,7 +173,7 @@
 - name: Three Point Ten - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Deploy Zone service
 - name: Deploy Zone service
@@ -187,7 +187,7 @@
 - name: Three Point Eleven - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Deploy Signer node
 - name: Deploy Signer service
@@ -201,7 +201,7 @@
 - name: Three Point Tweleve - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Deploy Idman service
 - name: Deploy Idman service
@@ -215,7 +215,7 @@
 - name: Three Point 13 - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Deploy networkmap service
 - name: Deploy networkmap service
@@ -229,7 +229,7 @@
 - name: Three Point 14 - Git pull and push flow1 branch
   shell: |
     git pull origin flow1
-    git push origin flow1
+    # git push origin flow1
 
 # Deploy notary service 
 - name: Deploy notary service
