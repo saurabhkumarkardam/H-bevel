@@ -169,13 +169,6 @@ jobs:
           export PATH=$PATH:~/bin
           pip3 install openshift=='0.12.0'
           ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
-          echo "##############"
-          echo "0=>" && pip list
-          echo "##############-1"
-          pip install jmespath
-          pip install jinja2-time
-          echo "##############-2"
-          echo "1=>" && pip list
         continue-on-error: true
 
       - name: Deploy network
@@ -191,7 +184,16 @@ jobs:
           [local]
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
+
+          echo "##############"
           echo "0=>" && pip list
+          echo "##############-1"
+          pip install jmespath
+          pip install jinja2-time
+          echo "##############-2"
+          echo "1=>" && pip list
+          echo "##############"
+          python -c "import jmespath"
           echo "##############"
 
           mkdir ~/.ssh
