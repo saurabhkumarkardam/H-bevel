@@ -2,5 +2,5 @@
 
 git status
 git add .
-git commit -m "F900"
+git commit -m "F"
 git push origin --force flow1
