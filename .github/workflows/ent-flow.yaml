@@ -163,6 +163,8 @@ jobs:
 
       - name: Check Ansible
         run: |
+          echo "ansible --version" && ansible --version
+          echo "which ansible" && which ansible
           mkdir -p ~/bin
           export PATH=$PATH:~/bin
           pip3 install openshift=='0.12.0'
