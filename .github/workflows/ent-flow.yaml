@@ -215,6 +215,8 @@ jobs:
           echo "1=>" && tree platforms/r3-corda-ent/releases
           echo "2=>" && kubectl get ns
           echo "3=>" && kubectl get pods -A
+          echo "4=>" && vault status
+          echo "5=>" && vault kv list secretsv2/
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
