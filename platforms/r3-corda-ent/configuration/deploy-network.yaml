@@ -97,6 +97,10 @@
     retries: "{{ network.env.retry_count}}"
     delay: 50
 
+  - name: Fifth
+    debug:
+      msg: "5 => Setup Corda Node services"
+
   # Setup Corda Node services for the network
   - name: Setup Corda Node services
     include_role:
@@ -116,6 +120,10 @@
       loop_var: org
     when: org.type == 'node'
 
+  - name: Sixth
+    debug:
+      msg: "6 => Setup Additional Notary services"
+
   # Setup Additional Notary services for the network
   - name: Setup Additional Notary services
     include_role:
@@ -134,6 +142,10 @@
     loop_control:
       loop_var: org
     when: org.type == 'notary'
+
+  - name: Seventh
+    debug:
+      msg: "7 => Finished"
 
   # These variables can be overriden from the command line
   vars:
