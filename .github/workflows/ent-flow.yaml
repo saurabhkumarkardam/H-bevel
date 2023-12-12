@@ -189,7 +189,7 @@ jobs:
           [local]
           localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
           echo "2=>cat /etc/ansible/hosts" && cat /etc/ansible/hosts
-          pip install jmespath
+          echo "0=>" && pip list
           echo "##############"
 
           mkdir ~/.ssh
