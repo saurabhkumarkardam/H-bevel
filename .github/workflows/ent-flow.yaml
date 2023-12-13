@@ -96,6 +96,7 @@ jobs:
           # sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
           # sudo bash -c 'echo "127.0.0.1 ${{ env.DEMO_VAULT_SERVER }}" >> /etc/hosts'
           sudo bash -c 'echo "127.0.0.1 vault.internal.demo.aws.blockchaincloudpoc.com" >> /etc/hosts'
+          echo "1" && cat /etc/hosts
 
       - name: Create Tunnel
         run: |
