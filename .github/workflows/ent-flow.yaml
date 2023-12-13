@@ -83,6 +83,7 @@ jobs:
           chmod 664 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan "2.bastion.demo.aws.blockchaincloudpoc.com" >> ~/.ssh/known_hosts
+          echo "one"
           ssh -i ~/.ssh/vault.pem -f -q -N -L "9001:vault.internal.demo.aws.blockchaincloudpoc.com:9001" "devinstance@2.bastion.demo.aws.blockchaincloudpoc.com" -v
         continue-on-error: true
 
