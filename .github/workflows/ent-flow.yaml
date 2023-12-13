@@ -63,7 +63,7 @@ jobs:
           mkdir - p build
           curl https://ipv4.icanhazip.com/ > build/localip 
           aws ec2 authorize-security-group-ingress \
-            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+            --group-id "sg-0207eb01c1c4cdd3c" \
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat build/localip)/32" \
