@@ -108,7 +108,7 @@ jobs:
           ssh -i ~/.ssh/vault.pem -f -q -N -L "9001:vault.internal.demo.aws.blockchaincloudpoc.com:9001" "devinstance@2.bastion.demo.aws.blockchaincloudpoc.com" -v
         continue-on-error: true
 
-      - name: Running vault command
+      - name: Vault command
         run: |
           vault status
           vault kv list secretsv2/
