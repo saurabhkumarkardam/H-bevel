@@ -94,7 +94,8 @@ jobs:
       - name: Local DNS Mapping
         run: |
           # sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
-          sudo bash -c 'echo "127.0.0.1 ${{ env.DEMO_VAULT_SERVER }}" >> /etc/hosts'
+          # sudo bash -c 'echo "127.0.0.1 ${{ env.DEMO_VAULT_SERVER }}" >> /etc/hosts'
+          sudo bash -c 'echo "127.0.0.1 vault.internal.demo.aws.blockchaincloudpoc.com" >> /etc/hosts'
 
       - name: Create Tunnel
         run: |
@@ -103,7 +104,8 @@ jobs:
           chmod 600 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan "${{ env.DEMO_VAULT_BASTION }}" >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.DEMO_VAULT_PORT }}:${{ env.DEMO_VAULT_SERVER }}:${{ env.DEMO_VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.DEMO_VAULT_BASTION }}" -v
+          # ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.DEMO_VAULT_PORT }}:${{ env.DEMO_VAULT_SERVER }}:${{ env.DEMO_VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.DEMO_VAULT_BASTION }}" -v
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "9001:vault.internal.demo.aws.blockchaincloudpoc.com:9001" "devinstance@2.bastion.demo.aws.blockchaincloudpoc.com" -v
         continue-on-error: true
 
       - name: Running vault command
@@ -253,12 +255,12 @@ jobs:
       #     echo "6=>" && git status
       #   continue-on-error: true
 
-      # - name: Remove SSH Rule from Security Group
-      #   run: |
-      #     curl https://ipv4.icanhazip.com/ > localip
-      #     aws ec2 revoke-security-group-ingress \
-      #       --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
-      #       --protocol "tcp" \
-      #       --port "22" \
-      #       --cidr "$(cat build/localip)/32" \
-      #       --region "${{ env.AWS_REGION_NAME }}"
+      - name: Remove SSH Rule from Security Group
+        run: |
+          curl https://ipv4.icanhazip.com/ > localip
+          aws ec2 revoke-security-group-ingress \
+            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
+            --protocol "tcp" \
+            --port "22" \
+            --cidr "$(cat build/localip)/32" \
+            --region "${{ env.AWS_REGION_NAME }}"
