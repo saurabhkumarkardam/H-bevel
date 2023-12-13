@@ -36,7 +36,7 @@ network:
   
   organizations:
     - organization:
-      name: sd
+      name: se
       country: UK
       state: London
       location: London
@@ -167,7 +167,7 @@ network:
             targetPort: 81
 
     - organization:
-      name: md
+      name: me
       version: 4.7
       cenm_version: 1.5
       country: CH
