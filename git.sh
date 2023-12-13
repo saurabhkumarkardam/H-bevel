@@ -2,5 +2,5 @@
 
 git status
 git add .
-git commit -m "F1"
+git commit -m "DEMO_F1"
 git push origin --force flow1

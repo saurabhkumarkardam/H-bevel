@@ -16,14 +16,21 @@ jobs:
       AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
       AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
       AWS_SECURITY_GROUP_ID: "${{ secrets.AWS_SECURITY_GROUP_ID }}"
-      ENCODED_KUBECONFIG: "${{ secrets.ENCODED_KUBECONFIG }}"
-      ENCODED_DEVENV_BASTION_PEM: "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}"
+      # ENCODED_KUBECONFIG: "${{ secrets.ENCODED_KUBECONFIG }}"
+      ENCODED_KUBECONFIG_DEMO: "${{ secrets.ENCODED_KUBECONFIG_DEMO }}"
+      # ENCODED_DEVENV_BASTION_PEM: "${{ secrets.ENCODED_DEVENV_BASTION_PEM }}"
+      ENCODED_DEVINSTANCE_PEM: "${{ secrets.ENCODED_DEVINSTANCE_PEM }}"
       VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
-      VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
-      VAULT_PORT: "${{ secrets.VAULT_PORT }}"
-      VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
-      VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
-      VAULT_USER: "${{ vars.VAULT_USER }}"
+      # VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
+      DEMO_VAULT_SERVER: "${{ secrets.DEMO_VAULT_SERVER }}"
+      # VAULT_PORT: "${{ secrets.VAULT_PORT }}"
+      DEMO_VAULT_PORT: "${{ secrets.DEMO_VAULT_PORT }}"
+      # VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
+      DEMO_VAULT_TOKEN: "${{ secrets.DEMO_VAULT_TOKEN }}"
+      # VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
+      DEMO_VAULT_BASTION: "${{ secrets.DEMO_VAULT_BASTION }}"
+      # VAULT_USER: "${{ vars.VAULT_USER }}"
+      DEMO_USER: "${{ vars.DEMO_USER }}"
       GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
       GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
       GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
@@ -54,7 +61,8 @@ jobs:
       - name: Set KUBECONFIG
         run: |
           mkdir -p /home/runner/.kube/build_config
-          echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
+          # echo "${{ env.ENCODED_KUBECONFIG }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
+          echo "${{ env.ENCODED_KUBECONFIG_DEMO }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
           export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
           echo "HOME=>$HOME"
           echo 'export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"' >> $HOME/.bashrc
@@ -74,7 +82,8 @@ jobs:
 
       - name: Local DNS Mapping
         run: |
-          sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
+          # sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
+          sudo bash -c 'echo "127.0.0.1 ${{ env.DEMO_VAULT_SERVER }}" >> /etc/hosts'
 
       - name: Add SSH Rule to Security Group
         run: |
@@ -98,6 +107,7 @@ jobs:
 
       - name: Network File Setup
         run: |
+
           mkdir -p build/ENT/
 
           tree build/ENT/
@@ -121,7 +131,8 @@ jobs:
           CLUSTER_CONTEXT=arn:aws:eks:eu-west-1:895052373684:cluster/bevel-dev-cluster-CLUSTER
           CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
           VAULT_ADDR="${{ env.VAULT_ADDR }}"
-          VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
+          # VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
+          VAULT_ROOT_TOKEN="${{ env.DEMO_VAULT_TOKEN }}"
           GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
           GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
           # GITHUB_TOKEN="${{ secrets.GH_TOKEN }}"
@@ -197,11 +208,14 @@ jobs:
           echo "##############"
 
           mkdir ~/.ssh
-          echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          # echo "${{ env.ENCODED_DEVENV_BASTION_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          echo "${{ env.ENCODED_DEVINSTANCE_PEM }}" | base64 --decode > ~/.ssh/vault.pem
           chmod 600 ~/.ssh/vault.pem
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "dev@${{ env.VAULT_BASTION }}" -v
+          # ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+          ssh-keyscan "${{ env.DEMO_VAULT_BASTION }}" >> ~/.ssh/known_hosts
+          # ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "dev@${{ env.VAULT_BASTION }}" -v
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.DEMO_VAULT_PORT }}:${{ env.DEMO_VAULT_SERVER }}:${{ env.DEMO_VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.DEMO_VAULT_BASTION }}" -v
           echo "0.1=>" && vault status
           echo "0.2=>" && vault kv list secretsv2/
 
