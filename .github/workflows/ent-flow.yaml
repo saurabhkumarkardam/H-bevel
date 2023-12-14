@@ -63,7 +63,7 @@ jobs:
           mkdir - p build
           curl https://ipv4.icanhazip.com/ > build/localip 
           aws ec2 authorize-security-group-ingress \
-            --group-id "sg-0207eb01c1c4cdd3c" \
+            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat build/localip)/32" \
@@ -97,7 +97,7 @@ jobs:
         run: |
           curl https://ipv4.icanhazip.com/ > localip
           aws ec2 revoke-security-group-ingress \
-            --group-id "sg-0207eb01c1c4cdd3c" \
+            --group-id "${{ env.AWS_SECURITY_GROUP_ID }}" \
             --protocol "tcp" \
             --port "22" \
             --cidr "$(cat build/localip)/32" \
