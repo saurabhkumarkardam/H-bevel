@@ -13,22 +13,30 @@ jobs:
       contents: write
     env:
       AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
       AWS_REGION_NAME: "${{ secrets.AWS_REGION_NAME }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
       AWS_SECURITY_GROUP_ID: "${{ secrets.AWS_SECURITY_GROUP_ID }}"
+      CLUSTER_CONTEXT: "${{ secrets.CLUSTER_CONTEXT }}"
+      CLOUD_PROVIDER: "${{ vars.CLOUD_PROVIDER }}"
+      DOCKER_URL: "${{ secrets.DOCKER_URL }}"
+      DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+      DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
+      DEMO_USER: "${{ vars.DEMO_USER }}"
+      EXTERNAL_URL_SUFFIX: "${{ secrets.EXTERNAL_URL_SUFFIX }}"
       ENCODED_KUBECONFIG_DEMO: "${{ secrets.ENCODED_KUBECONFIG_DEMO }}"
       ENCODED_DEVINSTANCE_PEM: "${{ secrets.ENCODED_DEVINSTANCE_PEM }}"
-      VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
-      VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
-      VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
-      VAULT_PORT: "${{ secrets.VAULT_PORT }}"
-      DEMO_USER: "${{ vars.DEMO_USER }}"
-      VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
       GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
       GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
       GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
       GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
       GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
+      VAULT_ADDR: "${{ secrets.VAULT_ADDR }}"
+      VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
+      VAULT_SERVER: "${{ secrets.VAULT_SERVER }}"
+      VAULT_PORT: "${{ secrets.VAULT_PORT }}"
+      VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
+
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -99,6 +107,80 @@ jobs:
           vault kv list secretsv2/
         continue-on-error: true
 
+      - name: Git Setup
+        run: |
+          git --version
+          git branch
+          git log -1
+          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+        continue-on-error: true
+
+      - name: Network File Setup
+        run: |
+
+          mkdir -p build/ENT/
+
+          tree build/ENT/
+
+          cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
+          # cat "build/ENT/running-network-cordaent.yaml"
+
+          NETWORK_VERSION="4.10"
+          FLUX_SUFFIX="r-ent"
+          INGRESS_CONTROLLER="ambassador"
+          PORT_RANGE_FROM=15010
+          PORT_RANGE_TO=15090
+          DOCKER_URL="${{ env.DOCKER_URL }}"
+          DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
+          DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
+          USER_DIRECTORY="$(pwd)"
+          EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
+          CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
+          AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
+          CLUSTER_CONTEXT="${{ env.CLUSTER_CONTEXT }}"
+          CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          VAULT_ADDR="${{ env.VAULT_ADDR }}"
+          VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
+          GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
+          GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
+          GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
+          GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
+          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
+
+          YAML_FILE="build/ENT/running-network-cordaent.yaml"
+
+          sed -i "s#NETWORK_VERSION_PLACEHOLDER#$NETWORK_VERSION#g" "$YAML_FILE"
+          sed -i "s#FLUX_SUFFIX_PLACEHOLDER#$FLUX_SUFFIX#g" "$YAML_FILE"
+          sed -i "s#INGRESS_CONTROLLER_PLACEHOLDER#$INGRESS_CONTROLLER#g" "$YAML_FILE"
+          sed -i "s#PORT_RANGE_FROM_PLACEHOLDER#$PORT_RANGE_FROM#g" "$YAML_FILE"
+          sed -i "s#PORT_RANGE_TO_PLACEHOLDER#$PORT_RANGE_TO#g" "$YAML_FILE"
+
+          sed -i "s#DOCKER_URL_PLACEHOLDER#$DOCKER_URL#g" "$YAML_FILE"
+          sed -i "s#DOCKER_USERNAME_PLACEHOLDER#$DOCKER_USERNAME#g" "$YAML_FILE"
+          sed -i "s#DOCKER_PASSWORD_PLACEHOLDER#$DOCKER_PASSWORD#g" "$YAML_FILE"
+          sed -i "s#USER_DIRECTORY_PLACEHOLDER#$USER_DIRECTORY#g" "$YAML_FILE"
+          sed -i "s#EXTERNAL_URL_SUFFIX_PLACEHOLDER#$EXTERNAL_URL_SUFFIX#g" "$YAML_FILE"
+
+          sed -i "s#CLOUD_PROVIDER_PLACEHOLDER#$CLOUD_PROVIDER#g" "$YAML_FILE"
+          sed -i "s#AWS_ACCESS_KEY_PLACEHOLDER#$AWS_ACCESS_KEY#g" "$YAML_FILE"
+          sed -i "s#AWS_SECRET_KEY_PLACEHOLDER#$AWS_SECRET_KEY#g" "$YAML_FILE"
+          sed -i "s#CLUSTER_CONTEXT_PLACEHOLDER#$CLUSTER_CONTEXT#g" "$YAML_FILE"
+          sed -i "s#CLUSTER_CONFIG_PLACEHOLDER#$CLUSTER_CONFIG#g" "$YAML_FILE"
+
+          sed -i "s#VAULT_ADDR_PLACEHOLDER#$VAULT_ADDR#g" "$YAML_FILE"
+          sed -i "s#VAULT_ROOT_TOKEN_PLACEHOLDER#$VAULT_ROOT_TOKEN#g" "$YAML_FILE"
+          sed -i "s#GITHUB_USERNAME_PLACEHOLDER#$GITHUB_USERNAME#g" "$YAML_FILE"
+          sed -i "s#GITHUB_EMAIL_ADDR_PLACEHOLDER#$GITHUB_EMAIL_ADDR#g" "$YAML_FILE"
+          sed -i "s#GITHUB_TOKEN_PLACEHOLDER#$GITHUB_TOKEN#g" "$YAML_FILE"
+          sed -i "s#GIT_BRANCH_PLACEHOLDER#$GIT_BRANCH#g" "$YAML_FILE"
+          sed -i "s#PRIVATE_KEY_PATH_PLACEHOLDER#$PRIVATE_KEY_PATH#g" "$YAML_FILE"
+
+          echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          cat "build/ENT/running-network-cordaent.yaml"
+        continue-on-error: true
+
       - name: Remove SSH Rule from Security Group
         run: |
           curl https://ipv4.icanhazip.com/ > localip
@@ -108,12 +190,3 @@ jobs:
             --port "22" \
             --cidr "$(cat build/localip)/32" \
             --region "${{ env.AWS_REGION_NAME }}"
-
-      - name: Git Setup
-        run: |
-          git --version
-          git branch
-          git log -1
-          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-        continue-on-error: true
