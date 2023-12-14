@@ -88,7 +88,7 @@ jobs:
           ssh-keyscan "2.bastion.demo.aws.blockchaincloudpoc.com" >> ~/.ssh/known_hosts
           echo "one"
           # ssh -i ~/.ssh/vault.pem -f -q -N -L "9001:vault.internal.demo.aws.blockchaincloudpoc.com:9001" "devinstance@2.bastion.demo.aws.blockchaincloudpoc.com" -v
-          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.DEMO_VAULT_BASTION }}" -v
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.VAULT_BASTION }}" -v
         continue-on-error: true
 
       - name: Vault command
