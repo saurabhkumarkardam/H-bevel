@@ -24,6 +24,8 @@ jobs:
       VAULT_PORT: "${{ secrets.VAULT_PORT }}"
       DEMO_USER: "${{ vars.DEMO_USER }}"
       VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
+      GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
+      GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
@@ -103,3 +105,12 @@ jobs:
             --port "22" \
             --cidr "$(cat build/localip)/32" \
             --region "${{ env.AWS_REGION_NAME }}"
+
+      - name: Git Setup
+        run: |
+          git --version
+          git branch
+          git log -1
+          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+        continue-on-error: true
