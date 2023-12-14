@@ -174,13 +174,13 @@ jobs:
 
           ansible-playbook platforms/shared/configuration/site.yaml \
             -i platforms/shared/inventory/ansible_provisioners \
-            -e @build/ENT/running-network-cordaent.yaml > build/logs
+            -e @build/ENT/running-network-cordaent.yaml # > build/logs
         continue-on-error: true
 
       - name: Output
         run: |
           export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-          echo "0=>" && cat build/logs
+          # echo "0=>" && cat build/logs
           echo "1=>" && tree platforms/r3-corda-ent/releases
           echo "2=>" && kubectl get ns
           echo "3=>" && kubectl get pods -A
