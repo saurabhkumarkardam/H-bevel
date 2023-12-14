@@ -26,6 +26,9 @@ jobs:
       VAULT_BASTION: "${{ secrets.VAULT_BASTION }}"
       GITHUB_USER_NAME: "${{ secrets.GH_USER_NAME }}"
       GITHUB_EMAIL_ADDR: "${{ secrets.GH_EMAIL_ADDR }}"
+      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+      GITHUB_BRANCH: "${{ vars.GH_BRANCH }}"
+      GITHUB_PRIVATE_SSH_KEY: "${{ secrets.GH_PRIVATE_SSH_KEY }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
