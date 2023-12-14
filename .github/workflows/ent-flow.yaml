@@ -91,22 +91,6 @@ jobs:
           sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
           echo "1" && cat /etc/hosts
 
-      # - name: Create Tunnel
-      #   run: |
-      #     mkdir ~/.ssh
-      #     echo "${{ env.ENCODED_DEVINSTANCE_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-      #     chmod 400 ~/.ssh/vault.pem
-      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-      #     ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
-      #     ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.VAULT_BASTION }}" -v
-      #   continue-on-error: true
-
-      # - name: Vault command
-      #   run: |
-      #     vault status
-      #     vault kv list secretsv2/
-      #   continue-on-error: true
-
       - name: Git Setup
         run: |
           git --version
@@ -211,9 +195,9 @@ jobs:
           echo "4=>vault status=>" && vault status
           echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
 
-          # ansible-playbook platforms/shared/configuration/site.yaml \
-          #   -i platforms/shared/inventory/ansible_provisioners \
-          #   -e @build/ENT/running-network-cordaent.yaml > build/logs
+          ansible-playbook platforms/shared/configuration/site.yaml \
+            -i platforms/shared/inventory/ansible_provisioners \
+            -e @build/ENT/running-network-cordaent.yaml > build/logs
         continue-on-error: true
 
       - name: Output
