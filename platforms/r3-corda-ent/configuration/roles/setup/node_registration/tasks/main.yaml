@@ -47,8 +47,8 @@
     values_dir: "{{ playbook_dir }}/../../../{{ org.gitops.release_dir }}"
     charts_dir: "{{ org.gitops.chart_source }}"
     corda_service_version: node-{{ org.version }}
-    doorman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}"
-    networkmap_url: "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}"
+    doorman_url: "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`idman`].uri') | first }}"
+    networkmap_url: "https://networkmap.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}"
     helm_lint: "true"
   when: node_certs.failed
 

@@ -52,8 +52,8 @@ spec:
       idmanDomain: {{ idman_domain }}
       networkMapURL: {{ networkmap_url }}
       networkMapDomain: {{ networkmap_domain }}
-      idmanName: "{{ network | json_query('network_services[?type==`idman`].name') | first }}"
-      networkmapName: "{{ network | json_query('network_services[?type==`networkmap`].name') | first }}"
+      idmanName: "idman"
+      networkmapName: "networkmap"
     dataSourceProperties:
       dataSource:
         password: "{{ notary_service.name }}-db-password"

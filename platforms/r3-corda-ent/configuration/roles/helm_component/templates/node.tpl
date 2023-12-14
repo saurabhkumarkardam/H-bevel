@@ -34,8 +34,8 @@ spec:
       networkMapURL: {{ networkmap_url }}
       idmanDomain: "{{ doorman_url.split(':')[1] | regex_replace('/', '') }}"
       networkMapDomain: "{{ networkmap_url.split(':')[1] | regex_replace('/', '') }}"
-      idmanName: "{{ network | json_query('network_services[?type==`idman`].name') | first }}"
-      networkmapName: "{{ network | json_query('network_services[?type==`networkmap`].name') | first }}"
+      idmanName: "idman"
+      networkmapName: "networkmap"
     firewall:
       enabled: {{ org.firewall.enabled }}
     vault:
@@ -72,7 +72,7 @@ spec:
       emailAddress: "dev-node@bevel.com"
       crlCheckSoftFail: true
       tlsCertCrlDistPoint: ""
-      tlsCertCrlIssuer: "{{ network | json_query('network_services[?type==`idman`].crlissuer_subject') | first }}"
+      tlsCertCrlIssuer: "CN=Corda TLS CRL Authority,OU=Corda UAT,O=R3 HoldCo LLC,L=New York,C=US"
       devMode: false
       volume:
         baseDir: /opt/corda/base

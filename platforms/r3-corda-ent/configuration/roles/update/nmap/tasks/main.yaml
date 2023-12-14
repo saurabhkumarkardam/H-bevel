@@ -40,7 +40,7 @@
     charts_dir: "{{ org.gitops.chart_source }}"
     values_dir: "{{playbook_dir}}/../../../{{ org.gitops.release_dir }}"
     corda_service_version: networkmap-{{ org.version }}
-    idman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # Keep this in ansible role to prevent confusion in template
+    idman_url: "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # Keep this in ansible role to prevent confusion in template
     helm_lint: "true"
     nmap_update: true
 
