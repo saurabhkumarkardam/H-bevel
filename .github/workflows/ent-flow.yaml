@@ -91,21 +91,21 @@ jobs:
           sudo bash -c 'echo "127.0.0.1 ${{ env.VAULT_SERVER }}" >> /etc/hosts'
           echo "1" && cat /etc/hosts
 
-      - name: Create Tunnel
-        run: |
-          mkdir ~/.ssh
-          echo "${{ env.ENCODED_DEVINSTANCE_PEM }}" | base64 --decode > ~/.ssh/vault.pem
-          chmod 400 ~/.ssh/vault.pem
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-keyscan "2.bastion.demo.aws.blockchaincloudpoc.com" >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.VAULT_BASTION }}" -v
-        continue-on-error: true
+      # - name: Create Tunnel
+      #   run: |
+      #     mkdir ~/.ssh
+      #     echo "${{ env.ENCODED_DEVINSTANCE_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+      #     chmod 400 ~/.ssh/vault.pem
+      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
+      #     ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+      #     ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.VAULT_BASTION }}" -v
+      #   continue-on-error: true
 
-      - name: Vault command
-        run: |
-          vault status
-          vault kv list secretsv2/
-        continue-on-error: true
+      # - name: Vault command
+      #   run: |
+      #     vault status
+      #     vault kv list secretsv2/
+      #   continue-on-error: true
 
       - name: Git Setup
         run: |
@@ -179,6 +179,55 @@ jobs:
 
           echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
           cat "build/ENT/running-network-cordaent.yaml"
+        continue-on-error: true
+
+      - name: Check Ansible
+        run: |
+          echo "1=>ansible --version=>" && ansible --version
+          echo "2=>which ansible=>" && which ansible
+          mkdir -p ~/bin
+          export PATH=$PATH:~/bin
+          pip3 install openshift=='0.12.0'
+          ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
+        continue-on-error: true
+
+      - name: Deploy network
+        run: |
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+
+          echo "1=>tree build=>" && tree build
+          echo "2=>pip list=>" && pip list
+          pip install jmespath
+          pip install jinja2-time
+          echo "3=>pip list=>" && pip list
+          python -c "import jmespath"
+
+          mkdir ~/.ssh
+          echo "${{ env.ENCODED_DEVINSTANCE_PEM }}" | base64 --decode > ~/.ssh/vault.pem
+          chmod 400 ~/.ssh/vault.pem
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan "${{ env.VAULT_BASTION }}" >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/vault.pem -f -q -N -L "${{ env.VAULT_PORT }}:${{ env.VAULT_SERVER }}:${{ env.VAULT_PORT }}" "${{ env.DEMO_USER }}@${{ env.VAULT_BASTION }}" -v
+          echo "4=>vault status=>" && vault status
+          echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
+
+          # ansible-playbook platforms/shared/configuration/site.yaml \
+          #   -i platforms/shared/inventory/ansible_provisioners \
+          #   -e @build/ENT/running-network-cordaent.yaml > build/logs
+        continue-on-error: true
+
+      - name: Output
+        run: |
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          echo "0=>" && cat build/logs
+          echo "1=>" && tree platforms/r3-corda-ent/releases
+          echo "2=>" && kubectl get ns
+          echo "3=>" && kubectl get pods -A
+          echo "3.1=>" && curl 127.0.0.1:20002
+          echo "4=>" && vault status
+          echo "5=>" && vault kv list secretsv2/
+          echo "6=>" && git log --oneline
+          echo "6=>" && git status
         continue-on-error: true
 
       - name: Remove SSH Rule from Security Group
