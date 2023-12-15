@@ -78,7 +78,7 @@
 
 - set_fact:
     check_clusterRoleBinding: false
-  when: result.resources|length > 0 
+  when: result.resources|length > 0
 
 # Check if ServiceAccount is created for vault-auth
 - name: "Including the check for ServiceAccount vault-auth in {{ component_ns }} "
@@ -98,6 +98,18 @@
 - set_fact:
     check_serviceAccount: false
   when: serviceAccount_data.resources|length > 0 
+
+- name: Print check_clusterRoleBinding # NEW
+  debug:
+    var: check_clusterRoleBinding
+
+- name: Print check_serviceAccount # NEW
+  debug:
+    var: check_serviceAccount
+
+- name: Stop for 1 minute
+  pause:
+    minutes: 1
 
 #####################################################################################################################
 # This tasks generate vault_kubernetes helmrelease file
@@ -123,7 +135,7 @@
   vars:
     GIT_DIR: "{{ playbook_dir }}/../../../"
     msg: "[ci skip] Pushing vault_kubernetes files"
-   
+
 # Check if vault_kubernetes is completed
 - name: Check if vault_kubernetes job is completed
   include_role:
