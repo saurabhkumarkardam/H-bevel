@@ -73,7 +73,7 @@ jobs:
       - name: Vault Commands
         run: |
           echo "1=>vault status=>" && vault status
-          echo "2=>vault kv list secretsv2/=>" && vault kv list secretsv2/
+          # echo "2=>vault kv list secretsv2/=>" && vault kv list secretsv2/
 
       - name: Git Setup
         run: |
