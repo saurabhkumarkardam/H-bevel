@@ -163,14 +163,13 @@ jobs:
           export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
 
           echo "1=>tree build=>" && tree build
-          echo "2=>pip list=>" && pip list
+          # echo "2=>pip list=>" && pip list
           pip install jmespath
           pip install jinja2-time
-          echo "3=>pip list=>" && pip list
-          python -c "import jmespath"
-
-          echo "4=>vault status=>" && vault status
-          echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
+          # echo "3=>pip list=>" && pip list
+          # python -c "import jmespath"
+          # echo "4=>vault status=>" && vault status
+          # echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
 
           ansible-playbook platforms/shared/configuration/site.yaml \
             -i platforms/shared/inventory/ansible_provisioners \
