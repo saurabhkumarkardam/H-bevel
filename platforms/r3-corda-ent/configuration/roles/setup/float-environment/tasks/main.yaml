@@ -21,7 +21,9 @@
     git_path: "{{ item.gitops.release_dir }}"
     git_host: "{{ item.gitops.git_repo.split('/')[0] | lower }}" # extract the hostname from the git_repo
     # ssh: "{{ item.gitops.ssh | default(false) }}" # Not required
-    git_protocol: "{{ item.gitops.git_protocol | default('https') }}"
+    git_protocol: "{{ item.gitops.git_protocol | default('https') }}" # NEW
+    git_url: "{{ item.gitops.git_url }}" # NEW
+    git_key: "{{ item.gitops.private_key | default() }}" # NEW
     helm_operator_version: "1.2.0"
     aws_authenticator:
       os: "{{ install_os }}"
