@@ -82,7 +82,7 @@ jobs:
           git log -1
           git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
           git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-        continue-on-error: true
+        # continue-on-error: true
 
       - name: Network File Setup
         run: |
@@ -146,7 +146,7 @@ jobs:
 
           echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
           cat "build/ENT/running-network-cordaent.yaml"
-        continue-on-error: true
+        # continue-on-error: true
 
       - name: Check Ansible
         run: |
@@ -156,7 +156,7 @@ jobs:
           export PATH=$PATH:~/bin
           pip3 install openshift=='0.12.0'
           ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
-        continue-on-error: true
+        # continue-on-error: true
 
       - name: Deploy network
         run: |
@@ -175,7 +175,7 @@ jobs:
           ansible-playbook platforms/shared/configuration/site.yaml \
             -i platforms/shared/inventory/ansible_provisioners \
             -e @build/ENT/running-network-cordaent.yaml # > build/logs
-        continue-on-error: true
+        # continue-on-error: true
 
       - name: Output
         run: |
@@ -190,4 +190,4 @@ jobs:
           echo "7=>" && kubectl get ns
           echo "8=>" && vault status
           echo "9=>" && vault kv list secretsv2/
-        continue-on-error: true
+        # continue-on-error: true
