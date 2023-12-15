@@ -20,7 +20,8 @@
     git_branch: "{{ item.gitops.branch }}"
     git_path: "{{ item.gitops.release_dir }}"
     git_host: "{{ item.gitops.git_repo.split('/')[0] | lower }}" # extract the hostname from the git_repo
-    ssh: "{{ item.gitops.ssh | default(false) }}"
+    # ssh: "{{ item.gitops.ssh | default(false) }}" # Not required
+    git_protocol: "{{ item.gitops.git_protocol | default('https') }}"
     helm_operator_version: "1.2.0"
     aws_authenticator:
       os: "{{ install_os }}"
@@ -72,17 +73,18 @@
     kubernetes: "{{ org.services.float.k8s }}"
     type: "retry"
 
-# Wait for vault-auth creation
-- name: "Wait for vault-auth creation for {{ organisation }}"
-  include_role:
-    name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-  vars:
-    component_type: "ServiceAccount"
-    component_name: "vault-auth"
-    kubernetes: "{{ org.services.float.k8s }}"
-    type: "retry"
-  tags:
-    - notest    
+# Not required
+# # Wait for vault-auth creation
+# - name: "Wait for vault-auth creation for {{ organisation }}"
+#   include_role:
+#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
+#   vars:
+#     component_type: "ServiceAccount"
+#     component_name: "vault-auth"
+#     kubernetes: "{{ org.services.float.k8s }}"
+#     type: "retry"
+#   tags:
+#     - notest    
 
 # Wait for vault-reviewer creation
 - name: "Wait for vault-reviewer creation for {{ organisation }}"
@@ -96,14 +98,15 @@
   tags:
     - notest    
 
-# Wait for ClusterRoleBinding creation
-- name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
-  include_role:
-    name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-  vars:
-    component_type: "ClusterRoleBinding"
-    component_name: "{{ component_ns }}-role-tokenreview-binding"
-    kubernetes: "{{ org.services.float.k8s }}"
-    type: "retry"
-  tags:
-    - notest
+# Not required
+# # Wait for ClusterRoleBinding creation
+# - name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
+#   include_role:
+#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
+#   vars:
+#     component_type: "ClusterRoleBinding"
+#     component_name: "{{ component_ns }}-role-tokenreview-binding"
+#     kubernetes: "{{ org.services.float.k8s }}"
+#     type: "retry"
+#   tags:
+#     - notest
