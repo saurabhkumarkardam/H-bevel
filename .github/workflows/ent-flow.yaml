@@ -75,119 +75,119 @@ jobs:
           echo "1=>vault status=>" && vault status
           echo "2=>vault kv list secretsv2/=>" && vault kv list secretsv2/
 
-      # - name: Git Setup
-      #   run: |
-      #     git --version
-      #     git branch
-      #     git log -1
-      #     git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-      #     git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-      #   continue-on-error: true
+      - name: Git Setup
+        run: |
+          git --version
+          git branch
+          git log -1
+          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+        continue-on-error: true
 
-      # - name: Network File Setup
-      #   run: |
+      - name: Network File Setup
+        run: |
 
-      #     mkdir -p build/ENT/
+          mkdir -p build/ENT/
 
-      #     tree build/ENT/
+          tree build/ENT/
 
-      #     cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
+          cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
 
-      #     NETWORK_VERSION="4.10"
-      #     FLUX_SUFFIX="r-ent"
-      #     INGRESS_CONTROLLER="ambassador"
-      #     PORT_RANGE_FROM=15010
-      #     PORT_RANGE_TO=15090
-      #     DOCKER_URL="${{ env.DOCKER_URL }}"
-      #     DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
-      #     DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
-      #     USER_DIRECTORY="$(pwd)"
-      #     EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
-      #     CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
-      #     AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
-      #     AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
-      #     CLUSTER_CONTEXT="${{ env.CLUSTER_CONTEXT }}"
-      #     CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-      #     VAULT_ADDR="${{ env.VAULT_ADDR }}"
-      #     VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
-      #     GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
-      #     GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
-      #     GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
-      #     GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
-      #     echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
+          NETWORK_VERSION="4.10"
+          FLUX_SUFFIX="r-ent"
+          INGRESS_CONTROLLER="ambassador"
+          PORT_RANGE_FROM=15010
+          PORT_RANGE_TO=15090
+          DOCKER_URL="${{ env.DOCKER_URL }}"
+          DOCKER_USERNAME="${{ env.DOCKER_USERNAME }}"
+          DOCKER_PASSWORD="${{ env.DOCKER_PASSWORD }}"
+          USER_DIRECTORY="$(pwd)"
+          EXTERNAL_URL_SUFFIX="${{ env.EXTERNAL_URL_SUFFIX }}"
+          CLOUD_PROVIDER="${{ env.CLOUD_PROVIDER }}"
+          AWS_ACCESS_KEY="${{ env.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"
+          CLUSTER_CONTEXT="${{ env.CLUSTER_CONTEXT }}"
+          CLUSTER_CONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          VAULT_ADDR="${{ env.VAULT_ADDR }}"
+          VAULT_ROOT_TOKEN="${{ env.VAULT_TOKEN }}"
+          GITHUB_USERNAME="${{ env.GITHUB_USER_NAME }}"
+          GITHUB_TOKEN="${{ env.GITHUB_TOKEN }}"
+          GITHUB_EMAIL_ADDR="${{ env.GITHUB_EMAIL_ADDR }}"
+          GIT_BRANCH="${{ env.GITHUB_BRANCH }}"
+          echo "${{ env.GITHUB_PRIVATE_SSH_KEY }}" | base64 --decode > /home/runner/encoded_private_ssh_key && PRIVATE_KEY_PATH="/home/runner/encoded_private_ssh_key"
 
-      #     YAML_FILE="build/ENT/running-network-cordaent.yaml"
+          YAML_FILE="build/ENT/running-network-cordaent.yaml"
 
-      #     sed -i "s#NETWORK_VERSION_PLACEHOLDER#$NETWORK_VERSION#g" "$YAML_FILE"
-      #     sed -i "s#FLUX_SUFFIX_PLACEHOLDER#$FLUX_SUFFIX#g" "$YAML_FILE"
-      #     sed -i "s#INGRESS_CONTROLLER_PLACEHOLDER#$INGRESS_CONTROLLER#g" "$YAML_FILE"
-      #     sed -i "s#PORT_RANGE_FROM_PLACEHOLDER#$PORT_RANGE_FROM#g" "$YAML_FILE"
-      #     sed -i "s#PORT_RANGE_TO_PLACEHOLDER#$PORT_RANGE_TO#g" "$YAML_FILE"
+          sed -i "s#NETWORK_VERSION_PLACEHOLDER#$NETWORK_VERSION#g" "$YAML_FILE"
+          sed -i "s#FLUX_SUFFIX_PLACEHOLDER#$FLUX_SUFFIX#g" "$YAML_FILE"
+          sed -i "s#INGRESS_CONTROLLER_PLACEHOLDER#$INGRESS_CONTROLLER#g" "$YAML_FILE"
+          sed -i "s#PORT_RANGE_FROM_PLACEHOLDER#$PORT_RANGE_FROM#g" "$YAML_FILE"
+          sed -i "s#PORT_RANGE_TO_PLACEHOLDER#$PORT_RANGE_TO#g" "$YAML_FILE"
 
-      #     sed -i "s#DOCKER_URL_PLACEHOLDER#$DOCKER_URL#g" "$YAML_FILE"
-      #     sed -i "s#DOCKER_USERNAME_PLACEHOLDER#$DOCKER_USERNAME#g" "$YAML_FILE"
-      #     sed -i "s#DOCKER_PASSWORD_PLACEHOLDER#$DOCKER_PASSWORD#g" "$YAML_FILE"
-      #     sed -i "s#USER_DIRECTORY_PLACEHOLDER#$USER_DIRECTORY#g" "$YAML_FILE"
-      #     sed -i "s#EXTERNAL_URL_SUFFIX_PLACEHOLDER#$EXTERNAL_URL_SUFFIX#g" "$YAML_FILE"
+          sed -i "s#DOCKER_URL_PLACEHOLDER#$DOCKER_URL#g" "$YAML_FILE"
+          sed -i "s#DOCKER_USERNAME_PLACEHOLDER#$DOCKER_USERNAME#g" "$YAML_FILE"
+          sed -i "s#DOCKER_PASSWORD_PLACEHOLDER#$DOCKER_PASSWORD#g" "$YAML_FILE"
+          sed -i "s#USER_DIRECTORY_PLACEHOLDER#$USER_DIRECTORY#g" "$YAML_FILE"
+          sed -i "s#EXTERNAL_URL_SUFFIX_PLACEHOLDER#$EXTERNAL_URL_SUFFIX#g" "$YAML_FILE"
 
-      #     sed -i "s#CLOUD_PROVIDER_PLACEHOLDER#$CLOUD_PROVIDER#g" "$YAML_FILE"
-      #     sed -i "s#AWS_ACCESS_KEY_PLACEHOLDER#$AWS_ACCESS_KEY#g" "$YAML_FILE"
-      #     sed -i "s#AWS_SECRET_KEY_PLACEHOLDER#$AWS_SECRET_KEY#g" "$YAML_FILE"
-      #     sed -i "s#CLUSTER_CONTEXT_PLACEHOLDER#$CLUSTER_CONTEXT#g" "$YAML_FILE"
-      #     sed -i "s#CLUSTER_CONFIG_PLACEHOLDER#$CLUSTER_CONFIG#g" "$YAML_FILE"
+          sed -i "s#CLOUD_PROVIDER_PLACEHOLDER#$CLOUD_PROVIDER#g" "$YAML_FILE"
+          sed -i "s#AWS_ACCESS_KEY_PLACEHOLDER#$AWS_ACCESS_KEY#g" "$YAML_FILE"
+          sed -i "s#AWS_SECRET_KEY_PLACEHOLDER#$AWS_SECRET_KEY#g" "$YAML_FILE"
+          sed -i "s#CLUSTER_CONTEXT_PLACEHOLDER#$CLUSTER_CONTEXT#g" "$YAML_FILE"
+          sed -i "s#CLUSTER_CONFIG_PLACEHOLDER#$CLUSTER_CONFIG#g" "$YAML_FILE"
 
-      #     sed -i "s#VAULT_ADDR_PLACEHOLDER#$VAULT_ADDR#g" "$YAML_FILE"
-      #     sed -i "s#VAULT_ROOT_TOKEN_PLACEHOLDER#$VAULT_ROOT_TOKEN#g" "$YAML_FILE"
-      #     sed -i "s#GITHUB_USERNAME_PLACEHOLDER#$GITHUB_USERNAME#g" "$YAML_FILE"
-      #     sed -i "s#GITHUB_EMAIL_ADDR_PLACEHOLDER#$GITHUB_EMAIL_ADDR#g" "$YAML_FILE"
-      #     sed -i "s#GITHUB_TOKEN_PLACEHOLDER#$GITHUB_TOKEN#g" "$YAML_FILE"
-      #     sed -i "s#GIT_BRANCH_PLACEHOLDER#$GIT_BRANCH#g" "$YAML_FILE"
-      #     sed -i "s#PRIVATE_KEY_PATH_PLACEHOLDER#$PRIVATE_KEY_PATH#g" "$YAML_FILE"
+          sed -i "s#VAULT_ADDR_PLACEHOLDER#$VAULT_ADDR#g" "$YAML_FILE"
+          sed -i "s#VAULT_ROOT_TOKEN_PLACEHOLDER#$VAULT_ROOT_TOKEN#g" "$YAML_FILE"
+          sed -i "s#GITHUB_USERNAME_PLACEHOLDER#$GITHUB_USERNAME#g" "$YAML_FILE"
+          sed -i "s#GITHUB_EMAIL_ADDR_PLACEHOLDER#$GITHUB_EMAIL_ADDR#g" "$YAML_FILE"
+          sed -i "s#GITHUB_TOKEN_PLACEHOLDER#$GITHUB_TOKEN#g" "$YAML_FILE"
+          sed -i "s#GIT_BRANCH_PLACEHOLDER#$GIT_BRANCH#g" "$YAML_FILE"
+          sed -i "s#PRIVATE_KEY_PATH_PLACEHOLDER#$PRIVATE_KEY_PATH#g" "$YAML_FILE"
 
-      #     echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      #     cat "build/ENT/running-network-cordaent.yaml"
-      #   continue-on-error: true
+          echo "3->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          cat "build/ENT/running-network-cordaent.yaml"
+        continue-on-error: true
 
-      # - name: Check Ansible
-      #   run: |
-      #     echo "1=>ansible --version=>" && ansible --version
-      #     echo "2=>which ansible=>" && which ansible
-      #     mkdir -p ~/bin
-      #     export PATH=$PATH:~/bin
-      #     pip3 install openshift=='0.12.0'
-      #     ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
-      #   continue-on-error: true
+      - name: Check Ansible
+        run: |
+          echo "1=>ansible --version=>" && ansible --version
+          echo "2=>which ansible=>" && which ansible
+          mkdir -p ~/bin
+          export PATH=$PATH:~/bin
+          pip3 install openshift=='0.12.0'
+          ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
+        continue-on-error: true
 
-      # - name: Deploy network
-      #   run: |
-      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+      - name: Deploy network
+        run: |
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
 
-      #     echo "1=>tree build=>" && tree build
-      #     echo "2=>pip list=>" && pip list
-      #     pip install jmespath
-      #     pip install jinja2-time
-      #     echo "3=>pip list=>" && pip list
-      #     python -c "import jmespath"
+          echo "1=>tree build=>" && tree build
+          echo "2=>pip list=>" && pip list
+          pip install jmespath
+          pip install jinja2-time
+          echo "3=>pip list=>" && pip list
+          python -c "import jmespath"
 
-      #     echo "4=>vault status=>" && vault status
-      #     echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
+          echo "4=>vault status=>" && vault status
+          echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
 
-      #     ansible-playbook platforms/shared/configuration/site.yaml \
-      #       -i platforms/shared/inventory/ansible_provisioners \
-      #       -e @build/ENT/running-network-cordaent.yaml # > build/logs
-      #   continue-on-error: true
+          ansible-playbook platforms/shared/configuration/site.yaml \
+            -i platforms/shared/inventory/ansible_provisioners \
+            -e @build/ENT/running-network-cordaent.yaml # > build/logs
+        continue-on-error: true
 
-      # - name: Output
-      #   run: |
-      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-      #     # echo "0=>" && cat build/logs
-      #     echo "1=>" && tree platforms/r3-corda-ent/releases
-      #     echo "2=>" && kubectl get ns
-      #     echo "3=>" && kubectl get pods -A
-      #     # echo "4=>" && curl 127.0.0.1:9001
-      #     echo "5=>" && git log --oneline | head -n 10
-      #     echo "6=>" && git status
-      #     echo "7=>" && kubectl get ns
-      #     echo "8=>" && vault status
-      #     echo "9=>" && vault kv list secretsv2/
-      #   continue-on-error: true
+      - name: Output
+        run: |
+          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+          # echo "0=>" && cat build/logs
+          echo "1=>" && tree platforms/r3-corda-ent/releases
+          echo "2=>" && kubectl get ns
+          echo "3=>" && kubectl get pods -A
+          # echo "4=>" && curl 127.0.0.1:9001
+          echo "5=>" && git log --oneline | head -n 10
+          echo "6=>" && git status
+          echo "7=>" && kubectl get ns
+          echo "8=>" && vault status
+          echo "9=>" && vault kv list secretsv2/
+        continue-on-error: true
