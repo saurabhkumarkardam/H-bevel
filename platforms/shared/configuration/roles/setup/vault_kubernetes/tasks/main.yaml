@@ -107,9 +107,9 @@
   debug:
     var: check_serviceAccount
 
-- name: Stop for 1 minute
+- name: Stop for 20 seconds
   pause:
-    minutes: 1
+    seconds: 20
 
 #####################################################################################################################
 # This tasks generate vault_kubernetes helmrelease file

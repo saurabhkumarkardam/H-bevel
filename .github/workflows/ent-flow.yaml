@@ -184,7 +184,7 @@ jobs:
           echo "1=>" && tree platforms/r3-corda-ent/releases
           echo "2=>" && kubectl get ns
           echo "3=>" && kubectl get pods -A
-          echo "4=>" && curl 127.0.0.1:9001
+          # echo "4=>" && curl 127.0.0.1:9001
           echo "5=>" && git log --oneline | head -n 10
           echo "6=>" && git status
           echo "7=>" && kubectl get ns
