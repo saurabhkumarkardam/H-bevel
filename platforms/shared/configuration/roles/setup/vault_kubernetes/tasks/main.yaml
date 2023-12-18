@@ -155,6 +155,6 @@
     namespace: "{{ component_ns }}"    
     check: "token_secret"
 
-# NEW
-- name: Terminate Ansible playbook
-  meta: end_play
+# # NEW
+# - name: Terminate Ansible playbook
+#   meta: end_play
