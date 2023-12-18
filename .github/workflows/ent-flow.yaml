@@ -117,7 +117,7 @@ jobs:
           echo "7=> Installing pips"
           python3 -m pip install --user jmespath # pip3.10 install jmespath --user # python3 -m pip install jmespath # /usr/bin/pip3.10 install jmespath # pip install jmespath
           pip install jinja2-time
-          pip install ansible==2.10.6 # 2.12.6
+          pip install ansible==2.16.1 # 2.10.6 # 2.12.6
           echo "################"
           export PATH=$HOME/.local/bin:$PATH
           pip freeze
