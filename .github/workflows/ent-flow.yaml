@@ -36,33 +36,33 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.0
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
-          aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
-          aws-region: "${{ env.AWS_REGION_NAME }}"
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     aws-access-key-id: "${{ env.AWS_ACCESS_KEY_ID }}"
+      #     aws-secret-access-key: "${{ env.AWS_SECRET_ACCESS_KEY }}"
+      #     aws-region: "${{ env.AWS_REGION_NAME }}"
 
-      - name: AWS Commands
-        run: |
-          echo "aws --version" && aws --version
-          echo "aws configure list" && aws configure list  
-          echo "sts get-caller-identity" && aws sts get-caller-identity
+      # - name: AWS Commands
+      #   run: |
+      #     echo "aws --version" && aws --version
+      #     echo "aws configure list" && aws configure list  
+      #     echo "sts get-caller-identity" && aws sts get-caller-identity
 
-      - name: Set KUBECONFIG
-        run: |
-          mkdir -p /home/runner/.kube/build_config
-          echo "${{ env.ENCODED_KUBECONFIG_DEMO }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
-          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-          echo "HOME=>$HOME"
-          echo 'export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"' >> $HOME/.bashrc
-          source $HOME/.bashrc
-          echo "KUBECONFIG=$KUBECONFIG"
-          echo "###################################"
-          kubectl config view && echo "###############-5"
-          kubectl config current-context && echo "###############-6"
-          kubectl version && echo "###############-6"
-          kubectl get nodes
+      # - name: Set KUBECONFIG
+      #   run: |
+      #     mkdir -p /home/runner/.kube/build_config
+      #     echo "${{ env.ENCODED_KUBECONFIG_DEMO }}" | base64 --decode > /home/runner/.kube/build_config/decoded_kubeconfig
+      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+      #     echo "HOME=>$HOME"
+      #     echo 'export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"' >> $HOME/.bashrc
+      #     source $HOME/.bashrc
+      #     echo "KUBECONFIG=$KUBECONFIG"
+      #     echo "###################################"
+      #     kubectl config view && echo "###############-5"
+      #     kubectl config current-context && echo "###############-6"
+      #     kubectl version && echo "###############-6"
+      #     kubectl get nodes
 
       - name: Install HashiCorp Vault CLI
         run: |
@@ -82,7 +82,7 @@ jobs:
       #     git log -1
       #     git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
       #     git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-      #   # continue-on-error: true
+      # #   # continue-on-error: true
 
       - name: Network File Setup
         run: |
@@ -116,7 +116,7 @@ jobs:
           echo "7=> Installing pips"
           python3 -m pip install --user jmespath # pip3.10 install jmespath --user # python3 -m pip install jmespath # /usr/bin/pip3.10 install jmespath # pip install jmespath
           pip install jinja2-time
-          pip install ansible==2.12.6
+          pip install ansible==2.12 # .6
           echo "################"
           export PATH=$HOME/.local/bin:$PATH
           pip freeze
