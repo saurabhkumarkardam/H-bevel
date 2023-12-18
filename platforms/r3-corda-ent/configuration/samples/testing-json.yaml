@@ -19,3 +19,5 @@ network:
   vault:
     url: "VAULT_ADDR_PLACEHOLDER"
     root_token: "VAULT_ROOT_TOKEN_PLACEHOLDER"
+
+# ansible-playbook platforms/shared/configuration/testing-site.yaml -e @build/ENT/ENT.yaml -v
