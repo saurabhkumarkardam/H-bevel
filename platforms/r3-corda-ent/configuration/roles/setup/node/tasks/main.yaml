@@ -160,8 +160,8 @@
     values_dir: "{{ playbook_dir }}/../../../{{ org.gitops.release_dir }}"
     name: "{{ org.name | lower }}"
     corda_service_version: node-{{ network.version }}    
-    doorman_url: "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`idman`].uri') | first }}"
-    networkmap_url: "https://networkmap.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}"
+    doorman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
+    networkmap_url: "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}" # "https://networkmap.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
   loop: "{{ org.services.peers }}"
   loop_control:
     loop_var: peer

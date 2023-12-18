@@ -45,9 +45,9 @@
     name: "{{ org.name | lower }}"
     values_dir: "{{ playbook_dir }}/../../../{{ org.gitops.release_dir }}"
     charts_dir: "{{ org.gitops.chart_source }}"
-    idman_url: "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`idman`].uri') | first }}"
+    idman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
     idman_domain: "{{ idman_url.split(':')[1] | regex_replace('/', '') }}"    
-    networkmap_url: "https://networkmap.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}"
+    networkmap_url: "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}" # "https://networkmap.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
     networkmap_domain: "{{ networkmap_url.split(':')[1] | regex_replace('/', '') }}"
     corda_service_version: notary-{{ network.version }}
   loop: "{{ org.services.notaries }}"

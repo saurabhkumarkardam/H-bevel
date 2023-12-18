@@ -37,14 +37,14 @@
     tlscert_path: "./build/ambassador/{{ org.services.networkmap.name }}"
     service_name: "{{ org.services.networkmap.name }}"
     namespace: "{{ component_ns }}"
-    dest_path: /home/runner/work/H-bevel/H-bevel/platforms/r3-corda-ent/configuration/build/ambassador/networkmap/ambassador.pem # "{{ network | json_query('network_services[?type==`networkmap`].certificate') | first }}"
+    dest_path: "{{ network | json_query('network_services[?type==`networkmap`].certificate') | first }}" # /home/runner/work/H-bevel/H-bevel/platforms/r3-corda-ent/configuration/build/ambassador/networkmap/ambassador.pem # 
 
 # Get the network-root-truststore and save locally
 - name: Get the network-root-truststore
   shell: |
     vault kv get -field=network-root-truststore.jks {{ org.vault.secret_path | default('secretsv2') }}/{{ org.name | lower }}/root/certs > "{{ cert_path }}"
   vars:
-    cert_path: /home/runner/work/H-bevel/H-bevel/platforms/r3-corda-ent/configuration/build/ambassador/networkmap/ambassador.pem # "{{ network | json_query('network_services[?type==`networkmap`].truststore') | first }}"
+    cert_path: "{{ network | json_query('network_services[?type==`networkmap`].truststore') | first }}" # /home/runner/work/H-bevel/H-bevel/platforms/r3-corda-ent/configuration/build/ambassador/networkmap/ambassador.pem # 
   environment:
     VAULT_ADDR: "{{ org.vault.url }}"
     VAULT_TOKEN: "{{ org.vault.root_token }}"
@@ -69,7 +69,7 @@
     charts_dir: "{{ org.gitops.chart_source }}"
     values_dir: "{{playbook_dir}}/../../../{{ org.gitops.release_dir }}"
     corda_service_version: networkmap-{{ org.version }}
-    idman_url: "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # Keep this in ansible role to prevent confusion in template
+    idman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" #  # Keep this in ansible role to prevent confusion in template
     helm_lint: "true"
 
 # Git Push: Push the nmap deployment files to repository
