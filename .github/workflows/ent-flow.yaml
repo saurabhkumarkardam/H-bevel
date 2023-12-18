@@ -141,8 +141,8 @@ jobs:
 
           ansible-playbook platforms/shared/configuration/testing-site.yaml \
             -i platforms/shared/inventory/ansible_provisioners \
-            -e @build/ENT/running-network-cordaent.yaml \
-            -e 'ansible_python_interpreter=/usr/bin/python3' -v # > build/logs
+            -e @build/ENT/running-network-cordaent.yaml -v
+            # -e 'ansible_python_interpreter=/usr/bin/python3' -v # > build/logs
         # continue-on-error: true
 
       # - name: Output
