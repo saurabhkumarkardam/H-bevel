@@ -32,17 +32,18 @@
       bin_directory: "{{ bin_install_dir }}"
       checksum: ""
 
-# Setup ambassador for float cluster
-- name: Setup ambassador for float cluster
-  include_role:
-    name: "{{ playbook_dir }}/../../shared/configuration/roles/setup/ambassador"
-  vars:
-    item: "{{ org.services.float }}"
-    kubeconfig_path: "{{ item.k8s.config_file }}"
-    kubecontext: "{{ item.k8s.context }}"
-    aws: "{{ item.aws }}"
-    ambassador:
-      item: "{{ org.services.float }}"
+# Now we have Edge-stack, Add code skk. NEW
+# # Setup ambassador for float cluster
+# - name: Setup ambassador for float cluster
+#   include_role:
+#     name: "{{ playbook_dir }}/../../shared/configuration/roles/setup/ambassador"
+#   vars:
+#     item: "{{ org.services.float }}"
+#     kubeconfig_path: "{{ item.k8s.config_file }}"
+#     kubecontext: "{{ item.k8s.context }}"
+#     aws: "{{ item.aws }}"
+#     ambassador:
+#       item: "{{ org.services.float }}"
   
 # Create Storageclass that will be used for this deployment
 - name: Create Storageclass
