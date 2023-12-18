@@ -1,0 +1,21 @@
+network:
+  type: corda-enterprise
+
+  network_services:
+    - service:
+      name: idman
+      type: idman
+      uri: "https://idman.EXTERNAL_URL_SUFFIX_PLACEHOLDER"
+      certificate: USER_DIRECTORY_PLACEHOLDER/platforms/r3-corda-ent/configuration/build/ambassador/idman/ambassador.pem
+      crlissuer_subject: "CN=Corda TLS CRL Authority,OU=Corda UAT,O=R3 HoldCo LLC,L=New York,C=US"
+    - service:
+      name: networkmap
+      type: networkmap
+      uri: "https://networkmap.EXTERNAL_URL_SUFFIX_PLACEHOLDER"
+      certificate: USER_DIRECTORY_PLACEHOLDER/platforms/r3-corda-ent/configuration/build/ambassador/networkmap/ambassador.pem
+      truststore: USER_DIRECTORY_PLACEHOLDER/platforms/r3-corda-ent/configuration/build/networkroottruststore.jks
+      truststore_pass: rootpassword
+
+  vault:
+    url: "VAULT_ADDR_PLACEHOLDER"
+    root_token: "VAULT_ROOT_TOKEN_PLACEHOLDER"

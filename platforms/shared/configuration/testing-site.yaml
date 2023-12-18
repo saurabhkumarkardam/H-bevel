@@ -1,0 +1,11 @@
+- hosts: ansible_provisioners
+  gather_facts: yes
+  no_log: "false"
+  become: yes
+  tasks:
+  - name: Delete Crypto material for nodes
+    shell: |
+      vault kv delete secretsv2/mr/manufacturer/certs/{{ network | json_query('network_services[?type==`idman`].name') | first }}
+    environment:
+      VAULT_ADDR: "{{ network.vault.url }}"
+      VAULT_TOKEN: "{{ network.vault.root_token }}"
