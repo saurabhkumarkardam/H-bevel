@@ -114,7 +114,7 @@ jobs:
           echo "5=>python3 --version=>" && python3 --version
           echo "6=>which python3=>" && which python3
           echo "7=> Installing pips"
-          apt-get install python-jmespath # python3 -m pip install jmespath # /usr/bin/pip3.10 install jmespath # pip3.10 install jmespath # pip install jmespath
+          sudo apt-get install python-jmespath # python3 -m pip install jmespath # /usr/bin/pip3.10 install jmespath # pip3.10 install jmespath # pip install jmespath
           pip install jinja2-time
           echo "################"
           pip list
