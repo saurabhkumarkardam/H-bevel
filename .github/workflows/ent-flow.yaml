@@ -114,8 +114,9 @@ jobs:
           echo "5=>python3 --version=>" && python3 --version
           echo "6=>which python3=>" && which python3
           echo "7=> Installing pips"
-          python3 -m pip install --user jmespath # sudo python3 -m pip install --user jmespath # pip3.10 install jmespath --user # sudo apt-get install python-jmespath # python3 -m pip install jmespath # /usr/bin/pip3.10 install jmespath #  # pip install jmespath
+          python3 -m pip install --user jmespath # pip3.10 install jmespath --user # python3 -m pip install jmespath # /usr/bin/pip3.10 install jmespath # pip install jmespath
           pip install jinja2-time
+          pip instal ansible==2.12.6
           echo "################"
           export PATH=$HOME/.local/bin:$PATH
           pip freeze
@@ -131,6 +132,8 @@ jobs:
         run: |
           export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
 
+          echo "1=>ansible --version=>" && ansible --version
+          echo "2=>which ansible=>" && which ansible
           echo "1=>tree build=>" && tree build
           # echo "2=>pip list=>" && pip list
           # pip install jmespath
