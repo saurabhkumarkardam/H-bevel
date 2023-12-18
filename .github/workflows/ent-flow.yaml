@@ -152,41 +152,46 @@ jobs:
         run: |
           echo "1=>ansible --version=>" && ansible --version
           echo "2=>which ansible=>" && which ansible
+          echo "3=>python --version=>" && python --version
+          echo "4=>which python=>" && which python
+          echo "5=>python3 --version=>" && python3 --version
+          echo "6=>which python3=>" && which python3
+
           mkdir -p ~/bin
           export PATH=$PATH:~/bin
           pip3 install openshift=='0.12.0'
           ansible-galaxy collection install -r platforms/shared/configuration/requirements.yaml
         # continue-on-error: true
 
-      - name: Deploy network
-        run: |
-          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+      # - name: Deploy network
+      #   run: |
+      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
 
-          echo "1=>tree build=>" && tree build
-          # echo "2=>pip list=>" && pip list
-          pip install jmespath
-          pip install jinja2-time
-          # echo "3=>pip list=>" && pip list
-          # python -c "import jmespath"
-          # echo "4=>vault status=>" && vault status
-          # echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
+      #     echo "1=>tree build=>" && tree build
+      #     # echo "2=>pip list=>" && pip list
+      #     pip install jmespath
+      #     pip install jinja2-time
+      #     # echo "3=>pip list=>" && pip list
+      #     # python -c "import jmespath"
+      #     # echo "4=>vault status=>" && vault status
+      #     # echo "5=>vault kv list secretsv2/=>" && vault kv list secretsv2/
 
-          ansible-playbook platforms/shared/configuration/site.yaml \
-            -i platforms/shared/inventory/ansible_provisioners \
-            -e @build/ENT/running-network-cordaent.yaml # > build/logs
-        # continue-on-error: true
+      #     ansible-playbook platforms/shared/configuration/site.yaml \
+      #       -i platforms/shared/inventory/ansible_provisioners \
+      #       -e @build/ENT/running-network-cordaent.yaml # > build/logs
+      #   # continue-on-error: true
 
-      - name: Output
-        run: |
-          export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
-          # echo "0=>" && cat build/logs
-          echo "1=>" && tree platforms/r3-corda-ent/releases
-          echo "2=>" && kubectl get ns
-          echo "3=>" && kubectl get pods -A
-          # echo "4=>" && curl 127.0.0.1:9001
-          echo "5=>" && git log --oneline | head -n 10
-          echo "6=>" && git status
-          echo "7=>" && kubectl get ns
-          echo "8=>" && vault status
-          echo "9=>" && vault kv list secretsv2/
-        # continue-on-error: true
+      # - name: Output
+      #   run: |
+      #     export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"
+      #     # echo "0=>" && cat build/logs
+      #     echo "1=>" && tree platforms/r3-corda-ent/releases
+      #     echo "2=>" && kubectl get ns
+      #     echo "3=>" && kubectl get pods -A
+      #     # echo "4=>" && curl 127.0.0.1:9001
+      #     echo "5=>" && git log --oneline | head -n 10
+      #     echo "6=>" && git status
+      #     echo "7=>" && kubectl get ns
+      #     echo "8=>" && vault status
+      #     echo "9=>" && vault kv list secretsv2/
+      #   # continue-on-error: true
