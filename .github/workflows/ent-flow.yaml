@@ -114,7 +114,7 @@ jobs:
           echo "5=>python3 --version=>" && python3 --version
           echo "6=>which python3=>" && which python3
           echo "7=> Installing pips"
-          pip3.10 install jmespath # pip install jmespath
+          /usr/bin/pip3.10 install jmespath # pip3.10 install jmespath # pip install jmespath
           pip install jinja2-time
           echo "################"
           pip list
@@ -141,8 +141,8 @@ jobs:
 
           ansible-playbook platforms/shared/configuration/testing-site.yaml \
             -i platforms/shared/inventory/ansible_provisioners \
-            -e @build/ENT/running-network-cordaent.yaml -v
-            # -e 'ansible_python_interpreter=/usr/bin/python3' -v # > build/logs
+            -e @build/ENT/running-network-cordaent.yaml \
+            -e 'ansible_python_interpreter=/usr/bin/python3.10' -v # > build/logs
         # continue-on-error: true
 
       # - name: Output
