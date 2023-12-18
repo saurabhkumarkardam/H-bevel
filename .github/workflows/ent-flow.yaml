@@ -70,19 +70,19 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
           sudo apt update && sudo apt install vault
 
-      - name: Vault Commands
-        run: |
-          echo "1=>vault status=>" && vault status
-          echo "2=>vault kv list secretsv2/=>" && vault kv list secretsv2/
+      # - name: Vault Commands
+      #   run: |
+      #     echo "1=>vault status=>" && vault status
+      #     echo "2=>vault kv list secretsv2/=>" && vault kv list secretsv2/
 
-      - name: Git Setup
-        run: |
-          git --version
-          git branch
-          git log -1
-          git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
-          git config --global user.name "${{ env.GITHUB_USER_NAME }}"
-        # continue-on-error: true
+      # - name: Git Setup
+      #   run: |
+      #     git --version
+      #     git branch
+      #     git log -1
+      #     git config --global user.email "${{ env.GITHUB_EMAIL_ADDR }}"
+      #     git config --global user.name "${{ env.GITHUB_USER_NAME }}"
+      #   # continue-on-error: true
 
       - name: Network File Setup
         run: |
@@ -116,7 +116,7 @@ jobs:
           echo "7=> Installing pips"
           python3 -m pip install --user jmespath # pip3.10 install jmespath --user # python3 -m pip install jmespath # /usr/bin/pip3.10 install jmespath # pip install jmespath
           pip install jinja2-time
-          pip instal ansible==2.12.6
+          pip install ansible==2.12.6
           echo "################"
           export PATH=$HOME/.local/bin:$PATH
           pip freeze
