@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - flow1
+    paths-ignore:
+      - 'docs/**'
+      - '**/charts/**'
+      - '**/releases/**'
   workflow_dispatch:
 
 jobs:
@@ -57,12 +61,12 @@ jobs:
           echo "HOME=>$HOME"
           echo 'export KUBECONFIG="/home/runner/.kube/build_config/decoded_kubeconfig"' >> $HOME/.bashrc
           source $HOME/.bashrc
-          echo "KUBECONFIG=$KUBECONFIG"
-          echo "###################################"
-          kubectl config view && echo "###############-5"
-          kubectl config current-context && echo "###############-6"
-          kubectl version && echo "###############-6"
-          kubectl get nodes
+          # echo "KUBECONFIG=$KUBECONFIG"
+          # echo "###################################"
+          # kubectl config view && echo "###############-5"
+          # kubectl config current-context && echo "###############-6"
+          # kubectl version && echo "###############-6"
+          # kubectl get nodes
 
       - name: Install HashiCorp Vault CLI
         run: |
@@ -94,7 +98,7 @@ jobs:
           cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
 
           NETWORK_VERSION="4.10"
-          FLUX_SUFFIX="rd-ent"
+          FLUX_SUFFIX="re-ent"
           INGRESS_CONTROLLER="ambassador"
           PORT_RANGE_FROM=15010
           PORT_RANGE_TO=15090
@@ -150,26 +154,26 @@ jobs:
 
       - name: Check Ansible
         run: |
-          echo "1=>ansible --version=>" && ansible --version
-          echo "2=>which ansible=>" && which ansible
-          echo "3=>python --version=>" && python --version
-          echo "4=>which python=>" && which python
-          echo "5=>python3 --version=>" && python3 --version
-          echo "6=>which python3=>" && which python3
+          # echo "1=>ansible --version=>" && ansible --version
+          # echo "2=>which ansible=>" && which ansible
+          # echo "3=>python --version=>" && python --version
+          # echo "4=>which python=>" && which python
+          # echo "5=>python3 --version=>" && python3 --version
+          # echo "6=>which python3=>" && which python3
           echo "1- #####################################################################"
           echo "7=>pip install jmespath=>" && pip install jmespath
           echo "8=>pip install jinja2-time=>" && pip install jinja2-time
           echo "9=>pip install ansible=>" && pip install ansible
-          echo "2- #####################################################################"
-          echo "9=>pip freeze=>" && pip freeze
-          echo "3- #####################################################################"
-          echo "1=>ansible --version=>" && ansible --version
-          echo "2=>which ansible=>" && which ansible
-          echo "3=>python --version=>" && python --version
-          echo "4=>which python=>" && which python
-          echo "5=>python3 --version=>" && python3 --version
-          echo "6=>which python3=>" && which python3
-          echo "4- #####################################################################"
+          # echo "2- #####################################################################"
+          # echo "9=>pip freeze=>" && pip freeze
+          # echo "3- #####################################################################"
+          # echo "1=>ansible --version=>" && ansible --version
+          # echo "2=>which ansible=>" && which ansible
+          # echo "3=>python --version=>" && python --version
+          # echo "4=>which python=>" && which python
+          # echo "5=>python3 --version=>" && python3 --version
+          # echo "6=>which python3=>" && which python3
+          # echo "4- #####################################################################"
 
           mkdir -p ~/bin
           export PATH=$PATH:~/bin
