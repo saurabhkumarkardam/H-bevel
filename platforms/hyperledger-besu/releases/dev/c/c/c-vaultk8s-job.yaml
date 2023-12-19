@@ -1,0 +1,43 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: c-vaultk8s-job
+  namespace: c-bes
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: c-vaultk8s-job
+  interval: 1m
+  chart:
+   spec:
+    chart: platforms/shared/charts/bevel-vault-mgmt
+    sourceRef:
+      kind: GitRepository
+      name: flux-skk
+      namespace: flux-skk
+  values:
+    metadata:
+      name: c-vaultk8s-job
+      namespace: c-bes
+      images:
+        alpineutils: ghcr.io/hyperledger/alpine-utils:1.0
+        pullPolicy: IfNotPresent
+
+    vault:
+      role: vault-role
+      address: http://demo.sau99.dev.aws.blockchaincloudpoc-develop.com
+      authpath: besuc
+      policy: vault-crypto-c-bes-c-ro
+      policydata: "{\n  \"policy\": \"path \\\"secretsv2/data/c-bes/crypto/*\\\" {\n    capabilities = [\\\"read\\\", \\\"list\\\", \\\"create\\\", \\\"update\\\"]\n  }\n  path \\\"secretsv2/data/c-bes/smartContracts/*\\\" {\n    capabilities = [\\\"read\\\", \\\"list\\\"]\n  }\"\n}"
+      secret_path: c
+      imagesecretname: regcred
+
+    k8s:
+      kubernetes_url: https://34D2F36E71F0880BE63D943D2E503A9B.gr7.eu-west-1.eks.amazonaws.com
+    
+    rbac:
+      create: true
+
+    serviceAccount:
+      create: true
+      name: vault-auth
