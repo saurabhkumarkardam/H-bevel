@@ -4,8 +4,6 @@
 #  SPDX-License-Identifier: Apache-2.0
 ##############################################################################################
 
-#!/bin/sh
-
 # Function to validate HashiCorp Vault responses
 validateVaultResponseHashicorp() {
     if [ "$2" = "LOOKUPSECRETRESPONSE" ]; then
