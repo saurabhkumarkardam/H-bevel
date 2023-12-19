@@ -256,7 +256,7 @@ network:
           subject: "CN=Test Bridge Certificate, OU=HQ, O=HoldCo LLC, L=New York, C=US"
         peers:
         - peer:
-          name: manufacturer
+          name: mr # manufacturer
           subject: "O=Manufacturer,OU=Manufacturer,L=47.38/8.54/Zurich,C=CH"
           type: node
           credentials:

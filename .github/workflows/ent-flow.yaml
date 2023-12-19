@@ -94,7 +94,7 @@ jobs:
           cp "./platforms/r3-corda-ent/configuration/samples/network-cordaent.yaml" "build/ENT/running-network-cordaent.yaml"
 
           NETWORK_VERSION="4.10"
-          FLUX_SUFFIX="ra-ent"
+          FLUX_SUFFIX="rb-ent"
           INGRESS_CONTROLLER="ambassador"
           PORT_RANGE_FROM=15010
           PORT_RANGE_TO=15090
