@@ -17,18 +17,6 @@
     component_name: "{{ component_ns }}"
     type: "retry"
 
-# Not required
-# # Wait for vault-auth creation
-# - name: "Wait for vault-auth creation for {{ organisation }}"
-#   include_role:
-#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-#   vars:
-#     component_type: "ServiceAccount"
-#     component_name: "vault-auth"
-#     type: "retry"
-#   tags:
-#     - notest    
-
 # Wait for vault-reviewer creation
 - name: "Wait for vault-reviewer creation for {{ organisation }}"
   include_role:
@@ -39,18 +27,6 @@
     type: "retry"
   tags:
     - notest    
-
-# Not required
-# # Wait for ClusterRoleBinding creation
-# - name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
-#   include_role:
-#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-#   vars:
-#     component_type: "ClusterRoleBinding"
-#     component_name: "{{ component_ns }}-role-tokenreview-binding"
-#     type: "retry"
-#   tags:
-#     - notest
 
 # create vault access policies
 - name: "Setup vault access for nodes"
@@ -106,9 +82,9 @@
     name: "{{ org.name | lower }}"
     values_dir: "{{ playbook_dir }}/../../../{{ org.gitops.release_dir }}"
     charts_dir: "{{ org.gitops.chart_source }}"
-    idman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
+    idman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}"
     idman_domain: "{{ idman_url.split(':')[1] | regex_replace('/', '') }}"    
-    networkmap_url: "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}" # "https://networkmap.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
+    networkmap_url: "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}"
     networkmap_domain: "{{ networkmap_url.split(':')[1] | regex_replace('/', '') }}"
     corda_service_version: "notary-{{ network.version }}"
   loop: "{{ org.services.notaries }}"

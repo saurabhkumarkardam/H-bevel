@@ -8,10 +8,6 @@
 # This role sets up all cenm services
 ##############################################################################################
 
-- name: "Three Point One"
-  debug:
-    msg: "3.1 =>Wait for namespace creation for {{ organisation }}"
-
 # Wait for namespace creation
 - name: "Wait for namespace creation for {{ organisation }}"
   include_role:
@@ -20,25 +16,6 @@
     component_type: "Namespace"
     component_name: "{{ component_ns }}"
     type: "retry"
-
-- name: "Three Point Two"
-  debug:
-    msg: "3.2 => Wait for vault-auth creation for {{ organisation }}"
-
-# # Wait for vault-auth creation
-# - name: "Wait for vault-auth creation for {{ organisation }}"
-#   include_role:
-#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-#   vars:
-#     component_type: "ServiceAccount"
-#     component_name: "vault-auth"
-#     type: "retry"
-#   tags:
-#     - notest
-
-- name: "Three Point Three"
-  debug:
-    msg: "3.3 => Wait for vault-reviewer creation for {{ organisation }}"
 
 # Wait for vault-reviewer creation
 - name: "Wait for vault-reviewer creation for {{ organisation }}"
@@ -51,25 +28,6 @@
   tags:
     - notest
 
-- name: "Three Point Four"
-  debug:
-    msg: "3.4 => Wait for ClusterRoleBinding creation for {{ organisation }}"
-
-# # Wait for ClusterRoleBinding creation
-# - name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
-#   include_role:
-#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-#   vars:
-#     component_type: "ClusterRoleBinding"
-#     component_name: "{{ component_ns }}-role-tokenreview-binding"
-#     type: "retry"
-#   tags:
-#     - notest
-
-- name: "Three Point Five"
-  debug:
-    msg: "3.5 => Setup vault access for cenm"
-
 # Create vault access policies
 - name: "Setup vault access for cenm"
   include_role: 
@@ -78,10 +36,6 @@
     component_name: "{{ org.name | lower }}-vaultk8s-job"
     component_auth: "cordaent{{ org.name | lower }}"
     component_type: "{{ org.type | lower }}"
-
-- name: "Three Point Six"
-  debug:
-    msg: "3.6 => Check if the root certs are already created"
 
 # Check if the certs are already created
 - name: Check if the root certs are already created
@@ -93,79 +47,43 @@
   register: root_certs
   ignore_errors: yes
 
-- name: "Three Point Seven"
-  debug:
-    msg: "3.7 => Generate crypto using pki-generator"
-
 # Generate crypto using pki-generator
 - name: "Generate crypto using pki-generator"   
   include_role: 
     name: "setup/pki-generator"
   when: root_certs.failed
 
-- name: "Three Point Eight"
-  debug:
-    msg: "3.8 => Deploy Auth Service"
-
 # Deploy Auth Service
 - name: "Deploy Auth Service"
   include_role:
     name: "setup/auth"
-
-- name: "Three Point Nine"
-  debug:
-    msg: "3.9 => Deploy gateway service"
 
 # Deploy gateway service
 - name: Deploy gateway service
   include_role:
     name: setup/gateway
 
-- name: "Three Point Ten"
-  debug:
-    msg: "3.10 => Deploy Zone service"
-
 # Deploy Zone service
 - name: Deploy Zone service
   include_role:
     name: setup/zone
-
-- name: "Three Point 11"
-  debug:
-    msg: "3.11 => Deploy Signer service"
 
 # Deploy Signer node
 - name: Deploy Signer service
   include_role:
     name: setup/signer
 
-- name: "Three Point 12"
-  debug:
-    msg: "3.12 => Deploy Idman service"
-
 # Deploy Idman service
 - name: Deploy Idman service
   include_role:
     name: setup/idman
-
-- name: "Three Point 13"
-  debug:
-    msg: "3.13 => Deploy networkmap service"
 
 # Deploy networkmap service
 - name: Deploy networkmap service
   include_role:
     name: setup/nmap
 
-- name: "Three Point 14"
-  debug:
-    msg: "3.14 => Deploy notary service"
-
 # Deploy notary service 
 - name: Deploy notary service
   include_role:
     name: setup/notary
-
-- name: "Three Point 15"
-  debug:
-    msg: "3.15 => Compeleted"

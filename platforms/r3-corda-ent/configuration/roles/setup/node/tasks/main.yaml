@@ -17,18 +17,6 @@
     component_name: "{{ component_ns }}"
     type: "retry"
 
-# Not required
-# # Wait for vault-auth creation
-# - name: "Wait for vault-auth creation for {{ organisation }}"
-#   include_role:
-#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-#   vars:
-#     component_type: "ServiceAccount"
-#     component_name: "vault-auth"
-#     type: "retry"
-#   tags:
-#     - notest    
-
 # Wait for vault-reviewer creation
 - name: "Wait for vault-reviewer creation for {{ organisation }}"
   include_role:
@@ -39,18 +27,6 @@
     type: "retry"
   tags:
     - notest
-
-# Not required
-# # Wait for ClusterRoleBinding creation
-# - name: "Wait for ClusterRoleBinding creation for {{ organisation }}"
-#   include_role:
-#     name: "{{ playbook_dir }}/../../shared/configuration/roles/check/k8_component"
-#   vars:
-#     component_type: "ClusterRoleBinding"
-#     component_name: "{{ component_ns }}-role-tokenreview-binding"
-#     type: "retry"
-#   tags:
-#     - notest
 
 # Setup cluster enviorment for float
 - name: Setup cluster enviorment for float
@@ -160,8 +136,8 @@
     values_dir: "{{ playbook_dir }}/../../../{{ org.gitops.release_dir }}"
     name: "{{ org.name | lower }}"
     corda_service_version: node-{{ network.version }}    
-    doorman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}" # "https://idman.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
-    networkmap_url: "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}" # "https://networkmap.sau99.dev.aws.blockchaincloudpoc-develop.com" # 
+    doorman_url: "{{ network | json_query('network_services[?type==`idman`].uri') | first }}"
+    networkmap_url: "{{ network | json_query('network_services[?type==`networkmap`].uri') | first }}"
   loop: "{{ org.services.peers }}"
   loop_control:
     loop_var: peer

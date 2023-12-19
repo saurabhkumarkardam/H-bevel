@@ -25,7 +25,7 @@
     component_name: "{{ org.services.bridge.name }}"
     type: bridge
     name: "{{ org.name | lower }}"
-    corda_service_version: "firewall-4.4" # "firewall-{{ org.version }}" # NEW, firewall-4.7 image isn't available as of now.
+    corda_service_version: "firewall-{{ org.version }}"
     charts_dir: "{{ org.gitops.chart_source }}"
     values_dir: "{{playbook_dir}}/../../../{{ org.gitops.release_dir }}"
 
