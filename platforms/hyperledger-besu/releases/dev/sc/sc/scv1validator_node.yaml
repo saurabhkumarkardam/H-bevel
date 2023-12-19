@@ -1,0 +1,84 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: scv1validator-node
+  namespace: sc-bes
+  annotations:
+    flux.weave.works/automated: "false"
+spec:
+  releaseName: scv1validator-node
+  interval: 1m
+  chart:
+   spec:
+    chart: platforms/hyperledger-besu/charts/besu-validator-node
+    sourceRef:
+      kind: GitRepository
+      name: flux-skk
+      namespace: flux-skk
+  values:
+    replicaCount: 1
+
+    healthcheck:
+      readinessthreshold: 100
+      readinesscheckinterval: 5
+
+    staticnodes:
+      - "enode://52feb1b58c5debf9bc902e8c23106c22ce16875455ef759a23d4b7de8dbd63c23649a65435608efda30499e14901aa50d603a09446c76633de52f314b43ebbbe@v1.sau99.dev.aws.blockchaincloudpoc-develop.com:15040"
+      - "enode://a43ca3a7191c44c4a8978fc252b3c23161fa425f0425ebc0c7a096abc326cb14949164bdba8cc7719b543ebd306c1d3828f1def770a790511d135baa5613561b@c.sau99.dev.aws.blockchaincloudpoc-develop.com:15044"
+
+    metadata:
+      namespace: sc-bes
+      labels:
+
+    ambassador:
+      external_url_suffix: sau99.dev.aws.blockchaincloudpoc-develop.com
+
+    liveliness_check:
+      enabled: false
+    proxy:
+      provider: ambassador
+      external_url: sau99.dev.aws.blockchaincloudpoc-develop.com
+      p2p: 15040
+      rpc: 15041
+
+    images:
+      node: hyperledger/besu:21.10.6
+      alpineutils: ghcr.io/hyperledger/bevel-alpine:latest
+      pullPolicy: IfNotPresent
+
+    node:
+      name: v1
+      tls: True
+      consensus: ibft
+      mountPath: /opt/besu/data
+      servicetype: ClusterIP
+      imagePullSecret: regcred
+      ports:
+        p2p: 30303
+        rpc: 8545
+        ws: 8546
+
+      permissioning:
+        enabled: False
+      
+    storage:
+      storageclassname: sc-aws-storageclass
+      storagesize: 1Gi
+
+    vault:
+      address: http://demo.sau99.dev.aws.blockchaincloudpoc-develop.com
+      secretengine: secretsv2
+      secretprefix: data/sc-bes/crypto/v1
+      serviceaccountname: vault-auth
+      keyname: data
+      tlsdir: tls
+      role: vault-role
+      authpath: besusc
+      type: hashicorp
+
+    genesis: ewogICJjb25maWciOiB7CiAgICAiY2hhaW5JZCI6IDIwMDAsCiAgICAiY29uc3RhbnRpbm9wbGVmaXhibG9jayI6IDAsCiAgICAiY29udHJhY3RTaXplTGltaXQiOiAyMTQ3NDgzNjQ3LAogICAgImliZnQyIjogewogICAgICAiYmxvY2twZXJpb2RzZWNvbmRzIjogMiwKICAgICAgImVwb2NobGVuZ3RoIjogMzAwMDAsCiAgICAgICJyZXF1ZXN0dGltZW91dHNlY29uZHMiOiAxMAogICAgfQogIH0sCiAgIm5vbmNlIjogIjB4MCIsCiAgInRpbWVzdGFtcCI6ICIweDU4ZWU0MGJhIiwKICAiZ2FzTGltaXQiOiAiMHgxZmZmZmZmZmZmZmZmZiIsCiAgImRpZmZpY3VsdHkiOiAiMHgxIiwKICAiYWxsb2MiOiB7CiAgICAiNGY2MDE5QmY4YTYyOWZlOTFiMTEwMTI1ZDU5NWY0MjE2YWZmMjQwMiI6IHsKICAgICAgImJhbGFuY2UiOiAiOTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiAgICB9LAogICAgImQyOTQ3OUUwNzA1RTM3NTQ1OTU2MTg1NDExMDY4MjIxRjlhZDlCOUMiOiB7CiAgICAgICJiYWxhbmNlIjogIjkwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIgogICAgfSwKICAgICI3NjUwYTQzNGU0ODVEMDIzZENjMWFhNzhGMjIwQjgxYjM2NjgwMjVEIjogewogICAgICAiYmFsYW5jZSI6ICI5MDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIKICAgIH0sCiAgICAiZjU1MkFjNGUxOTA3MEJFMzhlMjBENjBFQjY0ODk2RTdCYWFkMmUxNyI6IHsKICAgICAgImJhbGFuY2UiOiAiOTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiAgICB9CiAgfSwKICAiZXh0cmFEYXRhIjogIjB4ZjgzZWEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMGQ1OTQxYjBmMDdjYzZmOGMwYzk1NDYzN2MwOWUzMWE5OTE0OWMwNzM0ZjNhODA4NDAwMDAwMDAwYzAiCn0=
+
+
+    metrics:
+      enabled: True
+      port: 9545    
