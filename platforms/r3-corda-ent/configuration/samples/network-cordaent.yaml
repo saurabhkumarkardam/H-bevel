@@ -177,7 +177,7 @@ network:
       type: node
       external_url_suffix: "EXTERNAL_URL_SUFFIX_PLACEHOLDER"
       firewall:
-        enabled: true # false # true
+        enabled: false # true
         subject: "CN=Test Firewall CA Certificate, OU=HQ, O=HoldCo LLC, L=New York, C=US"
         credentials:
             firewallca: firewallcapassword
